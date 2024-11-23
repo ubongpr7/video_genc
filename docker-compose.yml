@@ -1,5 +1,5 @@
 services:
-  web:
+  web-2:
     image: nas415/video_gen:latest
     env_file:
       - .env
@@ -12,4 +12,4 @@ services:
     volumes:
       - .:/app
     ports:
-      - "8000:7752"
+      - "7752:7752"
