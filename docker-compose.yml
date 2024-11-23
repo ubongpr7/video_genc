@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  django-app:
+    build:
+      context: .  # Build from the current directory
+      dockerfile: Dockerfile  # Specify the Dockerfile if it's named differently
+    container_name: django_app_container
+    ports:
+      - "8000:8000"  # Map container's port 8000 to localhost
+    volumes:
+      - .:/app  # Mount current folder to /app in the container for development
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    command: >
+      bash -c "python manage.py migrate &&
+               python manage.py runserver 0.0.0.0:8000"
