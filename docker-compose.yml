@@ -12,4 +12,4 @@ services:
     volumes:
       - .:/app
     ports:
-      - "7752:7732"
+      - "7732:7732"
