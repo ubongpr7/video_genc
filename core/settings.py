@@ -136,7 +136,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # DOMAIN_NAME = 'http://153.92.208.98:8000'
-DOMAIN_NAME =  os.getenv("AWS_ACCESS_KEY_ID")
+DOMAIN_NAME =  os.getenv("DOMAIN_NAME")
 # DOMAIN_NAME = "http://localhost:8000"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
