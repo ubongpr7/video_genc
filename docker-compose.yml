@@ -1,5 +1,5 @@
 services:
-  web-2:
+  web:
     image: nas415/video_gen:latest
     env_file:
       - .env
@@ -7,9 +7,9 @@ services:
       sh -c "
         python3.10 manage.py makemigrations &&
         python3.10 manage.py migrate &&
-        python3.10 manage.py runserver 0.0.0.0:7752
+        python3.10 manage.py runserver 0.0.0.0:7732
       "
     volumes:
       - .:/app
     ports:
-      - "7752:7752"
+      - "7752:7732"
