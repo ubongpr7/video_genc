@@ -269,43 +269,62 @@ def add_video_clips(request, textfile_id):
 
                 text_file.text_file = request.FILES.get("text_file")
                 text_file.save()
-                lines =text_file.process_text_file()
-                video_clips=[] 
-                for i,line in enumerate(lines, start=1):
-                    video_clip=TextLineVideoClip(
-                        text_file=text_file,
-                        slide=line,
-                        line_number=i
-
-                    )
-                    video_clips.append(video_clip)
-                if video_clips:
-                    TextLineVideoClip.objects.bulk_create(video_clips)
                 return redirect(reverse("video:add_scenes", args=[textfile_id]))
-
-                # return render(
-                #     request,
-                #     "vlc/frontend/VLSMaker/sceneselection/index.html",
-                #     {'key':key, "video_clips": video_clips, "textfile_id": textfile_id},
-                # )
 
             messages.error(request, "You Did Not Upload Text File")
             return redirect(reverse("video:add_scenes", args=[textfile_id]))
 
     else:
-        video_clips= text_file.video_clips.all()
-        if video_clips:
+        if text_file.text_file and not existing_clips:
+            lines = text_file.process_text_file()
+            n_lines = len(lines)
+            # Create a list of dictionaries with line numbers for the form
+            form_data = [
+                {"line_number": i + 1, "line": lines[i], "i": i}
+                for i in range(len(lines))
+            ]
             return render(
                 request,
                 "vlc/frontend/VLSMaker/sceneselection/index.html",
-                {"key":key,"video_clips": video_clips,"textfile": text_file},
+                {
+                    "n_lines": n_lines,
+                    "key": key,
+                    "text_file": text_file,
+                    "video_categories": video_categories,
+                    "textfile_id": textfile_id,
+                    "form_data": form_data,
+                },
             )
-        else:
-             return render(
+        elif text_file.text_file and existing_clips:
+            lines = text_file.process_text_file()
+            n_lines = len(lines)
+            form_data = [
+                {
+                    "line_number": i + 1,
+                    "line": lines[i],
+                    "i": i,
+                    "clip": existing_clips[i],
+                }
+                for i in range(len(lines))
+            ]
+            return render(
                 request,
                 "vlc/frontend/VLSMaker/sceneselection/index.html",
-                { "key":key, "textfile": text_file},
+                {
+                    "n_lines": n_lines,
+                    "key": key,
+                    "text_file": text_file,
+                    "video_categories": video_categories,
+                    "textfile_id": textfile_id,
+                    "form_data": form_data,
+                },
             )
+
+        return render(
+            request,
+            "vlc/frontend/VLSMaker/sceneselection/index.html",
+            {"key": key, "text_file": text_file, "textfile_id": textfile_id},
+        )
 
 
 def get_clip(request, cat_id):
