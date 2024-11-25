@@ -140,6 +140,72 @@
           </div>
   </div>
   </form>
+
+  
+  <form class="grid-container">
+    <div class="scene-container"
+        style="display: flex; padding: 30px 30px; justify-content: center; align-items: center;">
+        <div class="Scene"
+            style="max-width: 2000px; margin-bottom: 30px; border: 1px solid #0000004D; box-sizing: border-box; border-radius: 8px; padding: 40px 24px; background: white; position: relative;">
+            <div class="select-scene-text" style="display: flex; justify-content: center; margin-bottom: 30px;">
+                <span style="font-size: 24px; font-weight: 700; line-height: 29.26px; text-align: center;">
+                    Select Your Scenes
+                </span>
+            </div>
+            <div class="grid-container"
+                style="display: grid; grid-template-columns: 0.23fr 1fr; width: 100%; border: 1px solid #0000004D;">
+                <div class="grid-item title column-1"><span>Subtitle</span></div>
+                <div class="grid-item title column-2"><span>Subtitle Text</span></div>
+
+                <!-- Subtitle 1 -->
+                <div class="grid-item slide-row grid-row" data-slide="1"><span>Subtitle 1</span></div>
+                <div class="grid-item slide-text" data-slide="1" tabindex="0">
+                    <span>After reviewing the existing offers in the market, <input type="hidden" name="line_0"
+                            value=""></span>
+                </div>
+
+                <!-- Subtitle 2 -->
+                <div class="grid-item slide-row grid-row" data-slide="2"><span>Subtitle 2</span></div>
+                <div class="grid-item slide-text" data-slide="2" tabindex="0">
+                    <span>we identified a gap in neck pain relief devices based on user feedback. <input
+                            type="hidden" name="line_1" value=""></span>
+                </div>
+
+                <!-- Subtitle 3 -->
+                <div class="grid-item slide-row grid-row" data-slide="3"><span>Subtitle 3</span></div>
+                <div class="grid-item slide-text" data-slide="3" tabindex="0">
+                    <span>Our research revealed a noticeable absence of heat therapy in competing products. <input
+                            type="hidden" name="line_2" value=""></span>
+                </div>
+
+                <!-- Subtitle 4 -->
+                <div class="grid-item slide-row grid-row" data-slide="4"><span>Subtitle 4</span></div>
+                <div class="grid-item slide-text" data-slide="4" tabindex="0">
+                    <span>As a result, ItamiFlow integrated heat therapy into the Itami Neck Stretcher, <input
+                            type="hidden" name="line_3" value=""></span>
+                </div>
+            </div>
+
+            <!-- Button Container (Moves based on container width) -->
+            <div class="button"
+                style="position: absolute; right: 20px; bottom: 16px;height: 24px; width: fit-content; display: flex; justify-content: flex-end;">
+                <div
+                    style="display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #864AF9; cursor: pointer;">
+                    <button type="submit" id="proceed-button"
+                        style="text-decoration: none; padding: 10px 20px; color: white; font-family: Montserrat; font-size: 18px; font-weight: 500; line-height: 24px; text-align: left; background: none; border: none; cursor: pointer;">
+                        Proceed To Background Music Selection
+                    </button>
+                    <svg width="24" height="24" type="button" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="white" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
    <script>
   document.getElementById("scene_form").addEventListener("submit", function(event) {
       let allValid = true;
