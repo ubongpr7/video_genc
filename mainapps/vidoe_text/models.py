@@ -173,7 +173,7 @@ class TextLineVideoClip(models.Model):
     
     def __str__(self):
         return f"VideoClip for line {self.line_number} of {self.text_file}"
-    def get_number_of_subclip():
+    def get_number_of_subclip(self):
         return len(self.subclips.all())
     class Meta:
         unique_together = ("text_file", "line_number")
