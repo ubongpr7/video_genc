@@ -36,6 +36,7 @@
     background-color: #864AF9;
     width: 50px;
     padding: 13px ;
+    cursor: pointer;
 }
 
 .notification-number {
@@ -85,7 +86,7 @@
                     <span>{{ clip.slide }}</span>
                 </div>
                 <div class="grid-item slide-row grid-row" data-slide="1">
-                    <div class="icon-wrapper">
+                    <div class="icon-wrapper" onclick="subclipAdd('{{clip.get_number_of_subclip}','{{clip.id}}')">
                         <i class="ri-file-video-line slide-text"></i>
                         <span class="notification-number">{{clip.get_number_of_subclip}}</span>
                     </div>
@@ -115,6 +116,10 @@
 </form>
 
    <script>
+    function subclipAdd(clipNumber, clipID){
+        console.log('This is the clipNumber ',clipNumber)
+        console.log('This is the clipID ',clipID)
+    }
   document.getElementById("scene_form").addEventListener("submit", function(event) {
       let allValid = true;
 
@@ -384,4 +389,5 @@
           
       }
   </script>
+
 
