@@ -38,9 +38,9 @@
 .notification-number {
     position: absolute;
     top: -5px; 
-    left: 80%;
+    left: 82%;
     color: rgb(12, 12, 12);
-    font-size: 12px;
+    font-size: 18px;
     font-weight: bold;
     border-radius: 50%;    
     text-align: center;
@@ -75,16 +75,18 @@
                 <div class="grid-item title column-1"><span>Subtitle</span></div>
                 <div class="grid-item title column-2"><span>Subtitle Text</span></div>
                 <div class="grid-item title column-3"><span>Clips</span></div>
-                <!-- Subtitle 1 -->
-                <div class="grid-item slide-row grid-row" data-slide="1"><span> 1</span></div>
+                {% for data in form_data %}
+
+                <div class="grid-item slide-row grid-row" data-slide="1"><span>Slide {{ data.line_number }}</span></div>
                 <div class="grid-item slide-text" data-slide="1" tabindex="0">
-                    <span>After reviewing the existing offers in the market</span>
+                    <span>{{ data.line }}</span>
                 </div>
                 <div class="grid-item slide-row grid-row" data-slide="1">
                     <div class="icon-wrapper">
                         <i class="ri-file-video-line slide-text"></i>
                         <span class="notification-number">5</span>
                     </div>
+                {% endfor %}
                     
 
 
