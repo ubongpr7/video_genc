@@ -118,8 +118,10 @@
    <script>
 
         function subclipAdd(clipNumber, clipID){
-            popupModal=document.getElementById('popup-modal')
+            const popupModal=document.getElementById('popup-modal')
+            const modalCont=document.getElementById('modal-cont')
             popupModal.style.display='block'
+            modalCont.style.display='flex'
             console.log('This is the clipNumber ',clipNumber)
             console.log('This is the clipID ',clipID)
 

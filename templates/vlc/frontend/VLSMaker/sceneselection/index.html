@@ -309,7 +309,10 @@ font-family: "Montserrat", sans-serif;
     </div>
     
     {%include  'vlc/frontend/VLSMaker/sceneselection/new_form.html' %}
-    {%include  'vlc/frontend/VLSMaker/sceneselection/add_clip_modal.html' %}
+    <div id="modal-cont">
+        {%include  'vlc/frontend/VLSMaker/sceneselection/add_clip_modal.html' %}
+
+    </div>
     
     <script>
         const fileName= document.getElementById('fileName')
