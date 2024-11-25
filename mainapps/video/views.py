@@ -280,7 +280,7 @@ def add_video_clips(request, textfile_id):
                     )
                     video_clips.append(video_clip)
                 if video_clips:
-                    TextLineVideoClip.bulk_create(video_clips)
+                    TextLineVideoClip.objects.bulk_create(video_clips)
                 video_clips= text_file.video_clips.all()
                 # return redirect(reverse("video:add_scenes", args=[textfile_id]))
 
