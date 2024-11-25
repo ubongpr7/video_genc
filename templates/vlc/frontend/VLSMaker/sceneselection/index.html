@@ -106,7 +106,122 @@ font-family: "Montserrat", sans-serif;
         grid-template-columns: 1fr; 
     }
 }
+/* popup stuff */
+.list-of-tags {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 12px 0;
+            padding: 7px;
+            border-radius: 5px;
+            border: 1px solid #a6a6a6;
+        }
 
+        .list-of-tags li {
+            list-style: none;
+            background: #f2f2f2;
+            padding: 5px 8px 5px 10px;
+            margin: 4px 3px;
+            border: 1px solid #e3d1e1;
+            border-radius: 3px;
+        }
+
+        .list-of-tags input {
+            flex: 1;
+            outline: none;
+            border: none;
+            padding: 5px;
+            font-size: 16px;
+        }
+        .details {
+            display: flex;
+            justify-content: flex-end;  
+            gap: 10px;  
+        }
+
+        #reset-btn {
+            border: 1px solid #864AF9; 
+            background-color: transparent;
+            color: #864AF9;  
+            padding: 5px 15px;
+            cursor: pointer;
+        }
+
+        #done-btn {
+            background-color: #864AF9; 
+            color: white;  
+            padding: 5px 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #reset-btn:hover {
+            background-color: #864AF9; 
+            color: white;
+        }
+
+        #done-btn:hover {
+            background-color: #864AF9; 
+        }
+
+        .details button {
+            padding: 5px 10px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .details button:hover {
+            background: #0056b3;
+        }
+        .guide {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .guide-title {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .guide-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 20px;
+            text-align: center;
+            border: 1px solid #a6a6a6;
+            border-radius: 50%;
+            cursor: pointer;
+            background-color: #f2f2f2;
+            color: #333;
+            user-select: none;
+        }
+        .guide-icon:hover::after {
+            content: attr(title);
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #a6a6a6;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        .error-message {
+                color: red;
+                font-size: 12px;
+                margin-top: 5px;
+            }
+        .details {
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body style="position: relative; overflow-x: hidden;">
@@ -192,11 +307,9 @@ font-family: "Montserrat", sans-serif;
 
 
     </div>
-    {% if text_file.text_file   %}
-    {%include  'vlc/frontend/VLSMaker/sceneselection/new_form.html' %}
     
-    {% endif %}
     {%include  'vlc/frontend/VLSMaker/sceneselection/new_form.html' %}
+    {%include  'vlc/frontend/VLSMaker/sceneselection/add_clip_modal.html' %}
     
     <script>
         const fileName= document.getElementById('fileName')
@@ -211,7 +324,6 @@ font-family: "Montserrat", sans-serif;
         });
 
     </script>
-    <script src="{% static 'htmx.js' %}"></script>
 </body>
 </html>
 
