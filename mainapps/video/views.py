@@ -287,7 +287,7 @@ def add_video_clips(request, textfile_id):
                 return render(
                     request,
                     "vlc/frontend/VLSMaker/sceneselection/index.html",
-                    { "video_clips": video_clips, "textfile_id": textfile_id},
+                    {'key':key, "video_clips": video_clips, "textfile_id": textfile_id},
                 )
 
             messages.error(request, "You Did Not Upload Text File")
