@@ -269,7 +269,26 @@ def add_video_clips(request, textfile_id):
 
                 text_file.text_file = request.FILES.get("text_file")
                 text_file.save()
-                return redirect(reverse("video:add_scenes", args=[textfile_id]))
+                lines =text_file.process_text_file()
+                video_clips=[] 
+                for i,line in enumerate(lines, start=1):
+                    video_clip=TextLineVideoClip(
+                        text_file=text_file,
+                        slide=line,
+                        line_number=i
+
+                    )
+                    video_clips.append(video_clip)
+                if video_clips:
+                    TextLineVideoClip.bulk_create(video_clips)
+                video_clips= text_file.video_clips.all()
+                # return redirect(reverse("video:add_scenes", args=[textfile_id]))
+
+                return render(
+                    request,
+                    "vlc/frontend/VLSMaker/sceneselection/index.html",
+                    {"key": key, "video_clips": video_clips, "textfile_id": textfile_id},
+                )
 
             messages.error(request, "You Did Not Upload Text File")
             return redirect(reverse("video:add_scenes", args=[textfile_id]))

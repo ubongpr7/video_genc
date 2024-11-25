@@ -75,6 +75,7 @@ class TextFile(models.Model):
         "accounts.User", on_delete=models.SET_NULL, null=True, editable=False
     )
 
+
     text_file = models.FileField(upload_to=text_file_upload_path, null=True, blank=True)
     voice_id = models.CharField(max_length=100)
     processed = models.BooleanField(default=False)
@@ -160,57 +161,60 @@ class TextFile(models.Model):
 
 def text_clip_upload_path(instance, filename):
     """Generate a unique file path for each uploaded text file."""
-    return os.path.join("text_clip", str(instance.text_file.id), filename)
+    return os.path.join("text_clips", str(instance.main_line.id), filename)
 
 
 class TextLineVideoClip(models.Model):
     text_file = models.ForeignKey(
         TextFile, on_delete=models.CASCADE, related_name="video_clips"
     )
-    video_file = models.ForeignKey(
-        "video.VideoClip", on_delete=models.SET_NULL, null=True, related_name="usage"
-    )
-    video_file_path = models.FileField(upload_to=text_clip_upload_path)
+    slide=models.CharField(max_length=100,null=True, blank=True)
     line_number = models.IntegerField()
-    timestamp_start = models.FloatField(null=True, blank=True)
-    timestamp_end = models.FloatField(null=True, blank=True)
-
-    def to_dict(self):
-        if self.video_file:
-            video_path = (
-                self.video_file.video_file
-            )  # Use .url to get the S3 or local URL
-        elif self.video_file_path:
-            video_path = self.video_file_path  # Use .url for the FileField as well
-        else:
-            video_path = ""  # Fallback to an empty string if no video path is available
-
-        return {
-            "line_number": self.line_number,
-            "video_path": video_path,  # Return the URL, not the path
-            "timestamp_start": self.timestamp_start,
-            "timestamp_end": self.timestamp_end,
-        }
-
-    def get_file_status(self):
-        if self.video_file_path:
-            return "filled"
-        else:
-            return "empty"
-
-    def get_video_file_name(self):
-        filename = self.video_file_path.name.split("/")[-1]
-
-        return filename[:15]
-
+    
     def __str__(self):
         return f"VideoClip for line {self.line_number} of {self.text_file}"
-
+    def get_number_of_subclip():
+        return len(self.subclips.all())
     class Meta:
         unique_together = ("text_file", "line_number")
 
         ordering = ["line_number", "text_file"]
 
 
+
+class SubClip(models.Model):
+    subtittle=models.CharField(max_length=100,)
+    video_clip = models.ForeignKey(
+        "video.VideoClip", on_delete=models.SET_NULL, null=True, related_name='clips_used_for'
+    )
+    video_file = models.FileField(upload_to=text_clip_upload_path)
+    main_line=models.ForeignKey(TextLineVideoClip,on_delete=models.CASCADE,related_name='subclips')
+
+    def get_file_status(self):
+        if self.video_file:
+            return "filled"
+        else:
+            return "empty"
+
+    def get_video_file_name(self):
+        filename = self.video_file.name.split("/")[-1]
+        return filename[:15]
+
+    def to_dict(self):
+        if self.video_clip:
+            video_path = (
+                self.video_clip.video_file
+            )  # Use .url to get the S3 or local URL
+        elif self.video_file:
+            video_path = self.video_file  # Use .url for the FileField as well
+        else:
+            video_path = ""  # Fallback to an empty string if no video path is available
+
+        return {
+            "subtittle": self.subtittle,
+            "video_path": video_path,  
+        }
+
+    
 class LogoModel(models.Model):
     logo = models.FileField(upload_to="logos/")
