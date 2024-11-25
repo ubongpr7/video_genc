@@ -1,6 +1,6 @@
 services:
   web:
-    image: nas415/video_gen:latest
+    image: ubongpr7/video_gen:latest
     env_file:
       - .env
     command: >
