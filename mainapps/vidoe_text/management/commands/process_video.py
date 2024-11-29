@@ -288,13 +288,15 @@ class Command(BaseCommand):
             clip = self.crop_to_aspect_ratio_(clip, target_resolution)
             clip = clip.set_fps(30)  
             cropped_clips.append(clip)
+        resized_clips = self.resize_clips_to_max_size(cropped_clips)
+        
 
         logging.info("Done cropping replacements")
 
         self.text_file_instance.track_progress(54)
 
         final_video_segments = self.replace_video_segments(
-            output_video_segments, cropped_clips, subtitles, blank_vide_clip
+            output_video_segments, resized_clips, subtitles, blank_vide_clip
         )
         logging.info("Done  replace_video_segments")
         concatenated_video = self.concatenate_clips(
@@ -994,15 +996,7 @@ class Command(BaseCommand):
         Returns:
             VideoFileClip: The concatenated video clip.
         """
-        processed_clips = []
-
-        # for clip in clips:
-        #     clip = self.crop_to_aspect_ratio_(clip, target_resolution)
-        #     if target_fps:
-        #         clip = clip.set_fps(target_fps)  # Set frame rate to target fps
-        #     processed_clips.append(clip)
-        resized_clips = self.resize_clips_to_max_size(clips)
-        final_clip = concatenate_videoclips(resized_clips, method="compose")
+        final_clip = concatenate_videoclips(clips, method="compose")
         logging.info("Clip has been concatenated: ")
         return final_clip
 
