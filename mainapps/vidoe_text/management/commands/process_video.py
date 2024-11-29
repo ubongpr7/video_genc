@@ -250,17 +250,17 @@ class Command(BaseCommand):
 
         replacement_videos_per_combination = []
 
-        for replacement_video_file in replacement_video_files:
-            replacement_video = self.load_video_from_file_field(replacement_video_file)
-            cropped_replacement_video = self.crop_to_aspect_ratio_(
-                replacement_video, MAINRESOLUTIONS[text_file_instance.resolution]
-            )  # MAINRESOLUTIONS[resolution]
+        # for replacement_video_file in replacement_video_files:
+        #     replacement_video = self.load_video_from_file_field(replacement_video_file)
+        #     cropped_replacement_video = self.crop_to_aspect_ratio_(
+        #         replacement_video, MAINRESOLUTIONS[text_file_instance.resolution]
+        #     )  # MAINRESOLUTIONS[resolution]
 
-            logging.info(
-                f"Replacement video {replacement_video_file} cropped to desired aspect ratio"
-            )
-            if len(replacement_videos_per_combination) < len(replacement_video_files):
-                replacement_videos_per_combination.append({})
+        #     logging.info(
+        #         f"Replacement video {replacement_video_file} cropped to desired aspect ratio"
+        #     )
+        #     if len(replacement_videos_per_combination) < len(replacement_video_files):
+        #         replacement_videos_per_combination.append({})
         logging.info("Concatination Done")
         self.text_file_instance.track_progress(48)
 
@@ -281,13 +281,20 @@ class Command(BaseCommand):
         for video_file in replacement_video_files:
             clip = self.load_video_from_file_field(video_file)
             replacement_video_clips.append(clip)
-
         logging.info("Done Clipping replacements")
+        cropped_clips=[]
+        target_resolution=MAINRESOLUTIONS[resolution]
+        for clip in replacement_video_clips:
+            clip = self.crop_to_aspect_ratio_(clip, target_resolution)
+            clip = clip.set_fps(30)  
+            cropped_clips.append(clip)
+
+        logging.info("Done cropping replacements")
 
         self.text_file_instance.track_progress(54)
 
         final_video_segments = self.replace_video_segments(
-            output_video_segments, replacement_video_clips, subtitles, blank_vide_clip
+            output_video_segments, cropped_clips, subtitles, blank_vide_clip
         )
         logging.info("Done  replace_video_segments")
         concatenated_video = self.concatenate_clips(
@@ -947,13 +954,10 @@ class Command(BaseCommand):
             raise
 
     def crop_to_aspect_ratio_(self, clip, desired_aspect_ratio):
-        # Get the original clip dimensions
         original_width, original_height = clip.size
 
-        # Calculate the current aspect ratio
         original_aspect_ratio = original_width / original_height
 
-        # If the aspect ratio is already correct, return the original clip
         if (
             abs(original_aspect_ratio - desired_aspect_ratio) < 0.01
         ):  # Allow small rounding errors
@@ -976,7 +980,6 @@ class Command(BaseCommand):
         x2 = x1 + new_width
         y2 = y1 + new_height
 
-        # Crop the clip to the new dimensions
         return crop(clip, x1=x1, y1=y1, x2=x2, y2=y2)
 
     def concatenate_clips(self, clips, target_resolution=None, target_fps=None):
@@ -991,26 +994,22 @@ class Command(BaseCommand):
         Returns:
             VideoFileClip: The concatenated video clip.
         """
-        # Prepare a list to store modified clips
         processed_clips = []
 
-        for clip in clips:
-            clip = self.crop_to_aspect_ratio_(clip, target_resolution)
-            if target_fps:
-                clip = clip.set_fps(target_fps)  # Set frame rate to target fps
-            processed_clips.append(clip)
-        resized_clips = self.resize_clips_to_max_size(processed_clips)
-        # Concatenate all video clips
+        # for clip in clips:
+        #     clip = self.crop_to_aspect_ratio_(clip, target_resolution)
+        #     if target_fps:
+        #         clip = clip.set_fps(target_fps)  # Set frame rate to target fps
+        #     processed_clips.append(clip)
+        resized_clips = self.resize_clips_to_max_size(clips)
         final_clip = concatenate_videoclips(resized_clips, method="compose")
         logging.info("Clip has been concatenated: ")
         return final_clip
 
     def resize_clips_to_max_size(self, clips):
-        # Step 1: Get the maximum width and height from the clips
         max_width = max(clip.w for clip in clips)
         max_height = max(clip.h for clip in clips)
 
-        # Step 2: Resize each clip to the maximum width and height
         resized_clips = [clip.resize(newsize=(max_width, max_height)) for clip in clips]
 
         return resized_clips
