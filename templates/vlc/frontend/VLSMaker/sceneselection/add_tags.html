@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div id="separateSlide" class="wrapper">
     
     <div class="guide">
         <span class="guide-title">Separate Words To Add Multiple Cips </span>
@@ -16,6 +16,7 @@
         <button id="done-btn" type="button">Proceed To add 1 Clip</button>
     </div>
 </div>
+
 <script>
    const listOfTags = document.getElementById('list-of-tags');
     const input = listOfTags.querySelector('input');
@@ -167,5 +168,12 @@
     doneBtn.addEventListener('click', convertRemainingToTag);
 
     input.addEventListener('paste', e => e.preventDefault());
-
+    document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+        const popupModal = document.getElementById("popup-modal");
+        if (popupModal && !popupModal.classList.contains("hidden")) {
+            popupModal.classList.add("hidden");
+        }
+    }
+});
 </script>

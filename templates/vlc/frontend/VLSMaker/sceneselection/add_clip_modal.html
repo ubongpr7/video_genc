@@ -27,110 +27,110 @@
      
 
         /* Modal Content */
-        .sub-div {
-            background: white;
-            border-radius: 8px;
-            padding: 20px 30px;
-            width: 100%;
-            max-width: 750px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            animation: slide-down 0.3s ease-in-out;
+    .sub-div {
+        background: white;
+        border-radius: 8px;
+        padding: 20px 30px;
+        width: 100%;
+        max-width: 750px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        animation: slide-down 0.3s ease-in-out;
+    }
+
+    /* Modal Header */
+    .popup-content .title {
+        background: #864AF9;
+        color: white;
+        border-top: none;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 29.26px;
+        text-align: center;
+    }
+
+    /* Modal Form Elements */
+    .popup-content select,
+    .popup-content input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        /* margin-bottom: 15px; */
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    /* Submit Button */
+    #popup-submit {
+        font-family: "Montserrat", sans-serif;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 24px;
+        color: white;
+        background: #864AF9;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 24px;
+        letter-spacing: 0.02em;
+        text-align: left;
+        cursor: pointer;
+        border: none;
+        transition: background 0.2s ease-in-out;
+    }
+
+    .close-btn {
+        display: inline-block;
+        margin-left: 775px;
+    }
+
+    #close-popup {
+        background-color: red;
+        color: white;
+        border: none;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        padding: 0;
+        line-height: 30px;
+        text-align: center;
+    }
+
+    #close-popup:hover {
+        background-color: darkred;
+    }
+
+
+    #popup-submit {
+        margin-top: 32px;
+        margin-left: 85%;
+    }
+
+    #popup-submit:hover {
+        background: #722df3;
+    }
+
+    /* Animation */
+    @keyframes slide-down {
+        from {
+            transform: translateY(-30px);
+            display:none;
         }
 
-        /* Modal Header */
-        .popup-content .title {
-            background: #864AF9;
-            color: white;
-            border-top: none;
-            font-size: 24px;
-            font-weight: 600;
-            line-height: 29.26px;
-            text-align: center;
+        to {
+            transform: translateY(0);
+            opacity: 1;
         }
-
-        /* Modal Form Elements */
-        .popup-content select,
-        .popup-content input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            /* margin-bottom: 15px; */
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        /* Submit Button */
-        #popup-submit {
-            font-family: "Montserrat", sans-serif;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 24px;
-            color: white;
-            background: #864AF9;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 500;
-            line-height: 24px;
-            letter-spacing: 0.02em;
-            text-align: left;
-            cursor: pointer;
-            border: none;
-            transition: background 0.2s ease-in-out;
-        }
-
-        .close-btn {
-            display: inline-block;
-            margin-left: 775px;
-        }
-
-        #close-popup {
-            background-color: red;
-            color: white;
-            border: none;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            font-weight: bold;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            padding: 0;
-            line-height: 30px;
-            text-align: center;
-        }
-
-        #close-popup:hover {
-            background-color: darkred;
-        }
-
-
-        #popup-submit {
-            margin-top: 32px;
-            margin-left: 85%;
-        }
-
-        #popup-submit:hover {
-            background: #722df3;
-        }
-
-        /* Animation */
-        @keyframes slide-down {
-            from {
-                transform: translateY(-30px);
-                display:none;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
+    }
 </style>
 <div class="grid-container hidden" id="popup-modal">
     
     <div class="sub-div">
         {%include  'vlc/frontend/VLSMaker/sceneselection/add_tags.html' %}
 
-        <div  class="grid-items popup-content" style="grid-template-columns: 0.7fr 1fr;width:100%;display: none;">
+        <div  class="grid-items popup-content" style="grid-template-columns: 0.7fr 1fr;width:100%;display: none;" id="chooseVideo">
             <div class="grid-item title column-hide column-3"><span>Upload Scene</span></div>
             <div class="grid-item title right column-hide column-4"><span>Upload Scene From Asset Folder</span></div>
             <div class="grid-item center column-hide column-3">
