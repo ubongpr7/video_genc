@@ -25,6 +25,32 @@
   .free-plan-disabled-overlay-container {
       position: relative;
   }
+  .icon-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.icon-wrapper i {
+    /* font-size: 24px;  */
+    color: #ffffff; 
+    background-color: #864AF9;
+    width: 50px;
+    padding: 13px ;
+    cursor: pointer;
+}
+
+.notification-number {
+    position: absolute;
+    top: -5px; 
+    left: 70%;
+    color: #ffffff; 
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50%;    
+    text-align: center;
+    min-width: 18px;
+    line-height: 1;
+}
 
   .free-plan-disabled-overlay {
       position: absolute;
@@ -36,557 +62,70 @@
       z-index: 999;
       cursor: not-allowed;
   }
-
-  .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
-  }
-
-  /* Modal Content */
-  .modal-content {
-    background-color: white;
-    margin: 15% auto;
-    padding: 20px;
-    border-radius: 8px;
-    width: 80%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Modal Header */
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .modal-header h2 {
-    margin: 0;
-  }
-
-  /* Close Button (X) */
-  .close {
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
 </style>
 
-<div class="grid-container">
-    <div class="grid-items" style="display: grid; grid-template-columns: 1fr 2fr; row-gap: 10px; column-gap: 10px; width: 100%;">
-        <!-- Column Headers -->
-        <div class="grid-item title" style="font-weight: bold; text-align: left;">
-            <span>Slide</span>
-        </div>
-        <div class="grid-item title" style="font-weight: bold; text-align: left;">
-            <span>Slide Text</span>
-        </div>
-
-        <!-- Loop through form_data to generate rows -->
-        {% for data in form_data %}
-        <div class="grid-item slide-number" style="text-align: left;">
-            <span class="slide-number-text" data-line-number= data.line_number>Slide {{ data.line_number }}</span>
-        </div>
-            <div class="grid-item" style="text-align: left;" onclick="handleTextSelection()">
-                <span class="selectable-text">{{ data.line }}</span>
+  <form class="grid-container">
+    <div class="scene-container"
+        style="display: flex; padding: 30px 30px; justify-content: center; align-items: center;">
+        <div class="Scene"
+            style="max-width: 2000px; margin-bottom: 30px; border: 1px solid #0000004D; box-sizing: border-box; border-radius: 8px; padding: 40px 24px; background: white; position: relative;">
+            <div class="select-scene-text" style="display: flex; justify-content: center; margin-bottom: 30px;">
+                <span style="font-size: 24px; font-weight: 700; line-height: 29.26px; text-align: center;">
+                    Select Your Scenes
+                </span>
             </div>
-        {% endfor %}
-    </div>
-</div>
+            <div class="grid-container"
+                style="display: grid; grid-template-columns: 0.15fr 1fr 0.08fr; width: 100%; border: 1px solid #0000004D;">
+                <div class="grid-item title column-1"><span>Subtitle</span></div>
+                <div class="grid-item title column-2"><span>Subtitle Text</span></div>
+                <div class="grid-item title column-3"><span>Clips</span></div>
+                {% for clip in video_clips %}
 
-<button id="openModalBtn">Open Modal</button>
+                <div class="grid-item slide-row grid-row" data-slide="1"><span>Slide {{ clip.line_number }}</span></div>
+                <div class="grid-item slide-text" data-slide="1" tabindex="0">
+                    <span>{{ clip.slide }}</span>
+                </div>
+                <div class="grid-item slide-row grid-row" data-slide="1">
+                    <div class="icon-wrapper" onclick="subclipAdd('{{clip.get_number_of_subclip}}','{{clip.id}}')">
+                        <i class="ri-file-video-line slide-text"></i>
+                        <span class="notification-number">{{clip.get_number_of_subclip}}</span>
+                    </div>
+                    
+                    
+            
+                </div>
+                {% endfor %}
 
-<!-- Modal Structure -->
-<div id="uploadModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">&times;</span>
-      <h2>Select Your Scenes</h2>
-    </div>
-    
-    <!-- Form Structure -->
-    <form method="POST" action="." id="scene_form" enctype="multipart/form-data">
-      {% csrf_token %}
-      <input type="text" hidden name="purpose" value='process'>
-      <input type="text" hidden name="slideNumber" value="">
-      <input type="text" hidden name="selectedtext" value="">
-
-
-      
-      <!-- Scene Container -->
-      <div class="scene-container" style="display: flex; padding: 30px; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
-        
-        <!-- Column 1: Upload Scene (Handles Select Topic and Select Video) -->
-        <div class="grid-item title">
-          <span>Upload Scene</span>
-        </div>
-        <div class="grid-item">
-          <!-- Select Topic Dropdown -->
-          <div style="width: 100%; position: relative; margin-bottom: 20px;">
-            <select id="topic_folder_{{ slideNumber }}" name="topic_folder_{{ slideNumber }}"
-                    onchange="fetchVideoClips(this.value, '{{ slideNumber }}', this)"
-                    style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333;">
-              <option value="">Select Topic</option>
-              {% for video_category in video_categories %}
-                <option value="{{ video_category.id }}">{{ video_category }}</option>
-              {% endfor %}
-            </select>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;">
-              <path d="M6 9L12 15L18 9" stroke="#050315" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-
-          <!-- Select Video Dropdown -->
-          <div id="div_{{ slideNumber }}" style="width: 100%; position: relative;">
-            <select class="selected_clip"
-                    onchange="saveInput(this)"
-                    name="selected_video_{{ slideNumber }}"
-                    id="videoSelect_{{ slideNumber }}_{{textfile_id}}" 
-                    style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333; padding-right: 40px;">
-              <option value="">Select a video</option>
-            </select>
-            <svg id="svg_{{ slideNumber }}" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" 
-                 style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;">
-              <path d="M6 9L12 15L18 9" stroke="#050315" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-        </div>
-
-        <!-- Column 2: Upload Scene From Asset Folder (Handles Choose File) -->
-        <div class="grid-item title">
-          <span>Upload Scene From Asset Folder</span>
-        </div>
-        <div class="grid-item">
-          <div style="width: 100%; height: fit-content; padding: 16px 24px; border-radius: 8px; border: 1px dashed #19191980; display: flex; align-items: center; position: relative; font-size: 16px; font-weight: 400; line-height: 23.2px; letter-spacing: 0.02em; text-align: center; gap: 14px;">
-            <svg id="svg1" class="uploadFileIcon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5M14.1667 6.66667L10 2.5M10 2.5L5.83333 6.66667M10 2.5V12.5" stroke="#191919B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <div class="uploadText" style="font-size: 16px; font-weight: 400; line-height: 23.2px; letter-spacing: 0.02em; text-align: center;">
-              Choose File
+            <div class="button"
+                style="position: absolute; right: 20px; bottom: 16px;height: 24px; width: fit-content; display: flex; justify-content: flex-end;">
+                <div
+                    style="display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #864AF9; cursor: pointer;">
+                    <button type="submit" id="proceed-button"
+                        style="text-decoration: none; padding: 10px 20px; color: white; font-family: Montserrat; font-size: 18px; font-weight: 500; line-height: 24px; text-align: left; background: none; border: none; cursor: pointer;">
+                        Proceed To Background Music Selection
+                    </button>
+                    <svg width="24" height="24" type="button" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="white" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
             </div>
-            <input type="file" accept="video/*" class="uploaded_file" id="video_{{ slideNumber }}" name="uploaded_video_{{ slideNumber }}" style="position: absolute; width: 100%; height: 100%; left: 0; opacity: 0; cursor: pointer;">
-          </div>
-        </div>
-
-      </div>
-      <div class="grid-container">
-        <div class="grid-items" style="display: grid; grid-template-columns: 1fr 2fr; row-gap: 10px; column-gap: 10px; width: 100%;">
-            <div class="grid-item title" style="font-weight: bold; text-align: left;">
-                <span>Selected Text</span>
-            </div>
-            <div class="grid-item" style="text-align: left;">
-                <span id="selectedText"></span> <!-- Display selected text here -->
-            </div>
-        </div>
-
-      <!-- Submit Button -->
-      <div style="text-align: center; margin-top: 20px;">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-      <div class="button" style="width: fit-content;margin-top: -30px; height:24px;position:absolute;right:10%; display: flex; justify-content: flex-end; align-items: center;">
-        <div style="display: flex;  align-items: center; justify-content: center; border-radius: 8px;  background: #864AF9; cursor: pointer;">
-            <button type="submit"  style="text-decoration: none; padding:10px; color: white; font-family: Montserrat; font-size: 18px; font-weight: 500; line-height: 24px; text-align: left; margin-right: 10px; background: none; border: none; cursor: pointer;">
-                Proceed To Background Music Selection
-            </button>
-            <svg width="24" height="24" type="button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>                        
         </div>
     </div>
-  
-    </form>
-  </div>
-</div>
-
-
-          
-    
-  
-<!-- Modal -->
-<div class="modal" id="sceneModal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">×</span>
-    <!-- Modal content will be dynamically added here -->
-  </div>
-</div>
-
-  </div>
-  </form>
-
-<!-- Button to manually trigger the modal (optional, can be removed if not needed) -->
-<button id="openModalBtn" style="display:none;">Open Modal</button>
+</form>
 
    <script>
-// Modal control logic
-var modal = document.getElementById("uploadModal");
-var span = document.getElementsByClassName("close")[0];
-let slideNumber = null;
 
-// Adding the event listener to all Slide Text elements dynamically
-// document.querySelectorAll('.grid-item .selectable-text').forEach(item => {
-//     item.addEventListener('mousedown', handleTextSelection);  // Detect mouse down to trigger selection
-// });
+        function subclipAdd(clipNumber, clipID){
+            const popupModal=document.getElementById('popup-modal')
+            const modalCont=document.getElementById('modal-cont')
+            popupModal.style.display='block'
+            modalCont.style.display='flex'
+            console.log('This is the clipNumber ',clipNumber)
+            console.log('This is the clipID ',clipID)
 
-
-
-// Close the modal when the user clicks the close button
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// Close the modal if the user clicks outside of it
-window.onclick = function(event) {
-    if (event.target === modal) {
-        modal.style.display = "none";
-    }
-}
-
-
-
-
-let isCtrlPressed = false;
-
-// Detect when the Control (Ctrl) key is pressed or released
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Control') {
-        isCtrlPressed = true;
-    }
-});
-
-document.addEventListener('keyup', function(event) {
-    if (event.key === 'Control') {
-        isCtrlPressed = false;
-    }
-});
-
-// Detect when Ctrl + C is pressed
-document.addEventListener('keydown', function(event) {
-    if (isCtrlPressed && event.key === 'c') {
-        handleTextSelection();
-    }
-});
-
-function handleTextSelection() {
-    // Get the selected text from the document
-    const selectedText = window.getSelection().toString().trim();
-
-    if (selectedText.length > 0) {
-        // Display the selected text in an alert
-        alert('Selected text: ' + selectedText);
-        const selectedTextInput = document.querySelector('input[name="selectedtext"]');
-        if (selectedTextInput) {
-            selectedTextInput.value = selectedText;
         }
+    </script>
 
 
-        // Check if the selected text is a valid word (contains alphabets and spaces only)
-            var wordRegex = /^[\w\s.,!?;:'"-@#&*()+=%$/<>|{}[\]\\^`~]+$/;
-
-        // Ensure that Shift key is pressed and there is selected text
-            if (selectedText.length > 0 && wordRegex.test(selectedText) ) {
-            // Display the modal
-              //  const selectedNode = window.getSelection().anchorNode;
-              //   const selectedGridItem = selectedNode?.closest('.grid-item');
-              //   const slideNumberItem = selectedGridItem.previousElementSibling;
-              //   const slideNumberElement = slideNumberItem?.querySelector('.slide-number-text');
-              //   const slideText = slideNumberElement.textContent.trim();
-                
-              //   const slideNumberMatch = slideText.match(/Slide\s*(\d+)/);
-              //   const slideNumber = slideNumberMatch[1];
-              //   const slideNumberInput = document.querySelector('input[name="slideNumber"]');
-              //   slideNumberInput.value=slideNumber
-                // Define the variable video_input that will hold the reference to the input element
-                
-
-                 modal.style.display = "block";
-
-                // Insert the selected text into the modal
-                var selectedTextElement = document.getElementById("selectedText");
-                selectedTextElement.textContent = selectedText;  // Display the selected text in the modal
-             } else if (selectedText.length > 0) {
-            // Alert the user if the selection is not a valid word
-                     alert("Please select a valid word (no fragments or punctuation).");
-        }
-    }
-};
-
-document.getElementById("scene_form").addEventListener("submit", function (event) {
-    let allValid = true;
-
-    // Get the selected text index stored globally
-    const slideNumber = slideNumber;
-    console.log(slideNumber);
-
-    if (slideNumber !== undefined && slideNumber !== null) {
-        const textfileId = "{{ textfile_id }}";
-
-        // Validate inputs for the selected index
-        const topicFolderSelect = document.getElementById(`topic_folder_${slideNumber}_${textfileId}`);
-        const videoSelect = document.getElementById(`videoSelect_${slideNumber}_${textfileId}`);
-        const errorElementId = `select_video_${slideNumber}_error`;
-        const svgItemid = `svg_${slideNumber}`;
-        let svgItemElement = document.getElementById(svgItemid);
-        let errorElement = document.getElementById(errorElementId);
-
-        // Check if file input has value or both selects have values
-        const isFileProvided = fileInput && fileInput.files.length > 0;
-        const isSelectProvided = topicFolderSelect && topicFolderSelect.value && videoSelect && videoSelect.value;
-
-        if (!isFileProvided && !isSelectProvided) {
-            fileInput.style.border = "0.5px solid red";
-            topicFolderSelect.style.border = "0.5px solid red";
-            videoSelect.style.border = "0.5px solid red";
-            svgItemElement.style.top = "30%";
-
-            // Focus on the first invalid field
-            topicFolderSelect.focus();
-
-            // Mark as invalid
-            allValid = false;
-
-            // Add error message just below the video select element if it doesn't exist
-            if (!errorElement) {
-                errorElement = document.createElement("div");
-                errorElement.id = errorElementId;
-                errorElement.style.color = "red";
-                errorElement.style.fontSize = "0.8rem";
-                errorElement.style.textAlign = "center";
-                errorElement.style.marginTop = "5px";
-                errorElement.innerText = "Please Select A Scene";
-                videoSelect.parentNode.insertBefore(errorElement, videoSelect.nextSibling);
-            }
-        } else {
-            // Remove red border if inputs are valid
-            fileInput.style.border = "";
-            topicFolderSelect.style.border = "";
-            videoSelect.style.border = "";
-            svgItemElement.style.top = "50%";
-
-            // Remove any existing error message if present
-            if (errorElement) {
-                errorElement.remove();
-            }
-        }
-    } else {
-        alert("No index selected. Please use Shift + Click to select a text index.");
-        allValid = false; // Prevent submission if no selection was made
-    }
-
-    // If not valid, prevent form submission
-    if (!allValid) {
-        event.preventDefault();
-    }
-});
-
-      // Function to handle changes in dynamically generated video inputs
-  function setupDynamicListeners(textfileId) {
-          const videoInput = document.getElementById(`video_${slideNumber}`);
-          const topicFolderSelect = document.getElementById(`topic_folder_${slideNumber}_${textfileId}`);
-          const videoSelect = document.getElementById(`videoSelect_${slideNumber}_${textfileId}`);
-
-          const deleteIcons = document.querySelectorAll('.delete-icon');
-          // Listen for changes in the video input field
-          videoInput.addEventListener("change", function() {
-              // If the video input has a file selected
-              if (videoInput.files.length > 0) {
-                deleteIcons[slideNumber].style.display = 'block';
-                  // Clear the corresponding topic folder select and video select fields
-                  topicFolderSelect.value = "";
-                  videoSelect.value = "";
-                  saveInput(topicFolderSelect);
-                  saveInput(videoSelect);
-                  // Remove all options from videoSelect except the default "Select a Video"
-                  while (videoSelect.options.length > 0) {
-                      videoSelect.remove(0); // Clear all existing options
-                  }
-
-                  // Add default option
-                  const defaultOption = document.createElement('option');
-                  defaultOption.value = "";
-                  defaultOption.text = "Select a Video";
-                  videoSelect.add(defaultOption);
-
-              }
-          });
-
-         
-      }
-  
-
-  function deleteIconListerHandler(){
-    const deleteIcons = document.querySelectorAll('.delete-icon');
-    const fileInputs = document.querySelectorAll('.uploaded_file');
-    const svgs = document.querySelectorAll('.uploadFileIcon');
-    const uploadTexts = document.querySelectorAll('.uploadText');
-    const selected_clips = document.querySelectorAll('.selected_clip');
-  
-    deleteIcons.forEach((icon, index) => {
-      icon.addEventListener('click', (event) => {
-          fileInputs[index].value = ""
-          uploadTexts[index].textContent = 'Choose File';
-          svgs[index].style.position = 'static';
-          svgs[index].style.opacity = '1';
-  
-          icon.style.display = 'none';
-          //selected_clips[index].value= ""
-      });
-  });
-  }
-  
-
-
-  deleteIconListerHandler()
-
-  
-  
-    
-      const textfileId = "{{ textfile_id }}";
-      setupDynamicListeners(textfileId);
-
-      
-      const topicFolderSelect = document.getElementById(`topic_folder_${slideNumber}_${textfileId}`);
-      const videoSelect = document.getElementById(`videoSelect_${slideNumber}_${textfileId}`);
-      const errorElementId = `select_video_${slideNumber}_error`;
-      const svgItemid=`svg_${slideNumber}`
-      let svgItemElement= document.getElementById(svgItemid)
-
-          // file inputs fields
-          const fileInputs = document.querySelectorAll('.uploaded_file');
-        const uploadTexts = document.querySelectorAll('.uploadText');
-        const svgs = document.querySelectorAll('.uploadFileIcon');
-
-          // Event listener for the first select field
-          topicFolderSelect.addEventListener("change", function() {
-              if (this.value !== "") {
-                  this.style.border = "";
-                  svgItemElement.style.top='50%'
-                  
-                  const errorElement = document.getElementById(errorElementId);
-                  if (errorElement) {
-                      errorElement.remove();  // Remove error message if it exists
-                  }
-
-                  // clearing file inputs
-                  fileInputs[slideNumber].value = '';
-                  uploadTexts[slideNumber].textContent = 'Choose File';
-                    svgs[slideNumber].style.position = 'static';
-                    svgs[slideNumber].style.opacity = '1';
-                  
-              }
-          });
-
-          // Event listener for the second dependent select field
-          videoSelect.addEventListener("change", function() {
-              if (this.value !== "") {
-                  this.style.border = ""; 
-                  svgItemElement.style.top='50%'
-                  const errorElement = document.getElementById(errorElementId);
-                  if (errorElement) {
-                      errorElement.remove();  // Remove error message if it exists
-                  }
-
-                  // clearing file inputs
-                  fileInputs[slideNumber].value = '';
-                  uploadTexts[slideNumber].textContent = 'Choose File';
-                    svgs[slideNumber].style.position = 'static';
-                    svgs[slideNumber].style.opacity = '1';
-              }
-          });
-    
-      window.onload = function() {
-      // Get all inputs on the page
-      document.getElementById('scene_form').reset();
-
-      }
-      window.addEventListener('load', async function() {
-          // Ensure all elements are loaded
-
-          const inputs = document.querySelectorAll('select');
-          
-          // Helper function to return a promise for each htmx request
-          const fetchClip = (url, targetId) => {
-              return new Promise((resolve, reject) => {
-                  htmx.ajax('GET', url, targetId)
-                      .then(() => resolve())
-                      .catch((err) => reject(err));
-              });
-          };
-
-          // First, update all select inputs that start with 'topic_folder_'
-          for (const input of inputs) {
-              const storedValue = sessionStorage.getItem(input.id);
-              if (storedValue && input.id.startsWith('topic_folder_')) {
-                  input.value = storedValue;
-
-                  // Get the current number from the ID, assuming it's in the format 'topic_folder_X'
-                  const idParts = input.id.split('_');
-                  const currentNumber = idParts[idParts.length - 2];  // Extract the current number part
-
-                  // Build the URL and target ID
-                  const url = `/video/get_clip/${storedValue}`;
-                  const targetId = `#videoSelect_${currentNumber}_{{textfile_id}}`;
-
-                  // Check if the target element exists before making the HTMX request
-                  if (document.querySelector(targetId)) {
-                      try {
-                          await fetchClip(url, targetId);  // Wait for each HTMX request to complete
-                      } catch (error) {
-                          console.error(`Error fetching clip for ${input.id}:`, error);
-                      }
-                  } else {
-                      console.warn(`Target element ${targetId} not found.`);
-                  }
-              }
-          }
-
-          inputs.forEach(input => {
-              const storedValue = sessionStorage.getItem(input.id);
-              if (storedValue && input.id.startsWith('videoSelect_')) {
-                  input.value = storedValue;
-              }
-          });
-      });
-
-
-      function saveInput(inputElement) {
-          
-              sessionStorage.setItem(inputElement.id, inputElement.value);
-              console.log(inputElement.value)
-      }
-      
-      function fetchVideoClips(categoryId, counter,item) {
-          select2=document.getElementById(`videoSelect_${counter}_{{textfile_id}}`)
-          saveInput(item)
-
-          if (categoryId === ""){
-              select2.value=""
-              select2.innerHTML = "";
-
-              const defaultOption = document.createElement('option');
-              defaultOption.value = "";
-              defaultOption.text = "Select a video";
-              select2.appendChild(defaultOption);
-
-          }
-          else{
-
-              htmx.ajax('GET',`/video/get_clip/${categoryId}`, `#videoSelect_${counter}_{{textfile_id}}`)
-          }
-  
-          
-      }
-  </script>
