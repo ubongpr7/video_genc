@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.urls import reverse
 
 
+
+
 def rename_video_clip(request, video_id):
     video_clip = get_object_or_404(VideoClip, id=video_id)
     if request.method == "POST":
@@ -184,40 +186,49 @@ def add_video_clips(request, textfile_id):
         return render(request, "permission_denied.html")
     video_categories = ClipCategory.objects.filter(user=request.user)
     if request.method == "POST":
+        selected_text = request.POST.get("selectedtext")
+        if text_file.text_file and selected_text:
+            text_file.add_line(selected_text)
+            text_file.progress = "0"
+            text_file.save()
+
+ 
         if text_file.text_file and request.POST.get("purpose") == "process":
             if text_file.video_clips.all():
                 for video_clip in TextLineVideoClip.objects.filter(text_file=text_file):
                     video_clip.delete()
                     print("Deleted a video_clip")
-
+            
+        
             lines = text_file.process_text_file()
             print(lines)
+            index = len(lines)
+
             video_clips_data = []
-            print('=================> post method',request.POST)
-            for index, line in enumerate(lines):
-                print('=============>index',index)
-                video_file = request.FILES.get(f"uploaded_video_{index}")
-                print('video file form input ============>',video_file)
-                video_clip_id = request.POST.get(f"selected_video_{index}")
-                print(video_clip_id)
-                if video_clip_id:
-                    video_clip = get_object_or_404(VideoClip, id=video_clip_id)
-                    print(video_clip.title)
-                else:
-                    video_clip = None
-                
-                if video_file or video_clip:
-                    video_clips_data.append(
-                        TextLineVideoClip(
-                            text_file=text_file,
-                            video_file=video_clip,
-                            video_file_path=video_file,
-                            line_number=index + 1,
-                        )
+            slide_number_a = ""
+            print('=============>index',index)
+            video_file = request.FILES.get(f"uploaded_video_{slide_number_a}")
+            print('video file form input ============>',video_file)
+            video_clip_id = request.POST.get(f"selected_video_{slide_number_a}")
+            print(video_clip_id)
+            if video_clip_id:
+                video_clip = get_object_or_404(VideoClip, id=video_clip_id)
+                print(video_clip.title)
+            else:
+                video_clip = None
+            
+            if video_file or video_clip:
+                video_clips_data.append(
+                    TextLineVideoClip(
+                        text_file=text_file,
+                        video_file=video_clip,
+                        video_file_path=video_file,
+                        line_number=index + 1,
                     )
-                else:
-                    messages.error(request, "You Did Not Choose The Clips Completely")
-                    return redirect(reverse("video:add_scenes", args=[textfile_id]))
+                )
+            else:
+                messages.error(request, "You Did Not Choose The Clips Completely")
+                return redirect(reverse("video:add_scenes", args=[textfile_id]))
 
             TextLineVideoClip.objects.bulk_create(video_clips_data)
 
