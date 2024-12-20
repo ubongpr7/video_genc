@@ -2,7 +2,7 @@
     
     <div class="guide">
         <span class="guide-title">Separate Words To Add Multiple Cips </span>
-        <span class="guide-icon" title="To Select Multiple Clips On This Line, Place Your Cursor Where You Want To Separate The Words, Type ',' To Separate The Words. When Done, Click The Done Button.">?</span>
+        <span class="guide-icon" title="To Select Multiple Clips On This Line, Place Your Cursor Where You Want To Separate The Words, Type '/' To Separate The Words. When Done, Click The Done Button.">?</span>
     </div>
 
     <div class="tag-box">
@@ -83,7 +83,7 @@
             input.setSelectionRange(cursorPosition, cursorPosition);  // Update cursor position
         }
         // Handling the comma key
-        else if (e.key === ',') {
+        else if (e.key === '/') {
             const isAtValidPosition =
                 cursorPosition === value.length ||  // At the end of the string
                 value[cursorPosition - 1] === ' ' ||  // After a space
@@ -132,7 +132,7 @@
  
     function preventUnwantedKeys(e) {
         const allowedKeys = [
-            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', ','
+            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', '/'
         ];
 
         

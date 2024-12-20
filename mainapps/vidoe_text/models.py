@@ -66,7 +66,7 @@ def subriptime_to_seconds(srt_time: pysrt.SubRipTime) -> float:
 
 class AudioClip(models.Model):
     audio_file = models.FileField(upload_to="audio_clips/")
-    duration = models.FloatField(null=True, blank=True)  # Duration in seconds
+    duration = models.FloatField(null=True, blank=True)
     voice_id = models.CharField(max_length=255)
 
 
