@@ -339,7 +339,7 @@ def add_video_clips(request, textfile_id):
             request, "You Do Not Have Access To The Resources You Requested "
         )
         return render(request, "permission_denied.html")
-    video_categories = ClipCategory.objects.filter(user=request.user)
+    video_categories = ClipCategory.objects.filter(user=request.user).values("id", "name", "parent_id")
     if request.method == "POST":
         if text_file.text_file and request.POST.get("purpose") == "process":
             if text_file.video_clips.all():
@@ -455,7 +455,7 @@ def add_video_clips(request, textfile_id):
             return render(
                 request,
                 "vlc/frontend/VLSMaker/sceneselection/index.html",
-                {"key":key,"video_clips": video_clips,"textfile": text_file,'video_categories':video_categories},
+                {"key":key,"video_clips": video_clips,"textfile": text_file,'video_categories':list(video_categories)},
             )
         else:
              return render(

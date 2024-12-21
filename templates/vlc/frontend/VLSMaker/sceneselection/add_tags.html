@@ -275,6 +275,33 @@
         
                 }
 
+
+
+              const video_categories = '{{ video_categories|safe }}';
+
+// Populate the select element
+function populateVideoCategories( selectElementId) {
+    const selectElement = document.getElementById(selectElementId);
+
+    if (!selectElement) {
+        console.error(`Select element with ID "${selectElementId}" not found.`);
+        return;
+    }
+
+    // Clear existing options
+    selectElement.innerHTML = "";
+
+    // Add options to the select element
+    video_categories.forEach(cat => {
+        const option = document.createElement("option");
+        option.value = cat.id;         // Set the value as cat.id
+        option.textContent = cat.name; // Set the inner text as cat.name
+        selectElement.appendChild(option);
+    });
+}
+
+populateVideoCategories(video_categories, "videoCategorySelect");
+
     function addSlide(currentNumber,text) {
 
     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
@@ -318,14 +345,14 @@
                                 <option value="{{cat.id}}">cat.name</option>
                                 {% endfor %}
                             </select>
-                            <svg id="svg_{{ forloop.counter0 }}" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" 
+                            <svg id="" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" 
                                  style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;">
                                 <path d="M6 9L12 15L18 9" stroke="#050315" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
                         
          </td>`;
- 
+         populateVideoCategories(`topic_folder_${currentNumber}_${textfile_id}`)
          const fileInputs = document.querySelectorAll('.br-input');
     
          const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
