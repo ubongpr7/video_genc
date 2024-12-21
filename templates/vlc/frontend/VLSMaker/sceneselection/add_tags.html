@@ -310,7 +310,7 @@
          console.log(fileInputs,noFileTexts);
     fileInputs.forEach((input, index) => {
       input.addEventListener('change', (event) => {
-        const fileName = event.target.files.length > 0 ? event.target.files[0].name : 'Choose file';
+        const fileName = event.target.files.length > 0 ? event.target.files[0].name.slice(0,12) : 'Choose file';
         noFileTexts[index].lastChild.textContent = fileName;
       });
     });
