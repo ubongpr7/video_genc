@@ -85,8 +85,9 @@
                 <div class="grid-item slide-text" data-slide="1" tabindex="0">
                     <span>{{ clip.slide }}</span>
                 </div>
+                <input type="text"value="{{clip.slide}}" name="slide_{{cilp.line_number}}" id="slide_{{clip.line_number}}">
                 <div class="grid-item slide-row grid-row" data-slide="1">
-                    <div class="icon-wrapper" onclick="subclipAdd('{{clip.id}}','{{clip.total_clip}}','{{clip.slide}}')">
+                    <div class="icon-wrapper" onclick="subclipAdd('{{clip.id}}','{{clip.total_clip}}','{{clip.line_number}}')">
                         <i class="ri-file-video-line slide-text"></i>
                         <span class="notification-number">{{clip.get_number_of_subclip}}</span>
                     </div>
@@ -116,19 +117,19 @@
 </form>
 
    <script>
-        function decodeHtmlEntities(encodedString) {
-            const textarea = document.createElement("textarea");
-            textarea.innerHTML = encodedString;
-            return textarea.value;
-        }
+        // function decodeHtmlEntities(encodedString) {
+        //     const textarea = document.createElement("textarea");
+        //     textarea.innerHTML = encodedString;
+        //     return textarea.value;
+        // }
         function subclipAdd(id,slideNumber,slide,){
             const popupModal=document.getElementById('popup-modal');
             const modalCont=document.getElementById('modal-cont');
             popupModal.style.display='block';
             modalCont.style.display='flex';
 
-            document.getElementById('words').value=decodeHtmlEntities(slide);
-            initialValue=slide
+            document.getElementById('words').value=document.getElementById(`slide_${slide}`).value
+            initialValue=document.getElementById(`slide_${slide}`).value
             document.getElementById('id').value=id;
             if (slideNumber >1){
               document.getElementById('done-btn').textContent=`Proceed To add ${slideNumber} clips`
