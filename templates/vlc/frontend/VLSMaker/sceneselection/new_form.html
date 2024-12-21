@@ -116,14 +116,18 @@
 </form>
 
    <script>
-
+        function decodeHtmlEntities(encodedString) {
+            const textarea = document.createElement("textarea");
+            textarea.innerHTML = encodedString;
+            return textarea.value;
+        }
         function subclipAdd(id,slideNumber,slide,){
             const popupModal=document.getElementById('popup-modal');
             const modalCont=document.getElementById('modal-cont');
             popupModal.style.display='block';
             modalCont.style.display='flex';
 
-            document.getElementById('words').value=slide;
+            document.getElementById('words').value=decodeHtmlEntities(encodedString);
             initialValue=slide
             document.getElementById('id').value=id;
             if (slideNumber >1){
