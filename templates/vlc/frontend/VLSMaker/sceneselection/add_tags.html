@@ -158,13 +158,14 @@
 
             errorMessage.textContent=''
             document.getElementById('separateSlide').style.display='none'
-            document.getElementById('chooseVideo').style.display='flex'
-            addSlide(5)
+            // document.getElementById('chooseVideo').style.display='flex'
+            let no_of_slides=document.getElementById('no_of_slides').value
+            for (let i = start; i <= no_of_slides +1; i++) {
+                            addSlide(i);
+                        }
+                    }
+                }
 
-        }
-    }
-
-    let no_of_slides=document.getElementById('no_of_slides')
     function addSlide(currentNumber) {
 
     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
