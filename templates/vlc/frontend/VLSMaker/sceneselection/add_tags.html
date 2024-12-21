@@ -23,7 +23,7 @@
     const input = listOfTags.querySelector('input');
     const resetBtn = document.getElementById('reset-btn');
     const doneBtn = document.getElementById('done-btn');
-    const initialValue = input.value;
+    let initialValue = input.value;
     const errorMessage = document.getElementById('error-message');
     function createTag(text) {
         const li = document.createElement('li');
