@@ -280,7 +280,8 @@
     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
     var newRow = table.insertRow(-1);
     var slideCell = newRow.insertCell(0);
-    
+    let textfile_id='{{textfile_id}}'
+    console.log('This is textfile_id: ', textfile_id)
     slideCell.innerText = `Clip ${currentNumber}`;
     newRow.innerHTML += 
         `<td>
@@ -299,18 +300,27 @@
          </td>
          <td>
             <div style="width: 100%; position: relative;">
-                            <select id="topic_folder_{{ forloop.counter0 }}_{{textfile_id}}" name="topic_folder_{{ forloop.counter0 }}"
-                                onchange="fetchVideoClips(this.value, '{{ forloop.counter0 }}',this)"
+                            <select id="topic_folder_${currentNumber}_${textfile_id}" name="topic_folder_${currentNumber}
                                     style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333;">
                             <option value="">Select Topic</option>
-                            {% for video_category in video_categories %}
-                                <option value="{{ video_category.id }}">{{ video_category }}</option>
-                            {% endfor %}
                             </select>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;">
                             <path d="M6 9L12 15L18 9" stroke="#050315" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg> 
                         </div>
+                        <div id="div_${currentNumber}" style="width: 100%; position: relative;">
+                            <select class="selected_clip"
+                                    name="selected_video_${currentNumber}"
+                                    id="videoSelect_${currentNumber}_${textfile_id}" 
+                                    style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333; padding-right: 40px;"> <!-- Add padding-right to ensure space for the arrow -->
+                                <option value="">Select a video</option>
+                            </select>
+                            <svg id="svg_{{ forloop.counter0 }}" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" 
+                                 style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;">
+                                <path d="M6 9L12 15L18 9" stroke="#050315" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        
          </td>`;
  
          const fileInputs = document.querySelectorAll('.br-input');
@@ -326,7 +336,7 @@
     });
 }
   function fetchVideoClips(){
-    
+
   }
     input.addEventListener('keydown', handleKeyPress);
     input.addEventListener('keydown', preventUnwantedKeys);
