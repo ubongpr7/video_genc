@@ -333,6 +333,7 @@ def add_video_clips(request, textfile_id):
     text_file.save()
     key = LogoModel.objects.get(id=2).logo.name
     existing_clips = TextLineVideoClip.objects.filter(text_file=text_file)
+
     if text_file.user != request.user:
         messages.error(
             request, "You Do Not Have Access To The Resources You Requested "
@@ -454,7 +455,7 @@ def add_video_clips(request, textfile_id):
             return render(
                 request,
                 "vlc/frontend/VLSMaker/sceneselection/index.html",
-                {"key":key,"video_clips": video_clips,"textfile": text_file},
+                {"key":key,"video_clips": video_clips,"textfile": text_file,'video_categories':video_categories},
             )
         else:
              return render(

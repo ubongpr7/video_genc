@@ -314,6 +314,9 @@
                                     id="videoSelect_${currentNumber}_${textfile_id}" 
                                     style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333; padding-right: 40px;"> <!-- Add padding-right to ensure space for the arrow -->
                                 <option value="">Select a video</option>
+                                {%for cat in video_categories%}
+                                <option value="{{cat.id}}">cat.name</option>
+                                {% endfor %}
                             </select>
                             <svg id="svg_{{ forloop.counter0 }}" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" 
                                  style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;">
