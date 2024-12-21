@@ -297,7 +297,7 @@
     fileInputs.forEach((input, index) => {
       input.addEventListener('change', (event) => {
         const fileName = event.target.files.length > 0 ? event.target.files[0].name : 'Choose file';
-        noFileTexts[index].lastChild.textContent = fileName; // Update the text to show the selected file name
+        noFileTexts[index].lastChild.textContent = fileName;
       });
     });
 }
