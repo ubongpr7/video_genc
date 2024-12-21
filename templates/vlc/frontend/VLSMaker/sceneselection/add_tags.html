@@ -124,6 +124,19 @@
         return 0;
     }
 }
+    function getListItemsText() {
+        const ulElement = document.getElementById("list-of-tags");
+        if (ulElement) {
+            const liElements = ulElement.getElementsByTagName("li");
+            const liTexts = Array.from(liElements).map(li => li.textContent.trim());
+            console.log(liTexts); // Output the array of text content
+            return liTexts;
+        } else {
+            console.error("Element with ID 'list-of-tags' not found.");
+            return [];
+        }
+    }
+
 
 
     function updateClipCount() {
@@ -255,13 +268,14 @@
         document.getElementById('separateSlide').style.display='none'
         document.getElementById('lead-form').style.display='flex'
         let no_of_slides=document.getElementById('no_of_slides').value
+        let textList=getListItemsText();
         for (let i = 1; i <= no_of_slides; i++) {
-                        addSlide(i);
+                        addSlide(i,textList[i-1]);
                     }
         
                 }
 
-    function addSlide(currentNumber) {
+    function addSlide(currentNumber,text) {
 
     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
     var newRow = table.insertRow(-1);
@@ -270,7 +284,7 @@
     slideCell.innerText = `Clip ${currentNumber}`;
     newRow.innerHTML += 
         `<td>
-          <textarea style="font-size: 19px;" type="text" name="slide_text_${currentNumber}" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
+          <textarea style="font-size: 19px;" type="text" name="slide_text_${currentNumber}" value="${text}" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
         </td>
         <td style="background: none;">
            <div class="custum-browse custum-browse-v2 d-flex align-items-center">
