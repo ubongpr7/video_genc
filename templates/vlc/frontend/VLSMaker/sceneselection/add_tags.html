@@ -117,7 +117,7 @@
     if (ulElement) {
         const liCount = ulElement.getElementsByTagName("li").length;
         console.log(`Number of <li> items: ${liCount}`);
-        document.getElementById('no_of_slides').value=liCount
+        document.getElementById('no_of_slides').value=liCount;
         return liCount;
     } else {
         console.error("Element with ID 'list-of-tags' not found.");
@@ -250,7 +250,7 @@
 
             errorMessage.textContent=''
             document.getElementById('separateSlide').style.display='none'
-            // document.getElementById('chooseVideo').style.display='flex'
+            document.getElementById('lead-form').style.display='flex'
             let no_of_slides=document.getElementById('no_of_slides').value
             for (let i = 1; i <= no_of_slides; i++) {
                             addSlide(i);
