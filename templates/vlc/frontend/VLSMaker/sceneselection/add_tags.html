@@ -248,14 +248,15 @@
             createTag(value);
             input.value = ''; 
 
-            errorMessage.textContent=''
-            document.getElementById('separateSlide').style.display='none'
-            document.getElementById('lead-form').style.display='flex'
-            let no_of_slides=document.getElementById('no_of_slides').value
-            for (let i = 1; i <= no_of_slides; i++) {
-                            addSlide(i);
-                        }
+        }
+        errorMessage.textContent=''
+        document.getElementById('separateSlide').style.display='none'
+        document.getElementById('lead-form').style.display='flex'
+        let no_of_slides=document.getElementById('no_of_slides').value
+        for (let i = 1; i <= no_of_slides; i++) {
+                        addSlide(i);
                     }
+        
                 }
 
     function addSlide(currentNumber) {
