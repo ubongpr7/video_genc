@@ -46,53 +46,46 @@
 
     function handleKeyPress(e) {
         const value = input.value;
-        let cursorPosition = input.selectionStart;  // Store initial cursor position
+        let cursorPosition = input.selectionStart;  
 
-        // Function to find the beginning of the current or previous word
         function moveToWordStart(pos) {
             while (pos > 0 && value[pos - 1] === ' ') {
-                pos--;  // Skip spaces before the word
+                pos--;  
             }
             while (pos > 0 && value[pos - 1] !== ' ') {
-                pos--;  // Move to the start of the word
+                pos--;  
             }
             return pos;
         }
 
-        // Function to find the end of the current or next word
         function moveToWordEnd(pos) {
             while (pos < value.length && value[pos] === ' ') {
-                pos++;  // Skip spaces between words
+                pos++;  
             }
             while (pos < value.length && value[pos] !== ' ') {
-                pos++;  // Move to the end of the word
+                pos++;  
             }
             return pos;
         }
 
-        // Handling the left arrow key
         if (e.key === 'ArrowLeft') {
             e.preventDefault();
-            // Move cursor to the beginning of the previous word
             cursorPosition = moveToWordStart(cursorPosition);
-            input.setSelectionRange(cursorPosition, cursorPosition);  // Update cursor position
+            input.setSelectionRange(cursorPosition, cursorPosition); 
         }
-        // Handling the right arrow key
         else if (e.key === 'ArrowRight') {
             e.preventDefault();
-            // Move cursor to the end of the next word
             cursorPosition = moveToWordEnd(cursorPosition);
-            input.setSelectionRange(cursorPosition, cursorPosition);  // Update cursor position
+            input.setSelectionRange(cursorPosition, cursorPosition);  
         }
-        // Handling the comma key
         else if (e.key === '/') {
             const isAtValidPosition =
-                cursorPosition === value.length ||  // At the end of the string
-                value[cursorPosition - 1] === ' ' ||  // After a space
-                (cursorPosition > 0 && value[cursorPosition] === ' ');  // Before a space
+                cursorPosition === value.length || 
+                value[cursorPosition - 1] === ' ' ||  
+                (cursorPosition > 0 && value[cursorPosition] === ' '); 
 
             if (!isAtValidPosition) {
-                e.preventDefault(); // Prevent action if not at a valid position
+                e.preventDefault(); 
                 errorMessage.textContent = 'Wrong Position To Separate Words';
                 return;
             }
@@ -103,17 +96,16 @@
             errorMessage.textContent = '';
 
             input.value = value.substring(cursorPosition).trim();
-            updateClipCount();  // Update clip count when a comma is pressed
+            updateClipCount();  
         }
-        // Handling the Enter key
         else if (e.key === 'Enter') {
             const isAtValidPosition =
-                cursorPosition === value.length ||  // At the end of the string
-                value[cursorPosition - 1] === ' ' ||  // After a space
-                (cursorPosition > 0 && value[cursorPosition] === ' ');  // Before a space
+                cursorPosition === value.length ||
+                value[cursorPosition - 1] === ' ' ||  
+                (cursorPosition > 0 && value[cursorPosition] === ' ');
 
             if (!isAtValidPosition) {
-                e.preventDefault(); // Prevent action if not at a valid position
+                e.preventDefault(); 
                 errorMessage.textContent = 'Wrong Position To Separate Words';
                 return;
             }
@@ -126,8 +118,8 @@
             if (afterCursor) createTag(afterCursor);
             errorMessage.textContent = '';
 
-            input.value = '';  // Clear the input field
-            updateClipCount();  // Update clip count when Enter is pressed
+            input.value = ''; 
+            updateClipCount();
         }
     }
 
@@ -144,7 +136,7 @@
     }
 
     function resetTags() {
-        // Clear all tags and restore the initial input value
+        
         const tags = listOfTags.querySelectorAll('li');
         tags.forEach(tag => tag.remove());
         input.value = initialValue;
@@ -156,9 +148,11 @@
     function convertRemainingToTag() {
         const value = input.value.trim();
         if (value) {
-            createTag(value); // Convert remaining text to a single tag
-            input.value = ''; // Clear the input field
+            createTag(value);
+            input.value = ''; 
             errorMessage.textContent=''
+            document.getElementById('separateSlide').classList.add('hidden')
+            document.getElementById('chooseVideo').classList.remove('hidden')
 
         }
     }
