@@ -123,28 +123,13 @@
             popupModal.style.display='block';
             modalCont.style.display='flex';
 
-            const separateSlide = document.getElementById("separateSlide");
-            if (separateSlide) {
-                separateSlide.innerHTML = `
-                    <div class="guide">
-                        <span class="guide-title">Separate Words To Add Multiple Clips</span>
-                        <span class="guide-icon" title="To Select Multiple Clips On This Line, Place Your Cursor Where You Want To Separate The Words, Type '/' To Separate The Words. When Done, Click The Done Button.">?</span>
-                    </div>
-        
-                    <div class="tag-box">
-                        <ul id="list-of-tags" class="list-of-tags">
-                            <input class="tag-input"   id="words" value="${slide}" type="text">
-                            <input class="tag-input" name="id" id  id="words" value="${id}" type="number">
-                        </ul>
-                    </div>
-                    <div id="error-message" class="error-message"></div>
-                    <div class="details">
-                        <button id="reset-btn" type="button">Reset</button>
-                        <button id="done-btn" type="button">Proceed To add ${slideNumber} Clip</button>
-                    </div>
-                `;
-            } else {
-                console.error("Element with ID 'separateSlide' not found.");
+            document.getElementById('id').value=id;
+            if (slideNumber >1){
+              document.getElementById('done-btn').textContent=`Proceed To add ${slideNumber} clips`
+              
+            }else{
+              
+              document.getElementById('done-btn').textContent=`Proceed To add ${slideNumber} clip`
             }
         }
 

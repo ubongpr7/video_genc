@@ -1,5 +1,5 @@
 <div id="separateSlide" class="wrapper">
-<!--     
+    
     <div class="guide">
         <span class="guide-title">Separate Words To Add Multiple Cips </span>
         <span class="guide-icon" title="To Select Multiple Clips On This Line, Place Your Cursor Where You Want To Separate The Words, Type '/' To Separate The Words. When Done, Click The Done Button.">?</span>
@@ -14,13 +14,12 @@
     <div class="details">
         <button id="reset-btn" type="button">Reset</button>
         <button id="done-btn" type="button">Proceed To add 1 Clip</button>
-    </div> -->
+    </div>
 </div>
 
 <script>
    const listOfTags = document.getElementById('list-of-tags');
-    // const input = listOfTags.querySelector('input');
-    const input = document.getElementById('words')
+    const input = listOfTags.querySelector('input');
     const resetBtn = document.getElementById('reset-btn');
     const doneBtn = document.getElementById('done-btn');
     const initialValue = input.value;
