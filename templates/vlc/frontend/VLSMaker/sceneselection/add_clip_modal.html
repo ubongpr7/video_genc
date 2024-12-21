@@ -254,3 +254,18 @@ a{
     </div>
 </div>
     
+<script>
+const fileInputs = document.querySelectorAll('.br-input');
+const noFileTexts = document.querySelectorAll('.browse-field p');
+
+fileInputs.forEach((input, index) => {
+  input.addEventListener('change', (event) => {
+    const fileName = event.target.files.length > 0 ? event.target.files[0].name : 'No file chosen';
+    console.log(fileName);
+    // noFileTexts[index].textContent = fileName; // Update the text to show the selected file name
+    noFileTexts[index].textContent =`${fileName.slice(0,15)}`;
+  });
+});
+
+
+</script>
