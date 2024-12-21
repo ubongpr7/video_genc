@@ -198,6 +198,7 @@
                 cursorPosition === value.length ||
                 value[cursorPosition - 1] === ' ' ||  
                 (cursorPosition > 0 && value[cursorPosition] === ' ');
+                convertRemainingToTag()
 
             if (!isAtValidPosition) {
                 e.preventDefault(); 
