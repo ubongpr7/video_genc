@@ -28,6 +28,8 @@
     function createTag(text) {
         const li = document.createElement('li');
         li.textContent = text;
+        document.getElementById('no_of_slides').value++
+
         listOfTags.insertBefore(li, input);
     }
 
@@ -142,6 +144,8 @@
         input.value = initialValue;
         errorMessage.textContent=''
         doneBtn.textContent='Proceed To add 1 Clip'
+        document.getElementById('no_of_slides').value=1
+
 
     }
 
@@ -150,12 +154,56 @@
         if (value) {
             createTag(value);
             input.value = ''; 
+
             errorMessage.textContent=''
             document.getElementById('separateSlide').style.display='none'
             document.getElementById('chooseVideo').style.display='flex'
+            addSlide(5)
 
         }
     }
+
+    let no_of_slides=document.getElementById('no_of_slides')
+    function addSlide(currentNumber) {
+
+    var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
+    var newRow = table.insertRow(-1);
+    var slideCell = newRow.insertCell(0);
+    
+    slideCell.innerText = `Clip ${currentNumber}`;
+    newRow.innerHTML += 
+        `<td>
+          <textarea style="font-size: 19px;" type="text" name="slide_text_${currentNumber}" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
+        </td>
+        <td style="background: none;">
+           <div class="custum-browse custum-browse-v2 d-flex align-items-center">
+             <div class="brws">
+               <input class="br-input" type="file" name="slide_file_${currentNumber}"accept="image/*,video/*"  >
+                  <a href="#!" class="btn get-start browse-btn">
+                 <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt=""> Choose file
+               </a>
+             </div>
+            
+           </div>
+         </td>
+         <td>
+                <a href="#!" class="delete-row-btn" onclick="deleteSlide(this)">
+                  <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
+                </a>
+         </td>`;
+ 
+         const fileInputs = document.querySelectorAll('.br-input');
+    
+         const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
+    
+         console.log(fileInputs,noFileTexts);
+    fileInputs.forEach((input, index) => {
+      input.addEventListener('change', (event) => {
+        const fileName = event.target.files.length > 0 ? event.target.files[0].name : 'Choose file';
+        noFileTexts[index].lastChild.textContent = fileName; // Update the text to show the selected file name
+      });
+    });
+}
 
     input.addEventListener('keydown', handleKeyPress);
     input.addEventListener('keydown', preventUnwantedKeys);

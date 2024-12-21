@@ -127,7 +127,7 @@
             const modalCont=document.getElementById('modal-cont');
             popupModal.style.display='block';
             modalCont.style.display='flex';
-
+            document.getElementById('no_of_slides').value=slideNumber
             document.getElementById('words').value=document.getElementById(`slide_${slide}`).value
             initialValue=document.getElementById(`slide_${slide}`).value
             document.getElementById('id').value=id;
