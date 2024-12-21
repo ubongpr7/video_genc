@@ -162,6 +162,7 @@ class TextLineVideoClip(models.Model):
     )
     slide=models.CharField(max_length=100,null=True, blank=True)
     line_number = models.IntegerField()
+    total_clip = models.IntegerField(default=1)
     
     def __str__(self):
         return f"VideoClip for line {self.line_number} of {self.text_file}"

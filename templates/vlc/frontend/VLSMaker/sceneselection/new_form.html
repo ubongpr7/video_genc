@@ -86,7 +86,7 @@
                     <span>{{ clip.slide }}</span>
                 </div>
                 <div class="grid-item slide-row grid-row" data-slide="1">
-                    <div class="icon-wrapper" onclick="subclipAdd('{{clip}}')">
+                    <div class="icon-wrapper" onclick="subclipAdd('{{clip.id}}','{{clip.total_clip}}','{{clip.slide}}')">
                         <i class="ri-file-video-line slide-text"></i>
                         <span class="notification-number">{{clip.get_number_of_subclip}}</span>
                     </div>
@@ -117,39 +117,36 @@
 
    <script>
 
-        function subclipAdd(clip){
+        function subclipAdd(id,slideNumber,slide,){
             const popupModal=document.getElementById('popup-modal');
             const modalCont=document.getElementById('modal-cont');
             popupModal.style.display='block';
             modalCont.style.display='flex';
-            addHtmlToSeparateSlide(clip);
 
+            const separateSlide = document.getElementById("separateSlide");
+            if (separateSlide) {
+                separateSlide.innerHTML = `
+                    <div class="guide">
+                        <span class="guide-title">Separate Words To Add Multiple Clips</span>
+                        <span class="guide-icon" title="To Select Multiple Clips On This Line, Place Your Cursor Where You Want To Separate The Words, Type '/' To Separate The Words. When Done, Click The Done Button.">?</span>
+                    </div>
+        
+                    <div class="tag-box">
+                        <ul id="list-of-tags" class="list-of-tags">
+                            <input class="tag-input"   id="words" value="${slide}" type="text">
+                            <input class="tag-input" name="id" id  id="words" value="${id}" type="number">
+                        </ul>
+                    </div>
+                    <div id="error-message" class="error-message"></div>
+                    <div class="details">
+                        <button id="reset-btn" type="button">Reset</button>
+                        <button id="done-btn" type="button">Proceed To add ${slideNumber} Clip</button>
+                    </div>
+                `;
+            } else {
+                console.error("Element with ID 'separateSlide' not found.");
+            }
         }
-        function addHtmlToSeparateSlide(clip) {
-    const separateSlide = document.getElementById("separateSlide");
-    if (separateSlide) {
-        separateSlide.innerHTML = `
-            <div class="guide">
-                <span class="guide-title">Separate Words To Add Multiple Clips</span>
-                <span class="guide-icon" title="To Select Multiple Clips On This Line, Place Your Cursor Where You Want To Separate The Words, Type '/' To Separate The Words. When Done, Click The Done Button.">?</span>
-            </div>
-
-            <div class="tag-box">
-                <ul id="list-of-tags" class="list-of-tags">
-                    <input class="tag-input"   id="words" value="${clip.slide}" type="text">
-                    <input class="tag-input"  id  id="words" value="${clip.id}" type="number">
-                </ul>
-            </div>
-            <div id="error-message" class="error-message"></div>
-            <div class="details">
-                <button id="reset-btn" type="button">Reset</button>
-                <button id="done-btn" type="button">Proceed To add 1 Clip</button>
-            </div>
-        `;
-    } else {
-        console.error("Element with ID 'separateSlide' not found.");
-    }
-}
 
     document.addEventListener("keydown", function (event) {
     if (event.key === "Esc") {
