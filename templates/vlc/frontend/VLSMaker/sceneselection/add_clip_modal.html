@@ -115,7 +115,7 @@
     <div class="sub-div">
         {%include  'vlc/frontend/VLSMaker/sceneselection/add_tags.html' %}
         
-        <form id="lead-form" method="POST" action="."style="display:none;overflow-y: auto; " enctype="multipart/form-data">
+        <form id="lead-form" method="POST" action="."style="display:none;overflow-y: auto;" enctype="multipart/form-data">
             {% csrf_token %}
             
             <table id="leadsTable" class="lead-table">
@@ -132,9 +132,8 @@
               </tbody>
             </table>
             <input hidden type="number" value="1" id="no_of_slides">
-            </div>
-          </form>
-        <!-- <button id="popup-submit">Submit</button> -->
+            <!-- <button id="popup-submit">Submit</button> -->
+        </form>
     </div>
 </div>
     
