@@ -29,10 +29,23 @@
     function createTag(text) {
         const li = document.createElement('li');
         li.textContent = text;
-        document.getElementById('no_of_slides').value++
 
         listOfTags.insertBefore(li, input);
+        getNumberOfListItems();
     }
+    function getNumberOfListItems() {
+    const ulElement = document.getElementById("list-of-tags");
+    if (ulElement) {
+        const liCount = ulElement.getElementsByTagName("li").length;
+        console.log(`Number of <li> items: ${liCount}`);
+        document.getElementById('no_of_slides').value=liCount
+        return liCount;
+    } else {
+        console.error("Element with ID 'list-of-tags' not found.");
+        return 0;
+    }
+}
+
 
     function updateClipCount() {
         const tags = document.querySelectorAll('.list-of-tags li'); 
