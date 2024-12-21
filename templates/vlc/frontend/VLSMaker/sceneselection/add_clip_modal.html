@@ -115,7 +115,7 @@
     <div class="sub-div">
         {%include  'vlc/frontend/VLSMaker/sceneselection/add_tags.html' %}
         
-        <form id="lead-form" method="POST" action="."style="display:none;overflow-y: auto;" enctype="multipart/form-data">
+        <form id="lead-form" method="POST" action="."style="display:none;overflow-y: auto;max-height: 700px;" enctype="multipart/form-data">
             {% csrf_token %}
             
             <table id="leadsTable" class="lead-table">
