@@ -278,8 +278,39 @@
                 }
 
 
+  async function restoreForm(){
+                const inputs = document.querySelectorAll('select');
 
+        for (const input of inputs) {
+            const storedValue = sessionStorage.getItem(input.id);
+            if (storedValue && input.id.startsWith('topic_folder_')) {
+                input.value = storedValue;
 
+                const idParts = input.id.split('_');
+                const currentNumber = idParts[idParts.length - 2]; 
+
+                const url = `/video/get_clip/${storedValue}`;
+                const targetId = `#videoSelect_${currentNumber}_${textfile_id}`;
+
+                if (document.querySelector(targetId)) {
+                    try {
+                        await populateVideoCategories(targetId,url);  
+                    } catch (error) {
+                        console.error(`Error fetching clip for ${input.id}:`, error);
+                    }
+                } else {
+                    console.warn(`Target element ${targetId} not found.`);
+                }
+            }
+        }
+
+        inputs.forEach(input => {
+            const storedValue = sessionStorage.getItem(input.id);
+            if (storedValue && input.id.startsWith('videoSelect_')) {
+                input.value = storedValue;
+            }
+        });
+    };
 
     function addSlide(currentNumber,text) {
 
@@ -320,6 +351,8 @@
                         <div id="div_${currentNumber}" style="width: 100%; position: relative;">
                             <select class="selected_clip"
                                     name="selected_video_${currentNumber}"
+                            onchange="saveInput(this)"
+
                                     id="videoSelect_${currentNumber}_${textfile_id}" 
                                     style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333; padding-right: 40px;"> <!-- Add padding-right to ensure space for the arrow -->
                                 <option value="">Select a video</option>
@@ -345,6 +378,7 @@
         noFileTexts[index].lastChild.textContent = fileName;
       });
     });
+    restoreForm()
 }
   function fetchVideoClips(selected){
     id = selected.value;
@@ -352,7 +386,7 @@
 const splitArray = selectedId.split('_'); 
 const currentNumber = splitArray[splitArray.length - 2];
     let video_id=`videoSelect_${currentNumber}_${textfile_id}`
-
+    saveInput(selected)
     populateVideoCategories(video_id,`/video/get_clip/${id}`)
   }
   function populateVideoCategories(selectElementId, apiUrl) {
@@ -385,6 +419,19 @@ const currentNumber = splitArray[splitArray.length - 2];
         });
 }
 
+function saveInput(inputElement) {
+        
+        sessionStorage.setItem(inputElement.id, inputElement.value);
+        console.log(inputElement.value)
+        if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
+            const cNumber= inputElement.id.split('_')[1]
+            console.log(cNumber);
+            document.getElementById(`video_${cNumber}_status`).value='empty';
+
+
+        };
+        
+};
     input.addEventListener('keydown', handleKeyPress);
     input.addEventListener('keydown', preventUnwantedKeys);
     resetBtn.addEventListener('click', resetTags);
