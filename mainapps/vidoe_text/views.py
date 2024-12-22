@@ -3,11 +3,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from mainapps.audio.models import BackgroundMusic
+from mainapps.video.models import VideoClip
 from mainapps.vidoe_text.decorators import (
     check_credits_and_ownership,
     check_user_credits,
 )
-from .models import TextFile
+from .models import SubClip, TextFile, TextLineVideoClip
 import os
 from django.http import HttpResponse, JsonResponse, Http404
 from django.conf import settings
@@ -20,6 +21,41 @@ from django.core.files.base import ContentFile
 import boto3
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 from django.apps import apps
+
+
+
+def add_subclip(request,id):
+    text_clip= TextLineVideoClip.objects.get(id=id)
+    if request.method=="POST":
+        num_of_clips=request.POST.get('no_of_slides')
+        clips= []
+        for i in range(1,num_of_clips+1):
+            file=request.FILES.get(f'slide_file_{i}')
+            text=request.POST.get(f'slide_text_{i}')
+            asset_clip_id=request.POST.get(f'selected_video_{i}')
+            if file:
+
+                clip=SubClip(
+                    subtittle=text,
+                    video_file=file,
+                    main_line=text_clip
+
+                )
+                clips.append(clip)
+            elif asset_clip_id:
+                asset_clip=VideoClip.objects.get(id=asset_clip_id)
+
+                clip=SubClip(
+                    subtittle=text,
+                    video_clip=asset_clip,
+                    main_line=text_clip
+
+                )
+                clips.append(clip)
+        created_clips=SubClip.objects.bulk_create(clips)
+
+
+    return HttpResponse(status=200)
 
 
 @require_http_methods(["DELETE"])

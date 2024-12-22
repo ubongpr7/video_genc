@@ -125,6 +125,8 @@
             document.getElementById('no_of_slides').value=slideNumber
             document.getElementById('words').value=document.getElementById(`slide_${slide}`).value
             initialValue=document.getElementById(`slide_${slide}`).value
+            document.getElementById('lead-form').action=`/text/add_subclip/${id}`
+
             document.getElementById('id').value=id;
             if (slideNumber >1){
               document.getElementById('done-btn').textContent=`Proceed To add ${slideNumber} clips`

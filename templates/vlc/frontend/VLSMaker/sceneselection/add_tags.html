@@ -289,11 +289,10 @@
                 input.value = storedValue;
 
                 const idParts = input.id.split('_');
-                const textId= input.id.split('-')[-1]
                 const currentNumber = idParts[idParts.length - 2]; 
 
                 const url = `/video/get_clip/${storedValue}`;
-                const targetId = `videoSelect_${currentNumber}_${textfile_id}-${textId}`;
+                const targetId = `videoSelect_${currentNumber}_${textfile_id}`;
                await populateVideoCategories(targetId,url);  
 
             }
@@ -331,7 +330,7 @@
          </td>
          <td>
             <div style="width: 100%; position: relative;">
-                            <select id="topic_folder_${currentNumber}_${textfile_id}-${cleanString(text)}" name="topic_folder_${currentNumber}"
+                            <select id="topic_folder_${currentNumber}_${textfile_id}" name="topic_folder_${currentNumber}"
                             onchange="fetchVideoClips(this)"
                                     style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333;">
                             <option value="">Select Topic</option>
@@ -343,12 +342,12 @@
                             <path d="M6 9L12 15L18 9" stroke="#050315" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg> 
                         </div>
-                        <div id="div_${currentNumber}-" style="width: 100%; position: relative;">
+                        <div id="div_${currentNumber}" style="width: 100%; position: relative;">
                             <select class="selected_clip"
                                     name="selected_video_${currentNumber}"
                             onchange="saveInput(this)"
 
-                                    id="videoSelect_${currentNumber}_${textfile_id}-${cleanString(text)}" 
+                                    id="videoSelect_${currentNumber}_${textfile_id}" 
                                     style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333; padding-right: 40px;"> <!-- Add padding-right to ensure space for the arrow -->
                                 <option value="">Select a video</option>
                                 
@@ -373,13 +372,15 @@
       });
     });
 }
+function submitForm(){
+    document.getElementById('lead-form').submt()
+}
   function fetchVideoClips(selected){
     id = selected.value;
     const selectedId = selected.id;
 const splitArray = selectedId.split('_'); 
-const textId= selectedId.split('-')[-1]
 const currentNumber = splitArray[splitArray.length - 2];
-    let video_id=`videoSelect_${currentNumber}_${textfile_id}-${textId}`
+    let video_id=`videoSelect_${currentNumber}_${textfile_id}`
     saveInput(selected)
     populateVideoCategories(video_id,`/video/get_clip/${id}`)
   }
@@ -437,10 +438,6 @@ function restoreVideoSelectInputs() {
             input.value = storedValue;
         }
     });
-}
-
-function cleanString(inputString) {
-    return inputString.replace(/[^a-zA-Z0-9]/g, ""); 
 }
 
 
