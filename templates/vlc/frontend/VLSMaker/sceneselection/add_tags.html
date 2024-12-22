@@ -277,28 +277,6 @@
 
 
 
-  const video_categories = '{{ video_categories|safe }}';
-
-// Populate the select element
-function populateVideoCategories( selectElementId) {
-    const selectElement = document.getElementById(selectElementId);
-
-    if (!selectElement) {
-        console.error(`Select element with ID "${selectElementId}" not found.`);
-        return;
-    }
-
-    // Clear existing options
-    selectElement.innerHTML = "";
-
-    // Add options to the select element
-    video_categories.forEach(cat => {
-        const option = document.createElement("option");
-        option.value = cat.id;         // Set the value as cat.id
-        option.textContent = cat.name; // Set the inner text as cat.name
-        selectElement.appendChild(option);
-    });
-}
 
 
     function addSlide(currentNumber,text) {
@@ -367,6 +345,36 @@ function populateVideoCategories( selectElementId) {
   function fetchVideoClips(){
 
   }
+  function populateVideoCategories(selectElementId, apiUrl='/video/api/video-categories/') {
+    const selectElement = document.getElementById(selectElementId);
+
+    if (!selectElement) {
+        console.error(`Select element with ID "${selectElementId}" not found.`);
+        return;
+    }
+
+
+    // Fetch categories from the API
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(categories => {
+            categories.forEach(cat => {
+                const option = document.createElement("option");
+                option.value = cat.id;         
+                option.textContent = cat.name; 
+                selectElement.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error("Failed to fetch video categories:", error);
+        });
+}
+
     input.addEventListener('keydown', handleKeyPress);
     input.addEventListener('keydown', preventUnwantedKeys);
     resetBtn.addEventListener('click', resetTags);

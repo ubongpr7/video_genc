@@ -6,7 +6,7 @@ from .models import VideoClip, ClipCategory
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
-
+from django.http import JsonResponse
 
 def rename_video_clip(request, video_id):
     video_clip = get_object_or_404(VideoClip, id=video_id)
@@ -463,6 +463,12 @@ def add_video_clips(request, textfile_id):
                 "vlc/frontend/VLSMaker/sceneselection/index.html",
                 { "key":key, "textfile": text_file},
             )
+
+@login_required
+def fetch_video_categories(request):
+    # Fetch categories related to the logged-in user
+    categories = ClipCategory.objects.filter(user=request.user).values("id", "name", "parent_id")
+    return JsonResponse(list(categories), safe=False)
 
 def get_clip(request, cat_id):
     category = get_object_or_404(ClipCategory, id=cat_id)
