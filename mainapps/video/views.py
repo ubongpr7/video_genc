@@ -470,6 +470,6 @@ def fetch_video_categories(request):
     return JsonResponse(list(categories), safe=False)
 
 def get_clip(request, cat_id):
-    category = get_object_or_404(ClipCategory, id=cat_id)
+    category = get_object_or_404(ClipCategory, id=cat_id).values("id", "title", )
     videos = VideoClip.objects.filter(category=category)
-    return render(request, "partials/model_options.html", {"items": videos})
+    return JsonResponse(list(videos), safe=False)

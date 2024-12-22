@@ -355,7 +355,7 @@ const currentNumber = splitArray[splitArray.length - 2];
 
     populateVideoCategories(video_id,`/video/get_clip/${id}`)
   }
-  function populateVideoCategories(selectElementId, apiUrl='/video/api/video-categories/') {
+  function populateVideoCategories(selectElementId, apiUrl) {
     const selectElement = document.getElementById(selectElementId);
 
     if (!selectElement) {
@@ -376,7 +376,7 @@ const currentNumber = splitArray[splitArray.length - 2];
             categories.forEach(cat => {
                 const option = document.createElement("option");
                 option.value = cat.id;         
-                option.textContent = cat.name; 
+                option.textContent = cat.title; 
                 selectElement.appendChild(option);
             });
         })
