@@ -277,7 +277,7 @@
 
 
 
-              const video_categories = '{{ video_categories|safe }}';
+  const video_categories = '{{ video_categories|safe }}';
 
 // Populate the select element
 function populateVideoCategories( selectElementId) {
@@ -300,7 +300,6 @@ function populateVideoCategories( selectElementId) {
     });
 }
 
-populateVideoCategories(video_categories, "videoCategorySelect");
 
     function addSlide(currentNumber,text) {
 
@@ -352,7 +351,7 @@ populateVideoCategories(video_categories, "videoCategorySelect");
                         </div>
                         
          </td>`;
-         populateVideoCategories(`topic_folder_${currentNumber}_${textfile_id}`)
+        //  populateVideoCategories(`topic_folder_${currentNumber}_${textfile_id}`)
          const fileInputs = document.querySelectorAll('.br-input');
     
          const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
