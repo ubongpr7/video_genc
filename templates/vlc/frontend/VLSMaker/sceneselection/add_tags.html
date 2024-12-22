@@ -391,6 +391,7 @@ const currentNumber = splitArray[splitArray.length - 2];
 
 
     // Fetch categories from the API
+    restoreVideoSelectInputs()
     fetch(apiUrl)
         .then(response => {
             if (!response.ok) {
@@ -424,7 +425,18 @@ function saveInput(inputElement) {
         };
         
 };
-    input.addEventListener('keydown', handleKeyPress);
+    
+function restoreVideoSelectInputs() {
+  inputs=document.querySelectorAll('select')
+    inputs.forEach(input => {
+        const storedValue = sessionStorage.getItem(input.id);
+        if (storedValue && input.id.startsWith('videoSelect_')) {
+            input.value = storedValue;
+        }
+    });
+}
+
+input.addEventListener('keydown', handleKeyPress);
     input.addEventListener('keydown', preventUnwantedKeys);
     resetBtn.addEventListener('click', resetTags);
     doneBtn.addEventListener('click', convertRemainingToTag);
