@@ -305,6 +305,7 @@
          <td>
             <div style="width: 100%; position: relative;">
                             <select id="topic_folder_${currentNumber}_${textfile_id}" name="topic_folder_${currentNumber}"
+                            onchange="fetchVideoClips(this)"
                                     style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333;">
                             <option value="">Select Topic</option>
                             </select>
@@ -319,7 +320,7 @@
                                     style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333; padding-right: 40px;"> <!-- Add padding-right to ensure space for the arrow -->
                                 <option value="">Select a video</option>
                                 {%for cat in video_categories%}
-                                <option value="{{cat.id}}">cat.name</option>
+                                <option value="{{cat.id}}">{{cat.name}}</option>
                                 {% endfor %}
                             </select>
                             <svg id="" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" 
@@ -329,6 +330,7 @@
                         </div>
                         
          </td>`;
+         
          populateVideoCategories(`topic_folder_${currentNumber}_${textfile_id}`)
          const fileInputs = document.querySelectorAll('.br-input');
     
@@ -342,8 +344,14 @@
       });
     });
 }
-  function fetchVideoClips(){
+  function fetchVideoClips(selected){
+    id = selected.value;
+    const selectedId = selected.id;
+const splitArray = selectedId.split('_'); 
+const currentNumber = splitArray[splitArray.length - 2];
+    let video_id=`videoSelect_${currentNumber}_${textfile_id}`
 
+    populateVideoCategories(video_id,`/video/get_clip/${id}`)
   }
   function populateVideoCategories(selectElementId, apiUrl='/video/api/video-categories/') {
     const selectElement = document.getElementById(selectElementId);
