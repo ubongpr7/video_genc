@@ -293,15 +293,9 @@
                 const targetId = `videoSelect_${currentNumber}_${textfile_id}`;
 
                 if (document.querySelector(targetId)) {
-                    try {
-                        await populateVideoCategories(targetId,url);  
-                    } catch (error) {
-                        console.error(`Error fetching clip for ${input.id}:`, error);
-                    }
-                } else {
-                    console.warn(`Target element ${targetId} not found.`);
-                }
+                    
             }
+          }
         }
 
         inputs.forEach(input => {
