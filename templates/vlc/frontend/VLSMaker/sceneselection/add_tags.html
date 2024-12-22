@@ -284,7 +284,7 @@
     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
     var newRow = table.insertRow(-1);
     var slideCell = newRow.insertCell(0);
-    let textfile_id='{{textfile_id}}'
+    let textfile_id='{{textfile.id}}'
     console.log('This is textfile_id: ', textfile_id)
     slideCell.innerText = `Clip ${currentNumber}`;
     newRow.innerHTML += 
