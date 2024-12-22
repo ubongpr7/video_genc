@@ -27,7 +27,7 @@ from django.apps import apps
 def add_subclip(request,id):
     text_clip= TextLineVideoClip.objects.get(id=id)
     if request.method=="POST":
-        num_of_clips=request.POST.get('no_of_slides')
+        num_of_clips=int(request.POST.get('no_of_slides'))
         clips= []
         for i in range(1,num_of_clips+1):
             file=request.FILES.get(f'slide_file_{i}')
