@@ -391,7 +391,6 @@ const currentNumber = splitArray[splitArray.length - 2];
 
 
     // Fetch categories from the API
-    restoreVideoSelectInputs()
     fetch(apiUrl)
         .then(response => {
             if (!response.ok) {
@@ -406,6 +405,8 @@ const currentNumber = splitArray[splitArray.length - 2];
                 option.textContent = cat.title; 
                 selectElement.appendChild(option);
             });
+        restoreVideoSelectInputs();
+
         })
         .catch(error => {
             console.error("Failed to fetch video categories:", error);
