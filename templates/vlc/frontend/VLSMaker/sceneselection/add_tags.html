@@ -274,8 +274,10 @@
         for (let i = 1; i <= no_of_slides; i++) {
                         addSlide(i,textList[i-1]);
                     }
+        restoreForm()
         
                 }
+
 
 
   async function restoreForm(){
@@ -358,7 +360,6 @@
                         
          </td>`;
          
-        //  populateVideoCategories(`topic_folder_${currentNumber}_${textfile_id}`)
          const fileInputs = document.querySelectorAll('.br-input');
     
          const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
@@ -370,7 +371,6 @@
         noFileTexts[index].lastChild.textContent = fileName;
       });
     });
-    restoreForm()
 }
   function fetchVideoClips(selected){
     id = selected.value;
