@@ -466,7 +466,6 @@ def add_video_clips(request, textfile_id):
 
 @login_required
 def fetch_video_categories(request):
-    # Fetch categories related to the logged-in user
     categories = ClipCategory.objects.filter(user=request.user).values("id", "name", "parent_id")
     return JsonResponse(list(categories), safe=False)
 
