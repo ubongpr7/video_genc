@@ -292,19 +292,26 @@
                 const url = `/video/get_clip/${storedValue}`;
                 const targetId = `videoSelect_${currentNumber}_${textfile_id}`;
 
-                if (document.querySelector(targetId)) {
-                    
+                // if (document.querySelector(targetId)) {
+                //     try {
+                //         await populateVideoCategories(targetId,url);  
+                //     } catch (error) {
+                //         console.error(`Error fetching clip for ${input.id}:`, error);
+                //     }
+                // } else {
+                //     console.warn(`Target element ${targetId} not found.`);
+                // }
             }
-          }
         }
-
+        populateVideoCategories(targetId,url);  
         inputs.forEach(input => {
             const storedValue = sessionStorage.getItem(input.id);
             if (storedValue && input.id.startsWith('videoSelect_')) {
                 input.value = storedValue;
             }
         });
-    };
+    
+      };
 
     function addSlide(currentNumber,text) {
 
