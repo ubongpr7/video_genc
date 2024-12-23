@@ -117,24 +117,33 @@
 </div>
 
    <script>
+    // fetchNoSubclipIds(textfileId).then((ids) => {
+    // if (ids) {
         function highlightNoSubclipIcons() {
         // Iterate over each ID in the array
-        ids=fetchNoSubclipIds();
-        ids.forEach((id) => {
-            // Build the element ID
-            const elementId = `icon_rapper_${id}`;
+        fetchNoSubclipIds().then((ids)=>{
+            if (ids){
 
-            // Get the element by its ID
-            const element = document.getElementById(elementId);
-
-            // Check if the element exists
-            if (element) {
-                // Apply a red border to the element
-                element.style.border = '2px solid red';
-            } else {
-                console.warn(`Element with ID ${elementId} not found.`);
+                
+                ids.forEach((id) => {
+                    // Build the element ID
+                    const elementId = `icon_rapper_${id}`;
+        
+                    // Get the element by its ID
+                    const element = document.getElementById(elementId);
+        
+                    // Check if the element exists
+                    if (element) {
+                        // Apply a red border to the element
+                        element.style.border = '2px solid red';
+                    } else {
+                        console.warn(`Element with ID ${elementId} not found.`);
+                    }
+                });
+           
             }
-        });
+
+        })
     }
 
         async function fetchNoSubclipIds() {
