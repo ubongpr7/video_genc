@@ -378,21 +378,23 @@
 
     function submitForm(){
         let no_of_slides=document.getElementById('no_of_slides').value
-        let submitForm=false
+        console.log('submitForm no_of_slides: ',no_of_slides)
+        let formValid=false
         for (i=1;i <= no_of_slides;i++){
+
             const videoSelect= document.getElementById(`videoSelect_${i}_${textfile_id}`)
             const videoFile=document.getElementById(`slide_file_${i}_${textfile_id}`)
             if (videoSelect.value || videoFile.files.length > 0 ){
-                submitForm=true
+                formValid=true
             }else{
-                submitForm= false
+                formValid= false
                 document.getElementById(`error_${i}`).style.display='block'
                 videoSelect.style.border='1px solid red'
                 videoSelect.focus()
                 return;
             }
         }
-        if (submitForm){
+        if (formValid){
 
             document.getElementById('lead-form').submit()
         }
