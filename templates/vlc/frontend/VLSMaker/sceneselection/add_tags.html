@@ -383,9 +383,11 @@
             const videoFile=document.getElementById(`slide_file_${i}_${textfile_id}`)
             if (videoSelect.value || videoFile.files.length > 0 ){
                 formValid=true
+                document.getElementById(`error_${i}`).style.display='none'
+                videoSelect.style.border='none'
             }else{
                 formValid= false
-                document.getElementById(`error_${i}`).style.display='block'
+                document.getElementById(`error_${i}`).style.display='flex'
                 videoSelect.style.border='1px solid red'
                 videoSelect.focus()
                 return;
