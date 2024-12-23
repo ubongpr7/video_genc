@@ -329,7 +329,7 @@
          </td>
          <td>
             <div style="width: 100%; position: relative;">
-                            <select id="topic_folder_${currentNumber}_${textfile_id}-${id}" name="topic_folder_${currentNumber}"
+                            <select id="topic_folder_${currentNumber}_${textfile_id}-${clip_id}" name="topic_folder_${currentNumber}"
                             onchange="fetchVideoClips(this)"
                                     style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333;">
                             <option value="">Select Topic</option>
@@ -346,7 +346,7 @@
                                     name="selected_video_${currentNumber}"
                             onchange="saveInput(this)"
 
-                                    id="videoSelect_${currentNumber}_${textfile_id}-${id}" 
+                                    id="videoSelect_${currentNumber}_${textfile_id}-${clip_id}" 
                                     style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333; padding-right: 40px;"> <!-- Add padding-right to ensure space for the arrow -->
                                 <option value="">Select a video</option>
                                 
