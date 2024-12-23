@@ -102,6 +102,7 @@ class TextFile(models.Model):
     generated_audio = models.FileField(
         upload_to="generated_audio/", blank=True, null=True
     )
+    generated_subclips_srt = models.FileField(upload_to="generated_subclips_srt/", blank=True, null=True)
     generated_srt = models.FileField(upload_to="generated_srt/", blank=True, null=True)
     generated_blank_video = models.FileField(
         upload_to="generated_blank_video/", blank=True, null=True
@@ -165,6 +166,8 @@ class TextLineVideoClip(models.Model):
     slide=models.CharField(max_length=100,null=True, blank=True)
     line_number = models.IntegerField()
     total_clip = models.IntegerField(default=1)
+    video_file = models.FileField(upload_to='text_clip_upload_videos/')
+
     
     def __str__(self):
         return f"VideoClip for line {self.line_number} of {self.text_file}"
@@ -174,7 +177,17 @@ class TextLineVideoClip(models.Model):
         unique_together = ("text_file", "line_number")
 
         ordering = ["line_number", "text_file"]
+    def to_dict(self):
+         
+        if self.video_file:
+            video_path = self.video_file  
+        else:
+            video_path = "" 
 
+        return {
+            "subtittle": self.slide,
+            "video_path": video_path,  
+        }
 
 
 class SubClip(models.Model):
