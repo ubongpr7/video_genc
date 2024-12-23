@@ -119,7 +119,7 @@
         if (ulElement) {
             const liCount = ulElement.getElementsByTagName("li").length;
             console.log(`Number of <li> items: ${liCount}`);
-            document.getElementById('no_of_slides').value=liCount;
+            // document.getElementById('no_of_slides').value=liCount;
             return liCount;
         } else {
             console.error("Element with ID 'list-of-tags' not found.");
@@ -237,7 +237,7 @@
  
     function preventUnwantedKeys(e) {
         const allowedKeys = [
-            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', '/'
+            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', '/'
         ];
 
         
