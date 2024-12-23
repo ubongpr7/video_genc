@@ -104,7 +104,6 @@
     const resetBtn = document.getElementById('reset-btn');
     const doneBtn = document.getElementById('done-btn');
     let initialValue = input.value;
-    let textfile_id='{{textfile.id}}'
 
     const errorMessage = document.getElementById('error-message');
     function createTag(text) {
@@ -255,7 +254,7 @@
         errorMessage.textContent=''
         doneBtn.textContent='Proceed To add 1 Clip'
         document.getElementById('no_of_slides').value=1
-        
+
 
 
     }
