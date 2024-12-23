@@ -118,7 +118,7 @@
 
    <script>
     let textfile_id='{{textfile.id}}'
-    
+    let clip_id=1
         function highlightNoSubclipIcons() {
         // Iterate over each ID in the array
         fetchNoSubclipIds().then((ids)=>{
@@ -178,6 +178,7 @@
         }
 
         function subclipAdd(id,slideNumber,slide,){
+            clip_id=id
             const popupModal=document.getElementById('popup-modal');
             const modalCont=document.getElementById('modal-cont');
             popupModal.style.display='block';
