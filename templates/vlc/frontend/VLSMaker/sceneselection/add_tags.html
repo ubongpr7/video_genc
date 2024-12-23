@@ -377,7 +377,7 @@
     function submitForm(){
     
         let formValid=false
-        for (i=1;i <= getListItemsText().length;i++){
+        for (let i=1;i <= getListItemsText().length;i++){
 
             const videoSelect= document.getElementById(`videoSelect_${i}_${textfile_id}-${clip_id}`)
             const videoFile=document.getElementById(`slide_file_${i}_${textfile_id}`)
