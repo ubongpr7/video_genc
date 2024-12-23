@@ -76,22 +76,17 @@ def delete_background_music(request, id):
 
 
 def check_credits(api_key):
-    # Define the endpoint for fetching user information
     url = "https://api.elevenlabs.io/v1/usage/character-stats"
 
-    # Set the headers with the API key for authentication
     headers = {
         "xi-api-key": api_key,
     }
 
-    # Make the request to the ElevenLabs API
     response = requests.get(url, headers=headers)
 
-    # Check if the request was successful
     if response.status_code == 200:
         remaining_credits = response.json()
 
-        # Extract the subscription information
 
         print(f"Remaining Credits: {remaining_credits}")
         return f"Remaining Credits: {remaining_credits}"

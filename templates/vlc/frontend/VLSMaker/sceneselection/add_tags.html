@@ -99,7 +99,7 @@
 </div>
 
 <script>
-   const listOfTags = document.getElementById('list-of-tags');
+    const listOfTags = document.getElementById('list-of-tags');
     const input = listOfTags.querySelector('input');
     const resetBtn = document.getElementById('reset-btn');
     const doneBtn = document.getElementById('done-btn');
@@ -114,18 +114,19 @@
         listOfTags.insertBefore(li, input);
         getNumberOfListItems();
     }
+
     function getNumberOfListItems() {
-    const ulElement = document.getElementById("list-of-tags");
-    if (ulElement) {
-        const liCount = ulElement.getElementsByTagName("li").length;
-        console.log(`Number of <li> items: ${liCount}`);
-        document.getElementById('no_of_slides').value=liCount;
-        return liCount;
-    } else {
-        console.error("Element with ID 'list-of-tags' not found.");
-        return 0;
+        const ulElement = document.getElementById("list-of-tags");
+        if (ulElement) {
+            const liCount = ulElement.getElementsByTagName("li").length;
+            console.log(`Number of <li> items: ${liCount}`);
+            document.getElementById('no_of_slides').value=liCount;
+            return liCount;
+        } else {
+            console.error("Element with ID 'list-of-tags' not found.");
+            return 0;
+        }
     }
-}
     function getListItemsText() {
         const ulElement = document.getElementById("list-of-tags");
         if (ulElement) {
@@ -280,7 +281,7 @@
 
 
 
-  async function restoreForm(){
+    async function restoreForm(){
                 const inputs = document.querySelectorAll('select');
 
         for (const input of inputs) {
@@ -357,6 +358,7 @@
                                 <path d="M6 9L12 15L18 9" stroke="#050315" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
+                        <p style="display:none; color:red;" id="error_${currentNumber}">Choose a clip</p>
                         
          </td>`;
          
@@ -371,77 +373,97 @@
         noFileTexts[index].lastChild.textContent = fileName;
       });
     });
-}
-function submitForm(){
-    document.getElementById('lead-form').submit()
-}
-  function fetchVideoClips(selected){
-    id = selected.value;
-    const selectedId = selected.id;
-const splitArray = selectedId.split('_'); 
-const currentNumber = splitArray[splitArray.length - 2];
-    let video_id=`videoSelect_${currentNumber}_${textfile_id}`
-    saveInput(selected)
-    populateVideoCategories(video_id,`/video/get_clip/${id}`)
-  }
-  function populateVideoCategories(selectElementId, apiUrl) {
-    const selectElement = document.getElementById(selectElementId);
+    }
 
-    if (!selectElement) {
-        console.error(`Select element with ID "${selectElementId}" not found.`);
-        return;
+    function submitForm(){
+        let no_of_slides=document.getElementById('no_of_slides').value
+        let submitForm=false
+        for (i=1,no_of_slides+1,i++){
+            const videoSelect= document.getElementById(`videoSelect_${i}_${textfile_id}`)
+            const videoFileId=document.getElementById(`slide_file_${i}_${textfile_id}`)
+            if (videoSelect.value || videoFileId.files.length > 0 ){
+                submitForm=true
+            }else{
+                submitForm= false
+                document.getElementById(`error_${i}`).style.display='block'
+                videoSelect.style.border='1px solid red'
+                videoSelect.focus()
+                return;
+            }
+        }
+        if (submitForm){
+
+            document.getElementById('lead-form').submit()
+        }
+    }
+    function fetchVideoClips(selected){
+        id = selected.value;
+        const selectedId = selected.id;
+        const splitArray = selectedId.split('_'); 
+        const currentNumber = splitArray[splitArray.length - 2];
+        let video_id=`videoSelect_${currentNumber}_${textfile_id}`
+        saveInput(selected)
+        populateVideoCategories(video_id,`/video/get_clip/${id}`)
+    }
+
+    function populateVideoCategories(selectElementId, apiUrl) {
+        const selectElement = document.getElementById(selectElementId);
+
+        if (!selectElement) {
+            console.error(`Select element with ID "${selectElementId}" not found.`);
+            return;
+        }
+
+
+        // Fetch categories from the API
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(categories => {
+                categories.forEach(cat => {
+                    const option = document.createElement("option");
+                    option.value = cat.id;         
+                    option.textContent = cat.title; 
+                    selectElement.appendChild(option);
+                });
+            restoreVideoSelectInputs();
+
+            })
+            .catch(error => {
+                console.error("Failed to fetch video categories:", error);
+            });
+    }
+
+    function saveInput(inputElement) {
+            
+            sessionStorage.setItem(inputElement.id, inputElement.value);
+            console.log(inputElement.value)
+            if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
+                const cNumber= inputElement.id.split('_')[1]
+                console.log(cNumber);
+                // document.getElementById(`video_${cNumber}_status`).value='empty';
+
+
+            };
+            
+    };
+        
+    function restoreVideoSelectInputs() {
+    inputs=document.querySelectorAll('select')
+        inputs.forEach(input => {
+            const storedValue = sessionStorage.getItem(input.id);
+            if (storedValue && input.id.startsWith('videoSelect_')) {
+                input.value = storedValue;
+            }
+        });
     }
 
 
-    // Fetch categories from the API
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(categories => {
-            categories.forEach(cat => {
-                const option = document.createElement("option");
-                option.value = cat.id;         
-                option.textContent = cat.title; 
-                selectElement.appendChild(option);
-            });
-        restoreVideoSelectInputs();
-
-        })
-        .catch(error => {
-            console.error("Failed to fetch video categories:", error);
-        });
-}
-
-function saveInput(inputElement) {
-        
-        sessionStorage.setItem(inputElement.id, inputElement.value);
-        console.log(inputElement.value)
-        if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
-            const cNumber= inputElement.id.split('_')[1]
-            console.log(cNumber);
-            // document.getElementById(`video_${cNumber}_status`).value='empty';
-
-
-        };
-        
-};
-    
-function restoreVideoSelectInputs() {
-  inputs=document.querySelectorAll('select')
-    inputs.forEach(input => {
-        const storedValue = sessionStorage.getItem(input.id);
-        if (storedValue && input.id.startsWith('videoSelect_')) {
-            input.value = storedValue;
-        }
-    });
-}
-
-
-input.addEventListener('keydown', handleKeyPress);
+    input.addEventListener('keydown', handleKeyPress);
     input.addEventListener('keydown', preventUnwantedKeys);
     resetBtn.addEventListener('click', resetTags);
     doneBtn.addEventListener('click', convertRemainingToTag);
