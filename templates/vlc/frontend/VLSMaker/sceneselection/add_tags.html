@@ -321,7 +321,7 @@
         <td style="background: none;">
            <div class="custum-browse custum-browse-v2 d-flex align-items-center">
              <div class="brws">
-               <input class="br-input" type="file" name="slide_file_${currentNumber}"accept="image/*,video/*"  >
+               <input class="br-input" type="file" id="slide_file_${currentNumber}_${textfile_id}" name="slide_file_${currentNumber}"accept="image/*,video/*"  >
                   <a href="#!" class="btn get-start browse-btn">
                  <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt=""> Choose file
                </a>
@@ -381,8 +381,8 @@
         let submitForm=false
         for (i=1;i <= no_of_slides;i++){
             const videoSelect= document.getElementById(`videoSelect_${i}_${textfile_id}`)
-            const videoFileId=document.getElementById(`slide_file_${i}_${textfile_id}`)
-            if (videoSelect.value || videoFileId.files.length > 0 ){
+            const videoFile=document.getElementById(`slide_file_${i}_${textfile_id}`)
+            if (videoSelect.value || videoFile.files.length > 0 ){
                 submitForm=true
             }else{
                 submitForm= false
