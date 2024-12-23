@@ -126,28 +126,26 @@
         fetchNoSubclipIds().then((ids)=>{
             if (ids){
 
-                if (ids.lenght === 0){
-                    document.getElementById('processFile').submit()
+                
+                ids.forEach((id) => {
+                    // Build the element ID
+                    const elementId = `icon_${id}`;
+        
+                    // Get the element by its ID
+                    const element = document.getElementById(elementId);
+        
+                    // Check if the element exists
+                    if (element) {
+                        // Apply a red border to the element
+                        element.style.border = '2px solid red';
+                    } else {
+                        console.warn(`Element with ID ${elementId} not found.`);
+                    }
+                });
+           
+            }else {
+                document.getElementById('processFile').submit()
 
-                }else {
-
-                    ids.forEach((id) => {
-                        // Build the element ID
-                        const elementId = `icon_${id}`;
-            
-                        // Get the element by its ID
-                        const element = document.getElementById(elementId);
-            
-                        // Check if the element exists
-                        if (element) {
-                            // Apply a red border to the element
-                            element.style.border = '2px solid red';
-                        } else {
-                            console.warn(`Element with ID ${elementId} not found.`);
-                        }
-                    });
-               
-                }
             }
 
         })
