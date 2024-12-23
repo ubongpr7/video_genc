@@ -404,7 +404,10 @@
         const currentNumber = splitArray[splitArray.length - 2];
         let video_id=`videoSelect_${currentNumber}_${textfile_id}`
         saveInput(selected)
-        populateVideoCategories(video_id,`/video/get_clip/${id}`)
+        if (id){
+            populateVideoCategories(video_id,`/video/get_clip/${id}`)
+
+        }
     }
 
     function populateVideoCategories(selectElementId, apiUrl) {
