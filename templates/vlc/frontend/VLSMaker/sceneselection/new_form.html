@@ -96,7 +96,8 @@
             
                 </div>
                 {% endfor %}
-                <form action="." id="processFile">
+                <form action="." method="post" id="processFile">
+                    {% csrf_token %}
                     <input type="text" name="purpose" value="process" hidden>
                 </form>
             <div class="button"
