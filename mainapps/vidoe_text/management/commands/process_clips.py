@@ -319,27 +319,30 @@ class Command(BaseCommand):
         logging.info(f"concatenate_clips_for_main done")
 
         cropped_clips=[]
-        target_resolution=MAINRESOLUTIONS[resolution]
-        for clip in replacement_video_clips:
-            if self.is_video_clip(clip):
-                clip = self.crop_to_aspect_ratio_(clip, target_resolution)
-                clip = clip.set_fps(30)  
-                cropped_clips.append(clip)
-            elif self.is_image_clip(clip):
-                clip = self.crop_to_aspect_ratio_(clip, target_resolution)
-                cropped_clips.append(clip)
-
-
-        resized_clips = self.resize_clips_to_max_size(cropped_clips)
+        # target_resolution=MAINRESOLUTIONS[resolution]
+        # for clip in replacement_video_clips:
+        #     if self.is_video_clip(clip):
+        #         clip = self.crop_to_aspect_ratio_(clip, target_resolution)
+        #         clip = clip.set_fps(30)  
+        #         cropped_clips.append(clip)
+        #     elif self.is_image_clip(clip):
+        #         clip = self.crop_to_aspect_ratio_(clip, target_resolution)
+        #         cropped_clips.append(clip)
+        # logging.info(f"crop_to_aspect_ratio_ done")
         
+
+
+        # resized_clips = self.resize_clips_to_max_size(cropped_clips)
+        
+        logging.info(f"resize_clips_to_max_size done")
 
         logging.info("Done cropping replacements")
 
         self.text_file_instance.track_progress(54)
         # I'ma
-        resized_video_clips=self.convert_clips_to_videos(resized_clips,)
+        # resized_video_clips=self.convert_clips_to_videos(resized_clips,)
         final_video_segments = self.replace_video_segments(
-            output_video_segments, resized_video_clips, subtitles, blank_vide_clip
+            output_video_segments, replacement_video_clips, subtitles, blank_vide_clip
         )
         logging.info("Done  replace_video_segments")
         concatenated_video = self.concatenate_clips(
