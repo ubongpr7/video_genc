@@ -1157,11 +1157,8 @@ class Command(BaseCommand):
         return final_clip
 
     def resize_clips_to_max_size(self, clips):
-        # max_width = max(clip.w for clip in clips)
-        # max_height = max(clip.h for clip in clips)
-        main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
-        max_width = main_clip.w
-        max_height = main_clip.h
+        max_width = max(clip.w for clip in clips)
+        max_height = max(clip.h for clip in clips)
 
         resized_clips = [clip.resize(newsize=(max_width, max_height)) for clip in clips]
 
