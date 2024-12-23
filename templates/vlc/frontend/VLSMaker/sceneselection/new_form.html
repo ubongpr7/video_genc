@@ -122,9 +122,8 @@
     let textfile_id='{{textfile.id}}'
     let clip_id=1
         function highlightNoSubclipIcons() {
-        formIsValid=false
         fetchNoSubclipIds().then((ids)=>{
-            if (ids){
+            if (ids.length >0){
 
                 
                 ids.forEach((id) => {
