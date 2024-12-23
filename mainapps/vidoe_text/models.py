@@ -96,8 +96,9 @@ class TextFile(models.Model):
     srt_file = models.FileField(
         upload_to="srt_files/", blank=True, null=True
     )  # SRT file for subtitles
-    blank_video = models.FileField(upload_to="blank_video/", blank=True, null=True)
     subtitle_file = models.FileField(upload_to="subtitles/", blank=True, null=True)
+    subclips_text_file = models.FileField(upload_to="subclips_text_files/", blank=True, null=True)
+    blank_video = models.FileField(upload_to="blank_video/", blank=True, null=True)
     generated_audio = models.FileField(
         upload_to="generated_audio/", blank=True, null=True
     )
@@ -105,6 +106,7 @@ class TextFile(models.Model):
     generated_blank_video = models.FileField(
         upload_to="generated_blank_video/", blank=True, null=True
     )
+    
     generated_final_video = models.FileField(
         upload_to="generated_final_video/", blank=True, null=True
     )
@@ -197,11 +199,11 @@ class SubClip(models.Model):
         if self.video_clip:
             video_path = (
                 self.video_clip.video_file
-            )  # Use .url to get the S3 or local URL
+            )  
         elif self.video_file:
-            video_path = self.video_file  # Use .url for the FileField as well
+            video_path = self.video_file  
         else:
-            video_path = ""  # Fallback to an empty string if no video path is available
+            video_path = "" 
 
         return {
             "subtittle": self.subtittle,

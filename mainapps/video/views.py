@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
 from django.http import JsonResponse
+import tempfile
 
 def rename_video_clip(request, video_id):
     video_clip = get_object_or_404(VideoClip, id=video_id)
@@ -341,44 +342,25 @@ def add_video_clips(request, textfile_id):
         return render(request, "permission_denied.html")
     video_categories = ClipCategory.objects.filter(user=request.user).values("id", "name", "parent_id")
     if request.method == "POST":
+
         if text_file.text_file and request.POST.get("purpose") == "process":
             if text_file.video_clips.all():
-                for video_clip in TextLineVideoClip.objects.filter(text_file=text_file):
-                    video_clip.delete()
-                    print("Deleted a video_clip")
+                with tempfile.NamedTemporaryFile(mode="w+", delete=False) as temp_file:
+                    for clip in text_file.video_clips.all():
+                        for subclip in clip.subclips.all():
+                            temp_file.write(subclip.subtittle + "\n")
+                    
+                    temp_file.flush() 
 
-            lines = text_file.process_text_file()
-            print(lines)
-            video_clips_data = []
-            print('=================> post method',request.POST)
-            for index, line in enumerate(lines):
-                print('=============>index',index)
-                video_file = request.FILES.get(f"uploaded_video_{index}")
-                print('video file form input ============>',video_file)
-                video_clip_id = request.POST.get(f"selected_video_{index}")
-                print(video_clip_id)
-                if video_clip_id:
-                    video_clip = get_object_or_404(VideoClip, id=video_clip_id)
-                    print(video_clip.title)
-                else:
-                    video_clip = None
-                
-                if video_file or video_clip:
-                    video_clips_data.append(
-                        TextLineVideoClip(
-                            text_file=text_file,
-                            video_file=video_clip,
-                            video_file_path=video_file,
-                            line_number=index + 1,
+                    with open(temp_file.name, "rb") as file_to_save:
+                        text_file.subclips_text_file.save(
+                            f"{text_file.id}_subclips.txt", file_to_save, save=True
                         )
-                    )
-                else:
-                    messages.error(request, "You Did Not Choose The Clips Completely")
-                    return redirect(reverse("video:add_scenes", args=[textfile_id]))
+            
 
-            TextLineVideoClip.objects.bulk_create(video_clips_data)
+                return redirect(f"/text/process-textfile/{textfile_id}")
+            return redirect(reverse("video:add_scenes", args=[textfile_id]))
 
-            return redirect(f"/text/process-textfile/{textfile_id}")
 
         elif text_file.text_file and request.POST.get("purpose") == "update":
             for i, clip in enumerate(existing_clips):

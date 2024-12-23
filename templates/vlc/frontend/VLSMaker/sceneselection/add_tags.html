@@ -378,7 +378,7 @@
     
         let formValid=false
         for (let i=1;i <= getListItemsText().length;i++){
-
+            console.log('i: ',i)
             const videoSelect= document.getElementById(`videoSelect_${i}_${textfile_id}-${clip_id}`)
             const videoFile=document.getElementById(`slide_file_${i}_${textfile_id}`)
             if (videoSelect.value || videoFile.files.length > 0 ){

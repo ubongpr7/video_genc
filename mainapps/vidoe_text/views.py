@@ -21,7 +21,7 @@ from django.core.files.base import ContentFile
 import boto3
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 from django.apps import apps
-
+import tempfile
 
 
 def add_subclip(request,id):
@@ -449,16 +449,14 @@ def process_textfile(request, textfile_id):
     # Run process_video command in a new thread
     def run_process_command(textfile_id):
         try:
-            call_command("process_video", textfile_id)
+            call_command("process_clips", textfile_id)
         except Exception as e:
             # Handle the exception as needed (e.g., log it)
             print(f"Error processing video: {e}")
 
-    # Start the background process
     thread = threading.Thread(target=run_process_command, args=(textfile_id,))
     thread.start()
 
-    # Redirect to another page while the process runs in the background
     return redirect(f"/text/progress_page/build/{textfile_id}")
 
 
