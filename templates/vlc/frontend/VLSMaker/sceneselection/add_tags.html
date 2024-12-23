@@ -401,7 +401,7 @@
         const selectedId = selected.id;
         const splitArray = selectedId.split('_'); 
         const currentNumber = splitArray[splitArray.length - 2];
-        let video_id=`videoSelect_${currentNumber}_${textfile_id}`
+        let video_id=`videoSelect_${currentNumber}_${textfile_id}-${clip_id}`
         saveInput(selected)
         if (id){
             populateVideoCategories(video_id,`/video/get_clip/${id}`)
