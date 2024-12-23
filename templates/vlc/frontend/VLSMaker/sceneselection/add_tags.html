@@ -362,6 +362,7 @@
                         
          </td>`;
          
+
          const fileInputs = document.querySelectorAll('.br-input');
     
          const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
@@ -378,7 +379,7 @@
     function submitForm(){
         let no_of_slides=document.getElementById('no_of_slides').value
         let submitForm=false
-        for (i=1,no_of_slides+1,i++){
+        for (i=1;i <= no_of_slides;i++){
             const videoSelect= document.getElementById(`videoSelect_${i}_${textfile_id}`)
             const videoFileId=document.getElementById(`slide_file_${i}_${textfile_id}`)
             if (videoSelect.value || videoFileId.files.length > 0 ){
