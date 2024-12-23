@@ -25,7 +25,14 @@ from django.apps import apps
 
 
 def add_subclip(request,id):
+    
     text_clip= TextLineVideoClip.objects.get(id=id)
+    if text_clip.subclips.all():
+        for subclip in text_clip.subclips.all():
+            if subclip.video_file:
+                subclip.video_file.delete(save=True)
+            subclip.delete()
+
     if request.method=="POST":
         num_of_clips=int(request.POST.get('no_of_slides'))
         clips= []
@@ -57,7 +64,13 @@ def add_subclip(request,id):
 
     return HttpResponse(status=200)
 
-
+def check_text_clip(request,textfile_id):
+    textfile=TextFile.objects.get(id=textfile_id)
+    ids_of_no_subclip=[]
+    for clip in textfile.video_clips.all():
+        if not clip.subclips.all():
+            ids_of_no_subclip.append(clip.id)
+    return JsonResponse(ids_of_no_subclip,safe=False)
 @require_http_methods(["DELETE"])
 def delete_background_music(request, id):
     try:
