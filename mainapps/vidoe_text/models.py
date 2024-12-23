@@ -166,7 +166,7 @@ class TextLineVideoClip(models.Model):
     slide=models.CharField(max_length=100,null=True, blank=True)
     line_number = models.IntegerField()
     total_clip = models.IntegerField(default=1)
-    video_file = models.FileField(upload_to='text_clip_upload_videos/')
+    # video_file = models.FileField(upload_to='text_clip_upload_videos/')
 
     
     def __str__(self):
@@ -177,17 +177,17 @@ class TextLineVideoClip(models.Model):
         unique_together = ("text_file", "line_number")
 
         ordering = ["line_number", "text_file"]
-    def to_dict(self):
+    # def to_dict(self):
          
-        if self.video_file:
-            video_path = self.video_file  
-        else:
-            video_path = "" 
+    #     if self.video_file:
+    #         video_path = self.video_file  
+    #     else:
+    #         video_path = "" 
 
-        return {
-            "subtittle": self.slide,
-            "video_path": video_path,  
-        }
+    #     return {
+    #         "subtittle": self.slide,
+    #         "video_path": video_path,  
+    #     }
 
 
 class SubClip(models.Model):
