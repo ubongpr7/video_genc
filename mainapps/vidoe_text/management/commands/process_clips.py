@@ -315,12 +315,9 @@ class Command(BaseCommand):
         except Exception as e:
             logging.error(f"Error loading background music: {e}")
             return
-        replacement_video_files=self.concatenate_clips_for_main()
-        replacement_video_clips = []
-        for clip in replacement_video_files:
-            # clip = self.load_video_from_file_field(video_file)
-            replacement_video_clips.append(clip)
-        logging.info("Done Clipping replacements")
+        replacement_video_clips=self.concatenate_clips_for_main()
+        logging.info(f"concatenate_clips_for_main done")
+
         cropped_clips=[]
         target_resolution=MAINRESOLUTIONS[resolution]
         for clip in replacement_video_clips:
@@ -370,9 +367,11 @@ class Command(BaseCommand):
         concatenated_clips=[]
         for clip in self.text_file_instance.video_clips.all():
             clips=clips_dicts.get(clip.id)
+            print(clips,' ',clip.id)
             if clips:
                 concatenated_clip=self.concatenate_clips(clips)
                 concatenated_clips.append(concatenated_clip)
+        return concatenated_clips
 
     def combine_clips_main(self):
         
