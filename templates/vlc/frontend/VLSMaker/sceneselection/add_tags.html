@@ -119,7 +119,7 @@
         if (ulElement) {
             const liCount = ulElement.getElementsByTagName("li").length;
             console.log(`Number of <li> items: ${liCount}`);
-            // document.getElementById('no_of_slides').value=liCount;
+            document.getElementById('no_of_slides').value=liCount;
             return liCount;
         } else {
             console.error("Element with ID 'list-of-tags' not found.");
@@ -209,28 +209,28 @@
             updateClipCount();  
         }
         else if (e.key === 'Enter') {
-            // const isAtValidPosition =
-            //     cursorPosition === value.length ||
-            //     value[cursorPosition - 1] === ' ' ||  
-            //     (cursorPosition > 0 && value[cursorPosition] === ' ');
-            //     convertRemainingToTag()
+            const isAtValidPosition =
+                cursorPosition === value.length ||
+                value[cursorPosition - 1] === ' ' ||  
+                (cursorPosition > 0 && value[cursorPosition] === ' ');
+                convertRemainingToTag()
 
-            // if (!isAtValidPosition) {
-            //     e.preventDefault(); 
-            //     errorMessage.textContent = 'Wrong Position To Separate Words';
-            //     return;
-            // }
+            if (!isAtValidPosition) {
+                e.preventDefault(); 
+                errorMessage.textContent = 'Wrong Position To Separate Words';
+                return;
+            }
 
-            // e.preventDefault();
-            // const beforeCursor = value.substring(0, cursorPosition).trim();
-            // const afterCursor = value.substring(cursorPosition).trim();
+            e.preventDefault();
+            const beforeCursor = value.substring(0, cursorPosition).trim();
+            const afterCursor = value.substring(cursorPosition).trim();
 
-            // if (beforeCursor) createTag(beforeCursor);
-            // if (afterCursor) createTag(afterCursor);
-            // errorMessage.textContent = '';
+            if (beforeCursor) createTag(beforeCursor);
+            if (afterCursor) createTag(afterCursor);
+            errorMessage.textContent = '';
 
-            // input.value = ''; 
-            // updateClipCount();
+            input.value = ''; 
+            updateClipCount();
         }
     }
 
