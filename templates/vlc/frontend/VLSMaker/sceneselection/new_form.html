@@ -87,7 +87,7 @@
                 </div>
                 <input type="text"value="{{clip.slide}}" hidden name="slide_{{cilp.line_number}}" id="slide_{{clip.line_number}}">
                 <div class="grid-item slide-row grid-row" data-slide="1">
-                    <div class="icon-wrapper" onclick="subclipAdd('{{clip.id}}','{{clip.total_clip}}','{{clip.line_number}}')">
+                    <div class="icon-wrapper" id="icon_rapper_{{clip.id}}" onclick="subclipAdd('{{clip.id}}','{{clip.total_clip}}','{{clip.line_number}}')">
                         <i class="ri-file-video-line slide-text"></i>
                         <span class="notification-number">{{clip.get_number_of_subclip}}</span>
                     </div>
@@ -101,7 +101,7 @@
                 style="position: absolute; right: 20px; bottom: 16px;height: 24px; width: fit-content; display: flex; justify-content: flex-end;">
                 <div
                     style="display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #864AF9; cursor: pointer;">
-                    <button type="button" onclick="fetchNoSubclipIds()" id="proceed-button"
+                    <button type="button" onclick="highlightNoSubclipIcons()" id="proceed-button"
                         style="text-decoration: none; padding: 10px 20px; color: white; font-family: Montserrat; font-size: 18px; font-weight: 500; line-height: 24px; text-align: left; background: none; border: none; cursor: pointer;">
                         Proceed To Background Music Selection
                     </button>
@@ -117,6 +117,26 @@
 </div>
 
    <script>
+        function highlightNoSubclipIcons() {
+        // Iterate over each ID in the array
+        ids=fetchNoSubclipIds
+        ids.forEach((id) => {
+            // Build the element ID
+            const elementId = `icon_rapper_${id}`;
+
+            // Get the element by its ID
+            const element = document.getElementById(elementId);
+
+            // Check if the element exists
+            if (element) {
+                // Apply a red border to the element
+                element.style.border = '2px solid red';
+            } else {
+                console.warn(`Element with ID ${elementId} not found.`);
+            }
+        });
+    }
+
         async function fetchNoSubclipIds() {
             try {
                 // Define the URL endpoint
