@@ -400,7 +400,7 @@ class Command(BaseCommand):
         for clip in self.text_file_instance.video_clips.all():
             for subclip in clip.subclips.all():
                 mv_clip=self.load_video_from_file_field(subclip.to_dict().get('video_path'))
-                cropped_clip=self.crop_to_aspect_ratio_(MAINRESOLUTIONS[self.text_file_instance.resolution])
+                cropped_clip=self.crop_to_aspect_ratio_(mv_clip,MAINRESOLUTIONS[self.text_file_instance.resolution])
                 file_clips.append(cropped_clip)
         
         extracted_times=self.extract_start_end(self.text_file_instance.generated_subclips_srt)
