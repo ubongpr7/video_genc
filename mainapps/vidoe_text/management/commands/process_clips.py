@@ -368,7 +368,7 @@ class Command(BaseCommand):
     def concatenate_clips_for_main(self):
         clips_dicts=self.combine_clips_main()
         concatenated_clips=[]
-        for clip in self.text_file_instance.video_clips:
+        for clip in self.text_file_instance.video_clips.all():
             clips=clips_dicts.get(clip.id)
             if clips:
                 concatenated_clip=self.concatenate_clips(clips)
