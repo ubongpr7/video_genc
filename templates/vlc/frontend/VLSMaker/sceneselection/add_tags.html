@@ -375,10 +375,11 @@
     }
 
     function submitForm(){
-        let no_of_slides=document.getElementById('no_of_slides').value
-        console.log('submitForm no_of_slides: ',no_of_slides)
+        // let no_of_slides=document.getElementById('no_of_slides').value
+    
+        // console.log('submitForm no_of_slides: ',no_of_slides)
         let formValid=false
-        for (i=1;i <= no_of_slides;i++){
+        for (i=1;i <= getListItemsText().length;i++){
 
             const videoSelect= document.getElementById(`videoSelect_${i}_${textfile_id}`)
             const videoFile=document.getElementById(`slide_file_${i}_${textfile_id}`)
