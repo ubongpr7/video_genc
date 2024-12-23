@@ -1026,7 +1026,7 @@ class Command(BaseCommand):
         )
         file_names=[]
         for clip in video_clips:
-            for subclip in clip.subclip.all():
+            for subclip in clip.subclips.all():
               file_names.append(subclip.to_dict().get("video_path"))  
 
         return file_names
