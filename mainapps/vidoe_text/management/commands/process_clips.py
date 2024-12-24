@@ -402,10 +402,13 @@ class Command(BaseCommand):
             cropped_clip = self.crop_to_aspect_ratio_(clip_with_duration, MAINRESOLUTIONS[self.text_file_instance.resolution])
             logging.debug(f"Cropped clip to resolution: {MAINRESOLUTIONS[self.text_file_instance.resolution]}")
             clip_subclips.append(cropped_clip)
-        
-        resized_subclips = self.resize_clips_to_max_size(clip_subclips)
-        concatenated_clip = self.concatenate_clips(resized_subclips)
-        self.write_clip_file(concatenated_clip, clip.video_file)
+        if len(clip_subclips) == 1:
+            self.write_clip_file(clip_subclips, clip.video_file)
+        else:
+
+            resized_subclips = self.resize_clips_to_max_size(clip_subclips)
+            concatenated_clip = self.concatenate_clips(resized_subclips)
+            self.write_clip_file(concatenated_clip, clip.video_file)
 
 
     def extract_start_end(self,generated_srt):
