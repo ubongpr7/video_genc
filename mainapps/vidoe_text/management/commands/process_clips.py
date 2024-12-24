@@ -386,7 +386,7 @@ class Command(BaseCommand):
             subclip.end=Decimal(self.srt_time_to_float(end))
             subclip.save()
         with concurrent.futures.ProcessPoolExecutor() as executor:
-            list(executor.map(process_clip, self.text_file_instance.video_clips.all()))
+            list(executor.map(self.process_for_clip, self.text_file_instance.video_clips.all()))
         
         logging.debug("All clips processed. Proceeding to next steps.")
         return True  # Ensure this indicates success if you want to check for success
