@@ -401,7 +401,7 @@ class Command(BaseCommand):
             logging.debug(f"Loaded video clip from path: {subclip.to_dict().get('video_path')}")
             cropped_clip = self.crop_to_aspect_ratio_(clip_with_duration, MAINRESOLUTIONS[self.text_file_instance.resolution])
             logging.debug(f"Cropped clip to resolution: {MAINRESOLUTIONS[self.text_file_instance.resolution]}")
-            clip_subclips.append(cropped_clip)
+            clip_subclips.append(cropped_clip[0])
         if len(clip_subclips) == 1:
             self.write_clip_file(clip_subclips, clip.video_file)
         else:
