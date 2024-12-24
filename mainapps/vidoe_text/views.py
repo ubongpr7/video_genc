@@ -34,6 +34,7 @@ def add_subclip(request,id):
             subclip.delete()
 
     if request.method=="POST":
+        textfile_id=request.POST.get('textfile_id')
         num_of_clips=int(request.POST.get('no_of_slides'))
         clips= []
         for i in range(1,num_of_clips+1):
@@ -62,7 +63,7 @@ def add_subclip(request,id):
         created_clips=SubClip.objects.bulk_create(clips)
 
 
-    return HttpResponse(status=200)
+    return redirect(f'/video/add-scene/{textfile_id}')
 
 def check_text_clip(request,textfile_id):
     textfile=TextFile.objects.get(id=textfile_id)

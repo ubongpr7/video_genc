@@ -208,30 +208,7 @@
             input.value = value.substring(cursorPosition).trim();
             updateClipCount();  
         }
-        // else if (e.key === 'Enter') {
-        //     const isAtValidPosition =
-        //         cursorPosition === value.length ||
-        //         value[cursorPosition - 1] === ' ' ||  
-        //         (cursorPosition > 0 && value[cursorPosition] === ' ');
-        //         convertRemainingToTag()
-
-        //     if (!isAtValidPosition) {
-        //         e.preventDefault(); 
-        //         errorMessage.textContent = 'Wrong Position To Separate Words';
-        //         return;
-        //     }
-
-        //     e.preventDefault();
-        //     const beforeCursor = value.substring(0, cursorPosition).trim();
-        //     const afterCursor = value.substring(cursorPosition).trim();
-
-        //     if (beforeCursor) createTag(beforeCursor);
-        //     if (afterCursor) createTag(afterCursor);
-        //     errorMessage.textContent = '';
-
-        //     input.value = ''; 
-        //     updateClipCount();
-        // }
+        
     }
 
  
