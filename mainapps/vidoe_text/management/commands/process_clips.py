@@ -244,8 +244,11 @@ class Command(BaseCommand):
         if audio_file or text_file_instance.generated_audio:
             srt_file = self.generate_srt_file()
             subtitles_srt_file=self.generate_subclips_srt_file()
+
             self.text_file_instance.track_progress(25)
-            
+            self.generate_subclip_videos_with_duration()
+            self.text_file_instance.track_progress(26)
+
         else:
             return
         aligned_output = self.process_srt_file(self.text_file_instance.generated_srt)
@@ -295,11 +298,15 @@ class Command(BaseCommand):
 
         ################################################################
 
-        # replacement_video_files = self.get_video_paths_for_text_file()
+        replacement_video_files = self.get_video_paths_for_text_file()
         self.text_file_instance.track_progress(40)
 
         replacement_videos_per_combination = []
 
+        replacement_video_clips = []
+        for video_file in replacement_video_files:
+            clip = self.load_video_from_file_field(video_file)
+            replacement_video_clips.append(clip)
         logging.info("Concatination Done")
         self.text_file_instance.track_progress(48)
 
@@ -315,32 +322,15 @@ class Command(BaseCommand):
         except Exception as e:
             logging.error(f"Error loading background music: {e}")
             return
-        replacement_video_clips=self.concatenate_clips_for_main()
         logging.info(f"concatenate_clips_for_main done")
 
-        cropped_clips=[]
-        # target_resolution=MAINRESOLUTIONS[resolution]
-        # for clip in replacement_video_clips:
-        #     if self.is_video_clip(clip):
-        #         clip = self.crop_to_aspect_ratio_(clip, target_resolution)
-        #         clip = clip.set_fps(30)  
-        #         cropped_clips.append(clip)
-        #     elif self.is_image_clip(clip):
-        #         clip = self.crop_to_aspect_ratio_(clip, target_resolution)
-        #         cropped_clips.append(clip)
-        # logging.info(f"crop_to_aspect_ratio_ done")
-        
-
-
-        # resized_clips = self.resize_clips_to_max_size(cropped_clips)
         
         logging.info(f"resize_clips_to_max_size done")
 
         logging.info("Done cropping replacements")
 
         self.text_file_instance.track_progress(54)
-        # I'ma
-        # resized_video_clips=self.convert_clips_to_videos(resized_clips,)
+        
         final_video_segments = self.replace_video_segments(
             output_video_segments, replacement_video_clips, subtitles, blank_vide_clip
         )
@@ -365,95 +355,51 @@ class Command(BaseCommand):
             self.style.SUCCESS(f"Processing complete for {text_file_id}.")
         )
     
-    def concatenate_clips_for_main(self):
-        clips_dicts=self.combine_clips_main()
-        concatenated_clips=[]
-        for clip in self.text_file_instance.video_clips.all():
-            clips=clips_dicts.get(clip.id)
-            print(clips,' ',clip.id)
-            if clips:
-                concatenated_clip=self.concatenate_clips(clips)
-                concatenated_clips.append(concatenated_clip)
-        return concatenated_clips
 
-    def combine_clips_main(self):
-        
-        logging.debug("Starting to combine clips.")
-        all_clips = self.generate_subclip_videos_with_duration()
-        logging.debug(f"Generated all subclip videos with duration. Total clips: {len(all_clips)}")
-        
-        all_clips = self.resize_clips_to_max_size(all_clips)
-        logging.debug("Resized all clips to max size.")
-        
-        clip_dict = {}
-        clip_subclips_mapping = {}
-
-        current_index = 0
-
-        for i, clip in enumerate(self.text_file_instance.video_clips.all()):
-            logging.debug(f"Processing clip with ID: {clip.id}, index: {i}")
-            num_subclips = len(clip.subclips.all())
-            logging.debug(f"Number of subclips for clip ID {clip.id}: {num_subclips}")
-            
-            clip_dict[f'clip_{i}'] = num_subclips
-            logging.debug(f"Added to clip_dict: clip_{i} -> {num_subclips}")
-            
-            clip_subclips_mapping[clip.id] = all_clips[current_index:current_index + num_subclips]
-            logging.debug(f"Mapped clip ID {clip.id} to subclips from index {current_index} to {current_index + num_subclips - 1}")
-            
-            current_index += num_subclips
-
-        logging.debug("Completed combining clips.")
-        return clip_subclips_mapping
-
-
+# I'm
     def generate_subclip_videos_with_duration(self):
-        
-        
-        file_clips = []
-        logging.debug("Starting to process video clips.")
-        
-        for clip in self.text_file_instance.video_clips.all():
-            logging.debug(f"Processing clip with ID: {clip.id}")
-            for subclip in clip.subclips.all():
-                logging.debug(f"Processing subclip with ID: {subclip.id}")
-                mv_clip = self.load_video_from_file_field(subclip.to_dict().get('video_path'))
-                logging.debug(f"Loaded video clip from path: {subclip.to_dict().get('video_path')}")
-                cropped_clip = self.crop_to_aspect_ratio_(mv_clip, MAINRESOLUTIONS[self.text_file_instance.resolution])
-                logging.debug(f"Cropped clip to resolution: {MAINRESOLUTIONS[self.text_file_instance.resolution]}")
-                file_clips.append(cropped_clip)
         
         extracted_times = self.extract_start_end(self.text_file_instance.generated_subclips_srt)
         logging.debug(f"Extracted times: {extracted_times}")
         
-        if len(file_clips) != len(extracted_times):
+        file_clips = []
+        clip_subclips = []
+        logging.debug("Starting to process video clips.")
+        
+        for clip in self.text_file_instance.video_clips.all():
+            logging.debug(f"Processing clip with ID: {clip.id}")
+            clip_subclip=[]
+            for subclip in clip.subclips.all():
+                clip_subclips.append(subclip)
+        if len(clip_subclips) != len(extracted_times):
             logging.error("Mismatch between the number of clips and JSON fragments.")
             raise ValueError("Mismatch between the number of clips and JSON fragments.")
         
-        video_clips = []
-        logging.debug("Starting to assign durations to clips.")
         
-        for i, clip in enumerate(file_clips):
-            begin, end = extracted_times[i]
-            logging.debug(f"Processing file clip at index {i} with begin: {begin}, end: {end}")
-            duration = float(self.srt_time_to_float(end)) - float(self.srt_time_to_float((begin)))
-            logging.debug(f"Calculated duration: {duration}")
+        for i,subclip in enumerate(clip_subclips):
+            start,end=extracted_times[i]
+            subclip.start=float(self.srt_time_to_float(start))
+            subclip.end=float(self.srt_time_to_float(end))
+            subclip.save()
+
+
+        for clip in self.text_file_instance.video_clips.all():
+            logging.debug(f"Processing clip with ID: {clip.id}")
+            clip_subclips=[]
+            for subclip in clip.subclips.all():
+                logging.debug(f"Processing subclip with ID: {subclip.id}")
+                mv_clip = self.load_video_from_file_field(subclip.to_dict().get('video_path'))
+                clip_with_duration=mv_clip.set_duration(subclip.end-subclip.start)
+                logging.debug(f"Loaded video clip from path: {subclip.to_dict().get('video_path')}")
+                cropped_clip = self.crop_to_aspect_ratio_(clip_with_duration, MAINRESOLUTIONS[self.text_file_instance.resolution])
+                logging.debug(f"Cropped clip to resolution: {MAINRESOLUTIONS[self.text_file_instance.resolution]}")
+                clip_subclips.append(cropped_clip)
+            resized_subclips=self.resize_clips_to_max_size(clip_subclips)
+            concatenatd_clip=self.concatenate_clips(resized_subclips)
+            self.write_clip_filee(concatenatd_clip,clip.video_file)
             
-            if self.is_video_clip(clip):
-                clip.set_duration(duration)
-                logging.debug(f"Set duration for video clip at index {i}.")
-                video_clips.append(clip)
-            elif self.is_image_clip(clip):
-                try:
-                    video_clip = self.image_to_video(clip, duration)
-                    logging.debug(f"Converted image clip to video clip at index {i}.")
-                    video_clips.append(video_clip)
-                except IndexError:
-                    logging.error(f"Mismatch between the number of clips and JSON fragments at index {i}.")
-                    raise ValueError(f"Mismatch between the number of clips and JSON fragments at index {i}.")
-        
-        logging.debug("Completed processing video clips.")
-        return video_clips
+
+
 
     def extract_start_end(self,generated_srt):
         """
@@ -512,6 +458,33 @@ class Command(BaseCommand):
                     raise ValueError(f"Mismatch between the number of clips and JSON fragments at index {i}.")
         
         return video_clips
+
+    def write_clip_filee(self, clip,file_to_write):
+        with tempfile.NamedTemporaryFile(
+            suffix=".mp4", delete=False
+        ) as temp_output_video:
+            self.text_file_instance.track_progress(60)
+
+            clip.write_videofile(
+                temp_output_video.name,
+                codec="libx264",
+                preset="ultrafast",
+                audio_codec="aac",
+                fps=30,
+                ffmpeg_params=["-movflags", "+faststart"],
+            )
+
+            if file_to_write:
+                file_to_write.delete(save=False)
+
+            with open(temp_output_video.name, "rb") as output_video_file:
+                video_content = output_video_file.read()
+
+                file_to_write.save(
+                    f"video_{self.text_file_instance.id}_{timestamp}.mp4",
+                    ContentFile(video_content),
+                )
+            return True
 
 
     def save_final_video(self, clip):
@@ -1221,7 +1194,7 @@ class Command(BaseCommand):
             text_file=self.text_file_instance
         )
 
-        return [clip.to_dict().get('video_path') for clip in video_clips ]
+        return [clip.video_file for clip in video_clips ]
 
     def load_video_from_file_field(self, file_field) -> VideoFileClip:
         """
