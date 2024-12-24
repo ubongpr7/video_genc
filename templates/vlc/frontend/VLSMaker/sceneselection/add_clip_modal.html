@@ -233,11 +233,22 @@ input.no-border {
     box-shadow: none;        
     appearance: none;        
 }
+#close{
+  background-color: none;
+  width: 20px;
+  height: 20px;
+  color: #000;
+  position: fixed;
+  right: 10px;
+  top:20px;
 
+  
+}
 </style>
 <div class=" hidden" id="popup-modal">
     
     <div class="sub-div">
+      <button id="close"><i class="ri-close-circle-line"></i></button>
         {%include  'vlc/frontend/VLSMaker/sceneselection/add_tags.html' %}
     
         <form id="lead-form" method="POST" action="/text/add_subclip"style="display:none;" enctype="multipart/form-data">

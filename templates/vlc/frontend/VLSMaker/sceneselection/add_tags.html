@@ -451,4 +451,7 @@
     doneBtn.addEventListener('click', convertRemainingToTag);
     
     input.addEventListener('paste', e => e.preventDefault());
+    document.getElementById('close').addEventListener('click',()=>{
+        document.getElementById('popup-modal').classList.add('hidden')
+    })
 </script>

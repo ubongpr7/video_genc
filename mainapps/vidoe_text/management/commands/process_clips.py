@@ -389,24 +389,8 @@ class Command(BaseCommand):
             list(executor.map(self.process_for_clip, self.text_file_instance.video_clips.all()))
         
         logging.debug("All clips processed. Proceeding to next steps.")
-        return True  # Ensure this indicates success if you want to check for success
-        # with concurrent.futures.ProcessPoolExecutor() as executor:
-        #     executor.map(self.process_for_clip, self.text_file_instance.video_clips.all())
-        # for clip in self.text_file_instance.video_clips.all():
-        #     logging.debug(f"Processing clip with ID: {clip.id}")
-        #     clip_subclips=[]
-        #     for subclip in clip.subclips.all():
-        #         logging.debug(f"Processing subclip with ID: {subclip.id}")
-        #         mv_clip = self.load_video_from_file_field(subclip.to_dict().get('video_path'))
-        #         clip_with_duration=mv_clip.set_duration(float(subclip.end-subclip.start))
-        #         logging.debug(f"Loaded video clip from path: {subclip.to_dict().get('video_path')}")
-        #         cropped_clip = self.crop_to_aspect_ratio_(clip_with_duration, MAINRESOLUTIONS[self.text_file_instance.resolution])
-        #         logging.debug(f"Cropped clip to resolution: {MAINRESOLUTIONS[self.text_file_instance.resolution]}")
-        #         clip_subclips.append(cropped_clip)
-        #     resized_subclips=self.resize_clips_to_max_size(clip_subclips)
-        #     concatenatd_clip=self.concatenate_clips(resized_subclips)
-        #     self.write_clip_filee(concatenatd_clip,clip.video_file)
-                
+        return True 
+             
     def process_for_clip(self,clip):
         logging.debug(f"Processing clip with ID: {clip.id}")
         clip_subclips = []
