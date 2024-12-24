@@ -247,11 +247,14 @@ class Command(BaseCommand):
             subtitles_srt_file=self.generate_subclips_srt_file()
 
             self.text_file_instance.track_progress(25)
-            self.generate_subclip_videos_with_duration()
             self.text_file_instance.track_progress(26)
 
         else:
             return
+        subclips_processed=self.generate_subclip_videos_with_duration()
+        # if  subclips_processed:
+
+
         aligned_output = self.process_srt_file(self.text_file_instance.generated_srt)
         self.text_file_instance.track_progress(27)
 
@@ -382,9 +385,13 @@ class Command(BaseCommand):
             subclip.start=Decimal(self.srt_time_to_float(start))
             subclip.end=Decimal(self.srt_time_to_float(end))
             subclip.save()
-
         with concurrent.futures.ProcessPoolExecutor() as executor:
-            executor.map(self.process_for_clip, self.text_file_instance.video_clips.all())
+            list(executor.map(process_clip, self.text_file_instance.video_clips.all()))
+        
+        logging.debug("All clips processed. Proceeding to next steps.")
+        return True  # Ensure this indicates success if you want to check for success
+        # with concurrent.futures.ProcessPoolExecutor() as executor:
+        #     executor.map(self.process_for_clip, self.text_file_instance.video_clips.all())
         # for clip in self.text_file_instance.video_clips.all():
         #     logging.debug(f"Processing clip with ID: {clip.id}")
         #     clip_subclips=[]
