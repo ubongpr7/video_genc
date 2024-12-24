@@ -385,10 +385,13 @@ class Command(BaseCommand):
             subclip.start=Decimal(self.srt_time_to_float(start))
             subclip.end=Decimal(self.srt_time_to_float(end))
             subclip.save()
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            list(executor.map(self.process_for_clip, self.text_file_instance.video_clips.all()))
+        # with concurrent.futures.ThreadPoolExecutor() as executor:
+        #     list(executor.map(self.process_for_clip, self.text_file_instance.video_clips.all()))
         
-        logging.debug("All clips processed. Proceeding to next steps.")
+        # logging.debug("All clips processed. Proceeding to next steps.")
+        for clip in self.text_file_instance.video_clips.all():
+            logging.debug(f"Processing clip with ID: {clip.id}")
+            self.process_for_clip(clip)
         return True 
              
     def process_for_clip(self,clip):
