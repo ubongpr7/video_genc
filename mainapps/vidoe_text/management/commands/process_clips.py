@@ -482,7 +482,7 @@ class Command(BaseCommand):
         
         return video_clips
 
-    def write_clip_filee(self, clip,file_to_write):
+    def write_clip_file(self, clip,file_to_write):
         with tempfile.NamedTemporaryFile(
             suffix=".mp4", delete=False
         ) as temp_output_video:
