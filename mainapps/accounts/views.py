@@ -204,9 +204,10 @@ def register(request):
             except Exception as _:
                 messages.error(request, "Subscription Failed. Please Try Again Later.")
                 return redirect(
-                    reverse(
-                        "accounts:register", kwargs={"session_id": checkout_session_id}
-                    )
+                    f'accounts/register/?session_id={checkout_session_id}'
+                    # reverse(
+                    #     "accounts:register", kwargs={"session_id": checkout_session_id}
+                    # )
                 )
 
             send_html_email2(
