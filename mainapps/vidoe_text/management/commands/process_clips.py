@@ -375,11 +375,11 @@ class Command(BaseCommand):
             logging.error("Mismatch between the number of clips and JSON fragments.")
             raise ValueError("Mismatch between the number of clips and JSON fragments.")
         
-        
+        from decimal import Decimal
         for i,subclip in enumerate(clip_subclips):
             start,end=extracted_times[i]
-            subclip.start=float(self.srt_time_to_float(start))
-            subclip.end=float(self.srt_time_to_float(end))
+            subclip.start=Decimal(self.srt_time_to_float(start))
+            subclip.end=Decimal(self.srt_time_to_float(end))
             subclip.save()
 
 
@@ -389,7 +389,7 @@ class Command(BaseCommand):
             for subclip in clip.subclips.all():
                 logging.debug(f"Processing subclip with ID: {subclip.id}")
                 mv_clip = self.load_video_from_file_field(subclip.to_dict().get('video_path'))
-                clip_with_duration=mv_clip.set_duration(subclip.end-subclip.start)
+                clip_with_duration=mv_clip.set_duration(float(subclip.end-subclip.start))
                 logging.debug(f"Loaded video clip from path: {subclip.to_dict().get('video_path')}")
                 cropped_clip = self.crop_to_aspect_ratio_(clip_with_duration, MAINRESOLUTIONS[self.text_file_instance.resolution])
                 logging.debug(f"Cropped clip to resolution: {MAINRESOLUTIONS[self.text_file_instance.resolution]}")
