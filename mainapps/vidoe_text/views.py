@@ -36,7 +36,6 @@ def add_subclip(request,id):
 
     if request.method=="POST":
         textfile_id=request.POST.get('textfile_id')
-        num_of_clips=int(request.POST.get('no_of_slides'))
         remaining=int(request.POST.get('remaining'))
         text_clip.remaining=remaining
         text_clip.save()
