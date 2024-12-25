@@ -312,6 +312,8 @@ class Command(BaseCommand):
             clip = self.load_video_from_file_field(video_file)
             clip = clip.set_fps(30)  
             replacement_video_clips.append(clip)
+        replacement_video_clips = self.resize_clips_to_max_size(replacement_video_clips)
+        
         logging.info("Concatination Done")
         self.text_file_instance.track_progress(48)
 
@@ -326,23 +328,18 @@ class Command(BaseCommand):
         except Exception as e:
             logging.error(f"Error loading background music: {e}")
             return
-        logging.info(f"concatenate_clips_for_main done")
 
         
-        logging.info(f"resize_clips_to_max_size done")
 
-        logging.info("Done cropping replacements")
 
         self.text_file_instance.track_progress(54)
-        replacement_video_clips=self.resize_clips_to_max_size(replacement_video_clips)
+        # replacement_video_clips=self.resize_clips_to_max_size(replacement_video_clips)
         final_video_segments = self.replace_video_segments(
             output_video_segments, replacement_video_clips, subtitles, blank_vide_clip
         )
         logging.info("Done  replace_video_segments")
         concatenated_video = self.concatenate_clips(
             final_video_segments,
-            target_resolution=MAINRESOLUTIONS[resolution],
-            target_fps=30,
         )
         original_audio = blank_vide_clip.audio.subclip(
             0, min(concatenated_video.duration, blank_vide_clip.audio.duration)
