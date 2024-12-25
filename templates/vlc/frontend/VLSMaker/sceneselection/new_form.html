@@ -199,6 +199,10 @@ function fetchClipIds(textfileId) {
 function saveInput(inputElement) {
             if (inputElement.type ==='file'){
                 document.getElementById('error-slide').textContent=''
+                for (selectItem in document.querySelectorAll('select'){
+                    selectItem.value='';
+                    saveInput(selectItem)
+                })
 
             }else{
                 sessionStorage.setItem(inputElement.id, inputElement.value);
