@@ -62,7 +62,6 @@ def add_subclip(request,id):
                 clips.append(clip)
         created_clips=SubClip.objects.bulk_create(clips)
 
-
     return redirect(f'/video/add-scene/{textfile_id}')
 
 def check_text_clip(request,textfile_id):

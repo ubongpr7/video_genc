@@ -310,14 +310,14 @@ class Command(BaseCommand):
         replacement_video_clips = []
         for video_file in replacement_video_files:
             clip = self.load_video_from_file_field(video_file)
+            clip = clip.set_fps(30)  
             replacement_video_clips.append(clip)
         logging.info("Concatination Done")
         self.text_file_instance.track_progress(48)
 
         final_blank_video = self.concatenate_clips(
             blank_video_segments,
-            target_resolution=MAINRESOLUTIONS[text_file_instance.resolution],
-            target_fps=30,
+
         )
         try:
             final__blank_audio = final_blank_video.audio
