@@ -1,46 +1,35 @@
-<!-- Popup Form -->
 <div class="popup-form" id="add-subclip-popup">
     <div class="popup-container">
         <form method="POST" enctype="multipart/form-data" id="add-subclip-form">
             {% csrf_token %}
             
-            <!-- Hidden textfile_id (passed from the backend) -->
-            <input type="hidden" name="textfile_id" value="{{ textfile_id }}">
+            <input type="hidden" name="textfile_id" value="{{ textfile.id }}">
 
-            <!-- Number of slides -->
-            <div class="form-group">
-                <label for="no_of_slides">Number of Slides</label>
-                <input type="number" id="no_of_slides" name="no_of_slides" required class="form-input" placeholder="Enter number of slides" min="1">
-            </div>
+                <input type="text" hidden id="remaining" name="remaining" >
 
-            <!-- Remaining -->
-            <div class="form-group">
-                <label for="remaining">Remaining</label>
-                <input type="number" id="remaining" name="remaining" required class="form-input" placeholder="Enter remaining value" min="0">
-            </div>
-
-            <!-- Video File -->
             <div class="form-group">
                 <label for="slide_file">Upload Video File</label>
                 <input type="file" id="slide_file" name="slide_file" class="form-input" accept="video/*">
             </div>
 
-            <!-- Slide Text (Subtitle) -->
             <div class="form-group">
                 <label for="slide_text">Slide Text (Subtitle)</label>
                 <textarea id="slide_text" name="slide_text" required class="form-textarea" placeholder="Enter slide subtitle" rows="3"></textarea>
             </div>
 
-            <!-- Select Video Clip -->
+            <div class="form-group">
+                <label for="selected_topic">Select Video Clip</label>
+                <select id="selected_topic" name="selected_topic" class="form-select">
+                    <option value="" disabled selected>Select a video clip</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label for="selected_video">Select Video Clip</label>
                 <select id="selected_video" name="selected_video" class="form-select">
                     <option value="" disabled selected>Select a video clip</option>
-                    <!-- You will add options dynamically here -->
                 </select>
             </div>
 
-            <!-- Submit Button -->
             <div class="form-group">
                 <button type="submit" class="submit-btn">Add Subclip</button>
             </div>
@@ -49,7 +38,6 @@
     </div>
 </div>
 
-<!-- Add CSS for popup styling -->
 <style>
     .popup-form {
         display: none;
@@ -69,11 +57,13 @@
         padding: 20px;
         border-radius: 8px;
         max-width: 500px;
-        width: 100%;
+        width: 80%;
     }
 
     .form-group {
         margin-bottom: 15px;
+
+        
     }
 
     .form-group label {
@@ -83,7 +73,7 @@
     }
 
     .form-input, .form-textarea, .form-select {
-        width: 100%;
+        width: 80%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -95,18 +85,19 @@
     }
 
     .submit-btn {
-        background-color: #4CAF50;
+        background-color: #864AF9;
         color: white;
         border: none;
         padding: 10px 20px;
         font-size: 16px;
         cursor: pointer;
-        width: 100%;
+        width: 80%;
         border-radius: 4px;
     }
 
     .submit-btn:hover {
-        background-color: #45a049;
+        background-color: #864AF9;
+        opacity: 0.8;
     }
 
     .close-btn {
@@ -118,7 +109,7 @@
         border: none;
         margin-top: 10px;
         border-radius: 4px;
-        width: 100%;
+        width: 80%;
     }
 
     .close-btn:hover {
