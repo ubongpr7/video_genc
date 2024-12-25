@@ -141,25 +141,31 @@
 let clip_id
 
 function highlightNoSubclipIcons() {
-    fetchNoSubclipIds().then((ids)=>{
-        if (ids){
+    fetchNoSubclipIds().then((ids) => {
+        // Explicitly check if ids is an array and if it has any elements
+        if (Array.isArray(ids) && ids.length > 0) {
             ids.forEach((id) => {
                 const elementId = `icon_${id}`;
-    
                 const element = document.getElementById(elementId);
-    
+
                 if (element) {
                     element.style.border = '2px solid red';
                 } else {
                     console.warn(`Element with ID ${elementId} not found.`);
                 }
             });
-       
-        }else{
-            document.getElementById('processFile').submit();
+        } else {
+            // Submit the form if ids is empty or not an array
+            const form = document.getElementById('processFile');
+            if (form) {
+                form.submit();
+            } else {
+                console.error("Form with ID 'processFile' not found.");
+            }
         }
-
-    })
+    }).catch((error) => {
+        console.error("Error fetching no subclip IDs:", error);
+    });
 }
 
 async function fetchNoSubclipIds() {
