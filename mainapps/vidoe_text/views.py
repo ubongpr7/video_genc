@@ -33,40 +33,33 @@ def get_clips_id(request, textfile_id):
 def add_subclip(request,id):
     
     text_clip= TextLineVideoClip.objects.get(id=id)
-    if text_clip.subclips.all():
-        for subclip in text_clip.subclips.all():
-            if subclip.video_file:
-                subclip.video_file.delete(save=True)
-            subclip.delete()
 
     if request.method=="POST":
         textfile_id=request.POST.get('textfile_id')
         num_of_clips=int(request.POST.get('no_of_slides'))
-        clips= []
-        for i in range(1,num_of_clips+1):
-            file=request.FILES.get(f'slide_file_{i}')
-            text=request.POST.get(f'slide_text_{i}')
-            asset_clip_id=request.POST.get(f'selected_video_{i}')
-            if file:
+        remaining=int(request.POST.get('remaining'))
+        text_clip.remaining=remaining
+        text_clip.save()
 
-                clip=SubClip(
-                    subtittle=text,
-                    video_file=file,
-                    main_line=text_clip
+        file_=request.FILES.get(f'slide_file')
+        text=request.POST.get(f'slide_text')
+        asset_clip_id=request.POST.get(f'selected_video')
+        if file_:
+            subclip=SubClip.objects.create(
+                subtittle=text,
+                video_file=file_,
+                main_line=text_clip
 
-                )
-                clips.append(clip)
-            elif asset_clip_id:
-                asset_clip=VideoClip.objects.get(id=asset_clip_id)
+            )
+        elif asset_clip_id:
+            video= VideoClip.objects.get(id=asset_clip_id)
 
-                clip=SubClip(
-                    subtittle=text,
-                    video_clip=asset_clip,
-                    main_line=text_clip
+            subclip=SubClip.objects.create(
+                subtittle=text,
+                video_clip=video,
+                main_line=text_clip
 
-                )
-                clips.append(clip)
-        created_clips=SubClip.objects.bulk_create(clips)
+            )
 
     return redirect(f'/video/add-scene/{textfile_id}')
 

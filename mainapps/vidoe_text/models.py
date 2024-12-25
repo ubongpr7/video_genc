@@ -164,9 +164,9 @@ class TextLineVideoClip(models.Model):
         TextFile, on_delete=models.CASCADE, related_name="video_clips"
     )
     slide=models.CharField(max_length=100,null=True, blank=True)
+    remaining=models.CharField(max_length=100,null=True, blank=True)
     line_number = models.IntegerField()
     video_file = models.FileField(upload_to='text_clip_upload_videos/', null=True,blank=True)
-
     def __str__(self):
         return f"VideoClip for line {self.line_number} of {self.text_file}"
     def get_number_of_subclip(self):

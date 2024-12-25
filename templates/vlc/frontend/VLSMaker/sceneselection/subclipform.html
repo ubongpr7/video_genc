@@ -1,0 +1,141 @@
+<!-- Popup Form -->
+<div class="popup-form" id="add-subclip-popup">
+    <div class="popup-container">
+        <form method="POST" enctype="multipart/form-data" id="add-subclip-form">
+            {% csrf_token %}
+            
+            <!-- Hidden textfile_id (passed from the backend) -->
+            <input type="hidden" name="textfile_id" value="{{ textfile_id }}">
+
+            <!-- Number of slides -->
+            <div class="form-group">
+                <label for="no_of_slides">Number of Slides</label>
+                <input type="number" id="no_of_slides" name="no_of_slides" required class="form-input" placeholder="Enter number of slides" min="1">
+            </div>
+
+            <!-- Remaining -->
+            <div class="form-group">
+                <label for="remaining">Remaining</label>
+                <input type="number" id="remaining" name="remaining" required class="form-input" placeholder="Enter remaining value" min="0">
+            </div>
+
+            <!-- Video File -->
+            <div class="form-group">
+                <label for="slide_file">Upload Video File</label>
+                <input type="file" id="slide_file" name="slide_file" class="form-input" accept="video/*">
+            </div>
+
+            <!-- Slide Text (Subtitle) -->
+            <div class="form-group">
+                <label for="slide_text">Slide Text (Subtitle)</label>
+                <textarea id="slide_text" name="slide_text" required class="form-textarea" placeholder="Enter slide subtitle" rows="3"></textarea>
+            </div>
+
+            <!-- Select Video Clip -->
+            <div class="form-group">
+                <label for="selected_video">Select Video Clip</label>
+                <select id="selected_video" name="selected_video" class="form-select">
+                    <option value="" disabled selected>Select a video clip</option>
+                    <!-- You will add options dynamically here -->
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit" class="submit-btn">Add Subclip</button>
+            </div>
+        </form>
+        <button class="close-btn" id="close-popup-btn">Close</button>
+    </div>
+</div>
+
+<!-- Add CSS for popup styling -->
+<style>
+    .popup-form {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .popup-container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 500px;
+        width: 100%;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-input, .form-textarea, .form-select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .form-textarea {
+        resize: vertical;
+    }
+
+    .submit-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        border-radius: 4px;
+    }
+
+    .submit-btn:hover {
+        background-color: #45a049;
+    }
+
+    .close-btn {
+        background-color: #f44336;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        margin-top: 10px;
+        border-radius: 4px;
+        width: 100%;
+    }
+
+    .close-btn:hover {
+        background-color: #e53935;
+    }
+</style>
+
+<!-- JavaScript for popup logic (if not already implemented) -->
+<script>
+    document.getElementById('close-popup-btn').addEventListener('click', function() {
+        document.getElementById('add-subclip-popup').style.display = 'none';
+    });
+
+    // Add logic to show the popup when needed
+    function openPopup() {
+        document.getElementById('add-subclip-popup').style.display = 'flex';
+    }
+
+    // Call openPopup() when you need to display the popup
+</script>

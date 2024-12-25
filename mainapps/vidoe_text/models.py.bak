@@ -174,6 +174,7 @@ class TextLineVideoClip(models.Model):
     line_number = models.IntegerField()
     timestamp_start = models.FloatField(null=True, blank=True)
     timestamp_end = models.FloatField(null=True, blank=True)
+    
 
     def to_dict(self):
         if self.video_file:
