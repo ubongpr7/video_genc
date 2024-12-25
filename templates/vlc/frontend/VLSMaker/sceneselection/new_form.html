@@ -84,19 +84,16 @@
                 <div class="grid-item slide-row grid-row" data-slide="1"><span>Slide {{ clip.line_number }}</span></div>
                 <div class="grid-item slide-text" data-slide="1" tabindex="0">
                     <!-- <span>{{ clip.slide }}</span> -->
-                    <div class="wrapper">
-
-                    
+                    <div class="wrapper" id="wrapper_{{clip.id}}">
                         <div style="width: 100%;" class="tag-box">
-                            <ul id="list-of-tags" class="list-of-tags">
-                            <span data-id="{{clip.id}}">{{ clip.slide }}</span>
-
+                            <ul id="list-of-tags_{{clip.id}}" class="list-of-tags">
+                                <span data-id="{{clip.id}}">{{ clip.slide }}</span>
                             </ul>
                             <input id="remaining_{{clip.id}}" name="remaining_{{clip.id}}" hidden type="text">
                         </div>
-                        <div id="error-message" class="error-message"></div>
-                        
+                        <div id="error-message_{{clip.id}}" class="error-message"></div>
                     </div>
+                    
                 </div>
                 <input type="text"value="{{clip.slide}}" hidden name="slide_{{cilp.line_number}}" id="slide_{{clip.line_number}}">
                 <div class="grid-item slide-row grid-row" data-slide="1">
@@ -132,197 +129,71 @@
     </div>
 </div>
 <script>
-document.addEventListener("mouseup", function () {
-    const wrapper = document.querySelectorAll(".wrapper");
+    
+    document.addEventListener("mouseup", function () {
+    // Get all wrappers and loop through them
+    const wrappers = document.querySelectorAll(".wrapper");
 
-    wrapper.forEach((clipWrapper) => {
+    wrappers.forEach((clipWrapper) => {
+        const wrapperId = clipWrapper.id;
         const span = clipWrapper.querySelector("span");
         const ul = clipWrapper.querySelector(".list-of-tags");
         const remainingInput = clipWrapper.querySelector(`#remaining_${span.dataset.id}`);
         const errorMessage = clipWrapper.querySelector(".error-message");
 
-        if (window.getSelection) {
-            const selection = window.getSelection();
-            const selectedText = selection.toString().trim();
-
-            if (selectedText && span.contains(selection.anchorNode)) {
-                const fullText = span.innerText.trim();
-                const words = fullText.split(/\s+/);
-                const selectedWords = selectedText.split(/\s+/);
-
-                // Check if the selection starts from the beginning and is word-aligned
-                const startsCorrectly = fullText.startsWith(selectedText);
-                const isWordAligned = selectedWords.every(word => fullText.includes(word) && words.includes(word));
-
-                if (startsCorrectly && isWordAligned) {
-                    // Valid selection
-                    errorMessage.innerText = ""; // Clear error
-
-                    // Add selected text to <ul>
-                    const li = document.createElement("li");
-                    li.innerText = selectedText;
-                    ul.appendChild(li);
-
-                    // Update remaining text
-                    const remainingText = fullText.slice(selectedText.length).trim();
-                    remainingInput.value = remainingText; // Set remaining text
-                    span.innerText = remainingText; // Update span text
-                } else {
-                    // Invalid highlighting
-                    errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
-                }
-            }
-
-            // Clear selection
-            selection.removeAllRanges();
-        }
+        // Call the function to handle text selection
+        handleSelection(span, ul, remainingInput, errorMessage, wrapperId);
     });
 });
 
-// document.addEventListener("mouseup", function () {
-//     const wrapper = document.querySelectorAll(".wrapper");
+function handleSelection(span, ul, remainingInput, errorMessage, wrapperId) {
+    if (window.getSelection) {
+        const selection = window.getSelection();
+        const selectedText = selection.toString().trim();
 
-//     wrapper.forEach((clipWrapper) => {
-//         const span = clipWrapper.querySelector("span");
-//         const ul = clipWrapper.querySelector(".list-of-tags");
-//         const remainingInput = clipWrapper.querySelector(`#remaining_${span.dataset.id}`);
-//         const errorMessage = clipWrapper.querySelector(".error-message");
+        if (selectedText && span.contains(selection.anchorNode)) {
+            const fullText = span.innerText.trim();
+            const words = fullText.split(/\s+/);
+            const selectedWords = selectedText.split(/\s+/);
 
-//         if (window.getSelection) {
-//             const selection = window.getSelection();
-//             const selectedText = selection.toString().trim();
+            // Validate the selection
+            const startsCorrectly = fullText.startsWith(selectedText);
+            const isWordAligned = selectedWords.every(word => words.includes(word));
 
-//             if (selectedText && span.contains(selection.anchorNode)) {
-//                 const fullText = span.innerText.trim();
-//                 const words = fullText.split(/\s+/);
-//                 const selectedWords = selectedText.split(/\s+/);
+            if (startsCorrectly && isWordAligned) {
+                // Valid selection: Update the list and remaining text
+                clearErrorMessage(errorMessage);
+                updateTagsList(ul, selectedText);
+                updateRemainingText(remainingInput, span, fullText, selectedText);
+            } else {
+                // Invalid selection
+                showErrorMessage(errorMessage);
+            }
+        }
 
-//                 // Check if the selection starts from the beginning and is word-aligned
-//                 const startsCorrectly = fullText.startsWith(selectedText);
-//                 const isWordAligned = selectedWords.every(word => words.includes(word));
+        // Clear the selection after processing
+        selection.removeAllRanges();
+    }
+}
 
-//                 if (startsCorrectly && isWordAligned) {
-//                     // Valid selection
-//                     errorMessage.innerText = ""; // Clear error
+function clearErrorMessage(errorMessage) {
+    errorMessage.innerText = ""; // Clear the error message
+}
 
-//                     // Add selected text to <ul>
-//                     const li = document.createElement("li");
-//                     li.innerText = selectedText;
-//                     ul.appendChild(li);
+function showErrorMessage(errorMessage) {
+    errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
+}
 
-//                     // Update remaining text
-//                     const remainingText = fullText.slice(selectedText.length).trim();
-//                     remainingInput.value = remainingText; // Set remaining text
-//                     span.innerText = remainingText; // Update span text
-//                 } else {
-//                     // Invalid highlighting
-//                     errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
-//                 }
-//             }
+function updateTagsList(ul, selectedText) {
+    const li = document.createElement("li");
+    li.innerText = selectedText;
+    ul.appendChild(li);
+}
 
-//             // Clear selection
-//             selection.removeAllRanges();
-//         }
-//     });
-// });
+function updateRemainingText(remainingInput, span, fullText, selectedText) {
+    const remainingText = fullText.slice(selectedText.length).trim();
+    remainingInput.value = remainingText; // Set the remaining text in the input
+    span.innerText = remainingText; // Update the span text
+}
 
 </script>
-   <!-- <script>
-
-    let textfile_id='{{textfile.id}}'
-    let clip_id=1
-        function highlightNoSubclipIcons() {
-        fetchNoSubclipIds().then((ids)=>{
-            if (ids.length >0){
-
-                
-                ids.forEach((id) => {
-                    // Build the element ID
-                    const elementId = `icon_${id}`;
-        
-                    // Get the element by its ID
-                    const element = document.getElementById(elementId);
-        
-                    // Check if the element exists
-                    if (element) {
-                        // Apply a red border to the element
-                        element.style.border = '2px solid red';
-                    } else {
-                        console.warn(`Element with ID ${elementId} not found.`);
-                    }
-                });
-           
-            }else {
-                document.getElementById('processFile').submit()
-
-            }
-
-        })
-    }
-
-        async function fetchNoSubclipIds() {
-            try {
-                // Define the URL endpoint
-                textfileId="{{textfile.id}}"
-                const url = `/text/check_text_clip/${textfileId}/`;
-
-                // Make the AJAX request
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest', // This identifies the request as AJAX
-                    },
-                });
-
-                // Check if the response is okay
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                // Parse the JSON response
-                const idsOfNoSubclip = await response.json();
-
-                console.log('IDs of clips with no subclips:', idsOfNoSubclip);
-
-                return idsOfNoSubclip;
-            } catch (error) {
-                console.error('Error fetching no subclip IDs:', error);
-            }
-        }
-
-        function subclipAdd(id,slideNumber,slide,){
-            clip_id=id
-            const popupModal=document.getElementById('popup-modal');
-            const modalCont=document.getElementById('modal-cont');
-            popupModal.style.display='block';
-            modalCont.style.display='flex';
-            document.getElementById('no_of_slides').value=slideNumber
-            document.getElementById('words').value=document.getElementById(`slide_${slide}`).value
-            initialValue=document.getElementById(`slide_${slide}`).value
-            // document.getElementById('lead-form').action=`/text/add_subclip/${id}/`
-            document.getElementById('lead-form').action = `/text/add_subclip/${id}/`;
-
-            document.getElementById('main_clip_id').value=id
-            document.getElementById('id').value=id;
-            if (slideNumber >1){
-              document.getElementById('done-btn').textContent=`Proceed To add ${slideNumber} clips`
-              
-            }else{
-              
-              document.getElementById('done-btn').textContent=`Proceed To add ${slideNumber} clip`
-            }
-        }
-
-    document.addEventListener("keydown", function (event) {
-    if (event.key === "Esc") {
-        const popupModal = document.getElementById("popup-modal");
-        if (popupModal && !popupModal.classList.contains("hidden")) {
-            popupModal.classList.add("hidden");
-        }
-    }
-});
-
-    </script> -->
-
-
