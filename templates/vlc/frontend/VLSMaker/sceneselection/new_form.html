@@ -129,7 +129,7 @@
     </div>
 </div>
 <script>
-    
+    // Fetch the clip IDs from the backend
 function fetchClipIds(textfileId) {
     fetch(`/text/get_clips_id/${textfileId}/`)
         .then(response => response.json())
@@ -140,28 +140,37 @@ function fetchClipIds(textfileId) {
         .catch(error => console.error('Error fetching clip IDs:', error));
 }
 
-// Function to handle DOM manipulation once clip IDs are fetched
+// Handle each clip's DOM manipulation after fetching the IDs
 function handleClips(clipIds) {
+    // For each clip ID, set up the necessary DOM elements and logic
     clipIds.forEach(clipId => {
-        // Target the specific elements for each clip by clip.id
         const span = document.querySelector(`#wrapper_${clipId} span`);
         const ul = document.getElementById(`list-of-tags_${clipId}`);
         const remainingInput = document.getElementById(`remaining_${clipId}`);
         const errorMessage = document.getElementById(`error-message_${clipId}`);
 
-        // Now you can manipulate the elements as needed, e.g., handle selection
-        handleSelection(span, ul, remainingInput, errorMessage, clipId);
-        console.log("handleSelection added")
+        // Store the necessary elements in an object or similar
+        // and add an event listener for selection handling
+        span.dataset.clipId = clipId;
+        handleSelection(clipId);
     });
 }
 
-function handleSelection(span, ul, remainingInput, errorMessage, clipId) {
-    document.addEventListener("mouseup", function () {
+// Event delegation: Attach a single event listener to the document
+function handleSelection(clipId) {
+    document.addEventListener("mouseup", function (event) {
+        // We are handling the selection event for specific clips
         const selection = window.getSelection();
         if (selection && selection.toString().trim()) {
             const selectedText = selection.toString().trim();
 
-            if (span.contains(selection.anchorNode)) {
+            // Find the specific clip wrapper based on clipId
+            const span = document.querySelector(`#wrapper_${clipId} span`);
+            const ul = document.getElementById(`list-of-tags_${clipId}`);
+            const remainingInput = document.getElementById(`remaining_${clipId}`);
+            const errorMessage = document.getElementById(`error-message_${clipId}`);
+
+            if (span && span.contains(selection.anchorNode)) {
                 const fullText = span.innerText.trim();
                 const words = fullText.split(/\s+/);
                 const selectedWords = selectedText.split(/\s+/);
@@ -194,5 +203,8 @@ function handleSelection(span, ul, remainingInput, errorMessage, clipId) {
         }
     });
 }
-fetchClipIds("{{textfile.id}}")
+
+// Call the function to fetch clip IDs for a specific text file
+fetchClipIds("{{textfile.id}}");
+
 </script>
