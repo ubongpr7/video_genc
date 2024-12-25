@@ -414,7 +414,7 @@ def add_video_clips(request, textfile_id):
                     video_clip=TextLineVideoClip(
                         text_file=text_file,
                         slide=line,
-                        line_number=,
+                        line_number=i,
                         remaining=line,
 
                     )
