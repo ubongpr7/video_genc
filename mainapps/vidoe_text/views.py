@@ -36,7 +36,7 @@ def add_subclip(request,id):
 
     if request.method=="POST":
         textfile_id=request.POST.get('textfile_id')
-        remaining=int(request.POST.get('remaining'))
+        remaining=request.POST.get('remaining')
         text_clip.remaining=remaining
         text_clip.save()
 

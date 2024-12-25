@@ -139,7 +139,7 @@
     let num
 // Function to fetch the clip IDs from the backend
 let clip_id
-function openPopup(clipId,selectedText ) {
+function openPopup(clipId,selectedText,remainingText ) {
         document.getElementById('add-subclip-popup').style.display = 'flex';
         const formElement =document.getElementById('add-subclip-form')
         formElement.action=`/text/add_subclip/${clipId}/`
@@ -152,7 +152,7 @@ function openPopup(clipId,selectedText ) {
         
         <input type="hidden" name="textfile_id" value="{{textfile.id}}">
 
-        <input type="text" hidden id="remaining" name="remaining">
+        <input type="text" value="${remainingText}" hidden id="remaining" name="remaining">
 
         <div class="form-group">
             <label for="slide_file">Upload Video File</label>
@@ -240,11 +240,11 @@ function handleSelection(span, ul, remainingInput, errorMessage, clipId) {
                 const li = document.createElement("li");
                 li.innerText = selectedText;
                 num=span.dataset.num
-                openPopup(clipId,selectedText, );
                 ul.insertBefore(li,span);
                 const remainingText = fullText.slice(selectedText.length).trim();
                 remainingInput.value = remainingText;
                 span.innerText = remainingText; 
+                openPopup(clipId,selectedText,remainingText );
 
             } else {
                 errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
