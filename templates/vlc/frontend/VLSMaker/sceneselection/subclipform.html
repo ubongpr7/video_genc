@@ -19,7 +19,7 @@
             <div class="form-group">
                 <label for="selected_topic">Select Topic</label>
                 
-                <select id="selected_topic" name="selected_topic" class="form-select">
+                <select id="selected_topic" onchange="fetchVideoClips(this)" name="selected_topic" class="form-select">
                     <option value="">Select Topic</option>
                     {%for cat in video_categories%}
                         <option value="{{cat.id}}">{{cat.name}}</option>
@@ -34,7 +34,7 @@
             </div>
 
             <div class="form-group">
-                <button type="submit" class="submit-btn">Add Subclip</button>
+                <button type="submit" id="submit-clip" class="submit-btn">Add Clip</button>
             </div>
         </form>
         <button class="close-btn" id="close-popup-btn">Close</button>
@@ -126,6 +126,49 @@
 
 <!-- JavaScript for popup logic (if not already implemented) -->
 <script>
+    function fetchVideoClips(selected){
+        id = selected.value;
+        const selectedId = selected.id;
+        let video_id=`videoSelect_${clip_id}`
+        saveInput(selected)
+        if (id){
+            populateVideoCategories(video_id,`/video/get_clip/${id}`)
+
+        }
+    }
+
+    function populateVideoCategories(selectElementId, apiUrl) {
+        const selectElement = document.getElementById(selectElementId);
+
+        if (!selectElement) {
+            console.error(`Select element with ID "${selectElementId}" not found.`);
+            return;
+        }
+
+
+        // Fetch categories from the API
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(categories => {
+                categories.forEach(cat => {
+                    const option = document.createElement("option");
+                    option.value = cat.id;         
+                    option.textContent = cat.title; 
+                    selectElement.appendChild(option);
+                });
+            restoreVideoSelectInputs();
+
+            })
+            .catch(error => {
+                console.error("Failed to fetch video categories:", error);
+            });
+    }
+
     document.getElementById('close-popup-btn').addEventListener('click', function() {
         document.getElementById('add-subclip-popup').style.display = 'none';
     });
