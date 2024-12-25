@@ -191,20 +191,22 @@ function closeModal() {
         console.log("No <li> items found to remove.");
     }
 }
-const form = document.getElementById('add-subclip-form');
-if (form) {
-    const formClipID = document.getElementById('clipId').value;
+function attachValidation(formId, clipId) {
+    const form = document.getElementById(formId);
+    if (form) {
+        const formClipID = document.getElementById(clipId).value;
 
-    form.addEventListener('submit', function (event) {
-        const fileInput = document.getElementById('slide_file');
-        const videoSelect = document.querySelector(`#videoSelect_${formClipID}_${num}`);
+        form.addEventListener('submit', function (event) {
+            const fileInput = document.getElementById('slide_file');
+            const videoSelect = document.querySelector(`#videoSelect_${formClipID}_${num}`);
 
-        if ((!fileInput.value || fileInput.value.trim() === "") &&
-            (!videoSelect.value || videoSelect.value.trim() === "")) {
-            event.preventDefault(); 
-            alert("Please either upload a video file or select a video clip.");
-        }
-    });
+            if ((!fileInput.value || fileInput.value.trim() === "") &&
+                (!videoSelect.value || videoSelect.value.trim() === "")) {
+                event.preventDefault();
+                alert("Please either upload a video file or select a video clip.");
+            }
+        });
+    }
 }
 
 </script>

@@ -246,6 +246,8 @@ function handleSelection(span, ul, remainingInput, errorMessage, clipId) {
                 remainingInput.value = remainingText;
                 span.innerText = remainingText; 
                 openPopup(clipId,selectedText,remainingText );
+                attachValidation('add-subclip-form', clipId);
+
 
             } else {
                 errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
