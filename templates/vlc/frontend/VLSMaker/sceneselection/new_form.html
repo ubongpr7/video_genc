@@ -130,70 +130,68 @@
 </div>
 <script>
     
-    document.addEventListener("mouseup", function () {
-    // Get all wrappers and loop through them
-    const wrappers = document.querySelectorAll(".wrapper");
+function fetchClipIds(textfileId) {
+    fetch(`/path/to/get_clips_id/${textfileId}/`)
+        .then(response => response.json())
+        .then(clipIds => {
+            console.log('Fetched clip IDs:', clipIds);
+            handleClips(clipIds);
+        })
+        .catch(error => console.error('Error fetching clip IDs:', error));
+}
 
-    wrappers.forEach((clipWrapper) => {
-        // Get the wrapper's specific elements
-        const span = clipWrapper.querySelector("span");
-        const ul = clipWrapper.querySelector(".list-of-tags");
-        const remainingInput = clipWrapper.querySelector(`#remaining_${span.dataset.id}`);
-        const errorMessage = clipWrapper.querySelector(".error-message");
+// Function to handle DOM manipulation once clip IDs are fetched
+function handleClips(clipIds) {
+    clipIds.forEach(clipId => {
+        // Target the specific elements for each clip by clip.id
+        const span = document.querySelector(`#wrapper_${clipId} span`);
+        const ul = document.querySelector(`#wrapper_${clipId} .list-of-tags`);
+        const remainingInput = document.querySelector(`#remaining_${clipId}`);
+        const errorMessage = document.querySelector(`#wrapper_${clipId} .error-message`);
 
-        // Call the function to handle text selection
-        handleSelection(span, ul, remainingInput, errorMessage);
+        // Now you can manipulate the elements as needed, e.g., handle selection
+        handleSelection(span, ul, remainingInput, errorMessage, clipId);
     });
-});
+}
 
-function handleSelection(span, ul, remainingInput, errorMessage) {
-    if (window.getSelection) {
+function handleSelection(span, ul, remainingInput, errorMessage, clipId) {
+    document.addEventListener("mouseup", function () {
         const selection = window.getSelection();
-        const selectedText = selection.toString().trim();
+        if (selection && selection.toString().trim()) {
+            const selectedText = selection.toString().trim();
 
-        if (selectedText && span.contains(selection.anchorNode)) {
-            const fullText = span.innerText.trim();
-            const words = fullText.split(/\s+/);
-            const selectedWords = selectedText.split(/\s+/);
+            if (span.contains(selection.anchorNode)) {
+                const fullText = span.innerText.trim();
+                const words = fullText.split(/\s+/);
+                const selectedWords = selectedText.split(/\s+/);
 
-            // Validate the selection
-            const startsCorrectly = fullText.startsWith(selectedText);
-            const isWordAligned = selectedWords.every(word => words.includes(word));
+                // Check if the selection starts from the beginning and is word-aligned
+                const startsCorrectly = fullText.startsWith(selectedText);
+                const isWordAligned = selectedWords.every(word => words.includes(word));
 
-            if (startsCorrectly && isWordAligned) {
-                // Valid selection: Update the list and remaining text
-                clearErrorMessage(errorMessage);
-                updateTagsList(ul, selectedText);
-                updateRemainingText(remainingInput, span, fullText, selectedText);
-            } else {
-                // Invalid selection
-                showErrorMessage(errorMessage);
+                if (startsCorrectly && isWordAligned) {
+                    // Valid selection
+                    errorMessage.innerText = ""; // Clear error
+
+                    // Add selected text to <ul>
+                    const li = document.createElement("li");
+                    li.innerText = selectedText;
+                    ul.appendChild(li);
+
+                    // Update remaining text
+                    const remainingText = fullText.slice(selectedText.length).trim();
+                    remainingInput.value = remainingText; // Set remaining text
+                    span.innerText = remainingText; // Update span text
+                } else {
+                    // Invalid highlighting
+                    errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
+                }
             }
+
+            // Clear selection
+            selection.removeAllRanges();
         }
-
-        // Clear the selection after processing
-        selection.removeAllRanges();
-    }
+    });
 }
-
-function clearErrorMessage(errorMessage) {
-    errorMessage.innerText = ""; // Clear the error message
-}
-
-function showErrorMessage(errorMessage) {
-    errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
-}
-
-function updateTagsList(ul, selectedText) {
-    const li = document.createElement("li");
-    li.innerText = selectedText;
-    ul.appendChild(li);
-}
-
-function updateRemainingText(remainingInput, span, fullText, selectedText) {
-    const remainingText = fullText.slice(selectedText.length).trim();
-    remainingInput.value = remainingText; // Set the remaining text in the input
-    span.innerText = remainingText; // Update the span text
-}
-
+fetchClipIds("{{textfile.id}}")
 </script>

@@ -23,7 +23,13 @@ from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 from django.apps import apps
 import tempfile
 
-
+def get_clips_id(request, textfile_id):
+    text_file = get_object_or_404(TextFile, id=textfile_id)
+    clips = TextLineVideoClip.objects.filter(text_file=text_file).values("id")
+    
+    # Convert queryset to a list of clip ids
+    clip_ids = [clip["id"] for clip in clips]
+    return JsonResponse(clip_ids, safe=False)
 def add_subclip(request,id):
     
     text_clip= TextLineVideoClip.objects.get(id=id)
