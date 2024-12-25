@@ -140,12 +140,44 @@ let clip_id
 function openPopup(clipId,selectedText, ) {
         document.getElementById('add-subclip-popup').style.display = 'flex';
         const formElement =document.getElementById('add-subclip-form')
-        const htmlComponentsToInsert =`
-        <h1>Inserted</h1>
-        <h1>Inserted</h1>
-        <h1>Inserted</h1>
-        `
-        formElement.insertBefore(htmlComponentsToInsert,document.getElementById('submit-clip'))
+        formElement.action=`/text/add_subclip/${clipId}`
+    // Create a container for the new HTML content
+    const htmlContainer = document.createElement('div');
+    htmlContainer.innerHTML = `
+        <div class="form-group">
+            <input id="slide_text" name="slide_text" value="${selectedText}" readonly required class="form-input">
+        </div>
+        
+        <input type="hidden" name="textfile_id" value="{{textfile.id}}">
+
+        <input type="text" hidden id="remaining" name="remaining">
+
+        <div class="form-group">
+            <label for="slide_file">Upload Video File</label>
+            <input type="file" id="slide_file" name="slide_file" class="form-input" accept="video/*">
+        </div>
+
+        <div class="form-group">
+            <label for="selected_topic">Select Topic</label>
+            <select id="selected_topic" onchange="fetchVideoClips(this)" name="selected_topic" class="form-select">
+                <option value="">Select Topic</option>
+                {%for cat in video_categories%}
+                    <option value="{{cat.id}}">{{cat.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="selected_video">Select Video Clip</label>
+            <select id="selected_video" name="selected_video" class="form-select">
+                <option value="" disabled selected>Select a video clip</option>
+            </select>
+        </div>
+    `;
+    const submitClipButton = document.getElementById('submit-clip');
+
+    // Insert the new content before the button
+    formElement.insertBefore(htmlContainer, submitClipButton);
     }
 function fetchClipIds(textfileId) {
     fetch(`/text/get_clips_id/${textfileId}/`)
