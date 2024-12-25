@@ -62,6 +62,9 @@
       z-index: 999;
       cursor: not-allowed;
   }
+  .slide-span{
+    align-items: center; 
+  }
 </style>
 
   <div class="grid-container">
@@ -87,7 +90,7 @@
                     <div class="wrapper" id="wrapper_{{clip.id}}">
                         <div style="width: 100%;" class="tag-box">
                             <ul id="list-of-tags_{{clip.id}}" class="list-of-tags">
-                                <span data-id="{{clip.id}}">{{ clip.slide }}</span>
+                                <span class data-id="{{clip.id}}">{{ clip.slide }}</span>
                             </ul>
                             <input id="remaining_{{clip.id}}" name="remaining_{{clip.id}}" hidden type="text">
                         </div>
