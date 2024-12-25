@@ -174,10 +174,11 @@ function openPopup(clipId,selectedText, ) {
             </select>
         </div>
     `;
-    
+
     const submitClipButton = document.getElementById('submit-cont');
 
     formElement.insertBefore(htmlContainer, submitClipButton);
+    restoreForm();
     }
 function fetchClipIds(textfileId) {
     fetch(`/text/get_clips_id/${textfileId}/`)
