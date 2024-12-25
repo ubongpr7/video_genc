@@ -157,7 +157,7 @@ function openPopup(clipId,selectedText,remainingText ) {
 
         <div class="form-group">
             <label for="slide_file">Upload Video File</label>
-            <input type="file" id="slide_file" name="slide_file" class="form-input" accept="video/*">
+            <input type="file" onchange="saveInput(this)" id="slide_file" name="slide_file" class="form-input" accept="video/*">
         </div>
 
         <div class="form-group">
@@ -192,14 +192,19 @@ function fetchClipIds(textfileId) {
         .catch(error => console.error('Error fetching clip IDs:', error));
 }
 function saveInput(inputElement) {
-            
-            sessionStorage.setItem(inputElement.id, inputElement.value);
-            console.log(inputElement.value)
-            if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
-                
+            if (inputElement.type ==='file'){
                 document.getElementById('error-slide').textContent=''
 
-            };
+            }else{
+                sessionStorage.setItem(inputElement.id, inputElement.value);
+                console.log(inputElement.value)
+                if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
+                    
+                    document.getElementById('error-slide').textContent=''
+    
+                };
+
+            }
             
     };
 function handleClips(clipIds) {
