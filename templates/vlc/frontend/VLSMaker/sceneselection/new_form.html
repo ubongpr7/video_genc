@@ -177,8 +177,8 @@ function openPopup(clipId,selectedText, ) {
     `;
 
     const submitClipButton = document.getElementById('submit-cont');
-
-    formElement.insertBefore(htmlContainer, submitClipButton);
+    submitClipButton.innerHTML= htmlContainer
+    // formElement.insertBefore(htmlContainer, submitClipButton);
     restoreForm();
     }
 function fetchClipIds(textfileId) {
