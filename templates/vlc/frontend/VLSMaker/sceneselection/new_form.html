@@ -83,7 +83,23 @@
 
                 <div class="grid-item slide-row grid-row" data-slide="1"><span>Slide {{ clip.line_number }}</span></div>
                 <div class="grid-item slide-text" data-slide="1" tabindex="0">
-                    <span>{{ clip.slide }}</span>
+                    <!-- <span>{{ clip.slide }}</span> -->
+                    <div id="separateSlide" class="wrapper">
+<!--     
+                        <div class="guide">
+                            <span class="guide-title">Separate Words To Add Multiple Cips </span>
+                            <span class="guide-icon" title="To Select Multiple Clips On This Line, Place Your Cursor Where You Want To Separate The Words, Type '/' To Separate The Words. When Done, Click The Done Button.">?</span>
+                        </div> -->
+                    
+                        <div class="tag-box">
+                            <ul id="list-of-tags" class="list-of-tags">
+                                <input class="tag-input" id="words" value="{{ clip.slide }}" type="text">
+                            </ul>
+                            <input id="id" name="id" hidden type="number">
+                        </div>
+                        <div id="error-message" class="error-message"></div>
+                        
+                    </div>
                 </div>
                 <input type="text"value="{{clip.slide}}" hidden name="slide_{{cilp.line_number}}" id="slide_{{clip.line_number}}">
                 <div class="grid-item slide-row grid-row" data-slide="1">
