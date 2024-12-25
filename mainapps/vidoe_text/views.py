@@ -64,6 +64,32 @@ def add_subclip(request,id):
             text_clip.save()
 
     return redirect(f'/video/add-scene/{textfile_id}')
+def edit_subclip(request,id):
+    if request.method =='POST':
+        subclip= SubClip.objects.get(id= id)
+        textfile_id=request.POST.get('textfile_id')
+        file_=request.FILES.get(f'slide_file')
+        asset_clip_id=request.POST.get(f'selected_video')
+        if subclip.video_file:
+            subclip.video_file.delete(save=False)
+        if file_:
+            subclip.video_file=file_
+        elif asset_clip_id:
+            video= VideoClip.objects.get(id=asset_clip_id)
+            subclip.video_clip=video
+        subclip.save()
+
+        
+        return redirect(f'/video/add-scene/{textfile_id}')
+
+def reset_subclp(request, id):
+    textfile_id= request.GET.get('textfile_id')
+    text_clip= TextLineVideoClip.objects.get(id=id)
+    for subclip in text_clip.subclips.all():
+        if subclip.video_file:
+            subclip.video_file.delete(save=True)
+        subclip.delete()
+    return redirect(f'/video/add-scene/{textfile_id}')
 
 def check_text_clip(request,textfile_id):
     textfile=TextFile.objects.get(id=textfile_id)
