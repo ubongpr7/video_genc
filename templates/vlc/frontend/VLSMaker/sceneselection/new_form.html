@@ -93,7 +93,7 @@
                                 {% for subclip in clip.subclips.all %}
                                 <li data-id="{{subclip.id}}">{{subclip.subtittle}}</li>
                                 {% endfor %}
-                                <span class data-id="{{clip.id}}">{{ clip.remaining }}</span>
+                                <span data-num="{{clip.get_number_of_subclip}}" data-id="{{clip.id}}">{{ clip.remaining }}</span>
                             </ul>
                             <input id="remaining_{{clip.id}}" name="remaining_{{clip.id}}" hidden type="text">
                         </div>
@@ -136,9 +136,10 @@
 </div>
 <script>
     textfile_id='{{textfile.id}}'
+    let num
 // Function to fetch the clip IDs from the backend
 let clip_id
-function openPopup(clipId,selectedText, ) {
+function openPopup(clipId,selectedText ) {
         document.getElementById('add-subclip-popup').style.display = 'flex';
         const formElement =document.getElementById('add-subclip-form')
         formElement.action=`/text/add_subclip/${clipId}`
@@ -159,8 +160,8 @@ function openPopup(clipId,selectedText, ) {
         </div>
 
         <div class="form-group">
-            <label for="selected_topic">Select Topic</label>
-            <select id="selected_topic_${clipId}" onchange="fetchVideoClips(this)" name="selected_topic" class="form-select">
+            <label for="selected_topic_${clipId}_${num}">Select Topic</label>
+            <select id="selected_topic_${clipId}_${num}" onchange="fetchVideoClips(this)" name="selected_topic" class="form-select">
                 <option value="">Select Topic</option>
                 {%for cat in video_categories%}
                     <option value="{{cat.id}}">{{cat.name}}</option>
@@ -169,8 +170,8 @@ function openPopup(clipId,selectedText, ) {
         </div>
         
         <div class="form-group">
-            <label for="selected_video">Select Video Clip</label>
-            <select id="videoSelect_${clipId}" onclick="saveInput(this)" name="selected_video" class="form-select">
+            <label for="videoSelect_${clipId}_${num}">Select Video Clip</label>
+            <select id="videoSelect_${clipId}_${num}" onclick="saveInput(this)" name="selected_video" class="form-select">
                 <option value="" disabled selected>Select a video clip</option>
             </select>
         </div>
@@ -192,8 +193,7 @@ function saveInput(inputElement) {
             sessionStorage.setItem(inputElement.id, inputElement.value);
             console.log(inputElement.value)
             if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
-                const cNumber= inputElement.id.split('_')[1]
-                console.log(cNumber);
+                
 
 
             };
@@ -239,11 +239,13 @@ function handleSelection(span, ul, remainingInput, errorMessage, clipId) {
                 clip_id=clipId
                 const li = document.createElement("li");
                 li.innerText = selectedText;
+                num=span.dataset.num
                 openPopup(clipId,selectedText, );
                 ul.insertBefore(li,span);
                 const remainingText = fullText.slice(selectedText.length).trim();
                 remainingInput.value = remainingText;
                 span.innerText = remainingText; 
+
             } else {
                 errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
             }

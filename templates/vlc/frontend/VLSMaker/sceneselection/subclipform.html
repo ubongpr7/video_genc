@@ -97,11 +97,10 @@
     }
 </style>
 
-<!-- JavaScript for popup logic (if not already implemented) -->
 <script>
     function fetchVideoClips(selected){
         id = selected.value;
-        let video_id=`videoSelect_${clip_id}`
+        let video_id=`videoSelect_${clip_id}_${num}`
         saveInput(selected)
         if (id){
             populateVideoCategories(video_id,`/video/get_clip/${id}`)
@@ -121,7 +120,7 @@
                 const currentNumber = idParts[idParts.length - 2]; 
 
                 const url = `/video/get_clip/${storedValue}`;
-                const targetId = `videoSelect_${clip_id}`;
+                const targetId = `videoSelect_${clip_id}_${num}`;
                await populateVideoCategories(targetId,url);  
 
             }
