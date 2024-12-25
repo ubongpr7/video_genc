@@ -211,6 +211,15 @@ function handleClips(clipIds) {
         handleSelection(span, ul, remainingInput, errorMessage, clipId);
     });
 }
+function restoreVideoSelectInputs() {
+    inputs=document.querySelectorAll('select')
+        inputs.forEach(input => {
+            const storedValue = sessionStorage.getItem(input.id);
+            if (storedValue && input.id.startsWith('videoSelect_')) {
+                input.value = storedValue;
+            }
+        });
+    }
 
 function handleSelection(span, ul, remainingInput, errorMessage, clipId) {
     span.addEventListener("mouseup", function () {
