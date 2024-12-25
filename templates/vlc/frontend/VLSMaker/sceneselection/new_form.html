@@ -174,7 +174,9 @@ function openPopup(clipId,selectedText,remainingText ) {
             <label for="videoSelect_${clipId}_${num}">Select Video Clip</label>
             <select id="videoSelect_${clipId}_${num}" onclick="saveInput(this)" name="selected_video" class="form-select">
                 <option value="" disabled selected>Select a video clip</option>
+
             </select>
+            <p style="color:red; font-size:13px;" id="error-slide"></p>
         </div>
     `;
 
