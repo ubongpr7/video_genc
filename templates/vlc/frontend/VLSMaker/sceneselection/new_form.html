@@ -132,13 +132,13 @@
     </div>
 </div>
 <script>
-    document.addEventListener("mouseup", function () {
+document.addEventListener("mouseup", function () {
     const wrapper = document.querySelectorAll(".wrapper");
 
     wrapper.forEach((clipWrapper) => {
         const span = clipWrapper.querySelector("span");
         const ul = clipWrapper.querySelector(".list-of-tags");
-        const remainingInput = clipWrapper.querySelector(`#remaining_${span.dataset.id}`);
+        const remainingInput = clipWrapper.querySelector(`#remaining_${span.id}`);
         const errorMessage = clipWrapper.querySelector(".error-message");
 
         if (window.getSelection) {
@@ -147,9 +147,15 @@
 
             if (selectedText && span.contains(selection.anchorNode)) {
                 const fullText = span.innerText.trim();
+                const words = fullText.split(/\s+/);
+                const selectedWords = selectedText.split(/\s+/);
 
-                if (selectedText === fullText) {
-                    // Full text highlighted - valid
+                // Check if the selection starts from the beginning and is word-aligned
+                const startsCorrectly = fullText.startsWith(selectedText);
+                const isWordAligned = selectedWords.every(word => words.includes(word));
+
+                if (startsCorrectly && isWordAligned) {
+                    // Valid selection
                     errorMessage.innerText = ""; // Clear error
 
                     // Add selected text to <ul>
@@ -158,11 +164,12 @@
                     ul.appendChild(li);
 
                     // Update remaining text
-                    remainingInput.value = ""; // No text remains
-                    span.innerText = ""; // No text remains
+                    const remainingText = fullText.slice(selectedText.length).trim();
+                    remainingInput.value = remainingText; // Set remaining text
+                    span.innerText = remainingText; // Update span text
                 } else {
                     // Invalid highlighting
-                    errorMessage.innerText = "Invalid highlighting. You must highlight the entire text.";
+                    errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
                 }
             }
 
