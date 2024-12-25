@@ -109,6 +109,32 @@
         }
     }
 
+    async function restoreForm(){
+                const inputs = document.querySelectorAll('select');
+
+        for (const input of inputs) {
+            const storedValue = sessionStorage.getItem(input.id);
+            if (storedValue && input.id.startsWith('selected_topic_')) {
+                input.value = storedValue;
+
+                const idParts = input.id.split('_');
+                const currentNumber = idParts[idParts.length - 2]; 
+
+                const url = `/video/get_clip/${storedValue}`;
+                const targetId = `videoSelect_${currentNumber}_${textfile_id}-${clip_id}`;
+               await populateVideoCategories(targetId,url);  
+
+            }
+        }
+        inputs.forEach(input => {
+            const storedValue = sessionStorage.getItem(input.id);
+            if (storedValue && input.id.startsWith('videoSelect_')) {
+                input.value = storedValue;
+            }
+        });
+    
+      };
+
     function populateVideoCategories(selectElementId, apiUrl) {
         const selectElement = document.getElementById(selectElementId);
 
