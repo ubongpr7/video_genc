@@ -385,13 +385,25 @@ class Command(BaseCommand):
             subclip.start=Decimal(self.srt_time_to_float(start))
             subclip.end=Decimal(self.srt_time_to_float(end))
             subclip.save()
-        # with concurrent.futures.ThreadPoolExecutor() as executor:
-        #     list(executor.map(self.process_for_clip, self.text_file_instance.video_clips.all()))
-        
-        # logging.debug("All clips processed. Proceeding to next steps.")
         for clip in self.text_file_instance.video_clips.all():
-            logging.debug(f"Processing clip with ID: {clip.id}")
-            self.process_for_clip(clip)
+            clip_subclips = []
+            for subclip in clip.subclips.all():
+                logging.debug(f"Processing subclip with ID: {subclip.id}")
+                mv_clip = self.load_video_from_file_field(subclip.to_dict().get('video_path'))
+                clip_with_duration = mv_clip.set_duration(float(subclip.end - subclip.start))
+                logging.debug(f"Loaded video clip from path: {subclip.to_dict().get('video_path')}")
+                cropped_clip = self.crop_to_aspect_ratio_(clip_with_duration, MAINRESOLUTIONS[self.text_file_instance.resolution])
+                logging.debug(f"Cropped clip to resolution: {MAINRESOLUTIONS[self.text_file_instance.resolution]}")
+                clip_subclips.append(cropped_clip)
+            if len(clip_subclips) == 1:
+                self.write_clip_file(clip_subclips[0], clip.video_file)
+            else:
+
+                resized_subclips = self.resize_clips_to_max_size(clip_subclips)
+                concatenated_clip = self.concatenate_clips(resized_subclips)
+                self.write_clip_file(concatenated_clip, clip.video_file,clip)
+
+
         return True 
              
     def process_for_clip(self,clip):
@@ -406,12 +418,12 @@ class Command(BaseCommand):
             logging.debug(f"Cropped clip to resolution: {MAINRESOLUTIONS[self.text_file_instance.resolution]}")
             clip_subclips.append(cropped_clip)
         if len(clip_subclips) == 1:
-            self.write_clip_file(clip_subclips[0], clip.video_file)
+            self.write_clip_file(clip_subclips[0], clip.video_file,clip)
         else:
 
             resized_subclips = self.resize_clips_to_max_size(clip_subclips)
             concatenated_clip = self.concatenate_clips(resized_subclips)
-            self.write_clip_file(concatenated_clip, clip.video_file)
+            self.write_clip_file(concatenated_clip, clip.video_file,clip)
 
 
     def extract_start_end(self,generated_srt):
@@ -472,7 +484,7 @@ class Command(BaseCommand):
         
         return video_clips
 
-    def write_clip_file(self, clip,file_to_write):
+    def write_clip_file(self, clip,file_to_write,main_clip):
         with tempfile.NamedTemporaryFile(
             suffix=".mp4", delete=False
         ) as temp_output_video:
@@ -493,7 +505,7 @@ class Command(BaseCommand):
                 video_content = output_video_file.read()
 
                 file_to_write.save(
-                    f"video_{self.text_file_instance.id}_{timestamp}.mp4",
+                    f"video_{self.main_clip.id}_{timestamp}.mp4",
                     ContentFile(video_content),
                 )
             return True
