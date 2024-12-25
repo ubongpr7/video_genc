@@ -505,7 +505,7 @@ class Command(BaseCommand):
                 video_content = output_video_file.read()
 
                 file_to_write.save(
-                    f"video_{self.main_clip.id}_{self.generate_random_string()}_{timestamp}.mp4",
+                    f"video_{main_clip.id}_{self.generate_random_string()}_{timestamp}.mp4",
                     ContentFile(video_content),
                 )
             return True
