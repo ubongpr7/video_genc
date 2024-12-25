@@ -91,7 +91,7 @@
                         <div style="width: 100%;" class="tag-box">
                             <ul id="list-of-tags_{{clip.id}}" class="list-of-tags">
                                 {% for subclip in clip.subclips.all %}
-                                <li data-id="{{subclip.id}}">{{subclip.text}}</li>
+                                <li data-id="{{subclip.id}}">{{subclip.subtittle}}</li>
                                 {% endfor %}
                                 <span class data-id="{{clip.id}}">{{ clip.remaining }}</span>
                             </ul>
