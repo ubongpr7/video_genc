@@ -152,7 +152,7 @@ document.addEventListener("mouseup", function () {
 
                 // Check if the selection starts from the beginning and is word-aligned
                 const startsCorrectly = fullText.startsWith(selectedText);
-                const isWordAligned = selectedWords.every(word => words.includes(word));
+                const isWordAligned = selectedWords.every(word => fullText.includes(word) && words.includes(word));
 
                 if (startsCorrectly && isWordAligned) {
                     // Valid selection
@@ -178,6 +178,53 @@ document.addEventListener("mouseup", function () {
         }
     });
 });
+
+// document.addEventListener("mouseup", function () {
+//     const wrapper = document.querySelectorAll(".wrapper");
+
+//     wrapper.forEach((clipWrapper) => {
+//         const span = clipWrapper.querySelector("span");
+//         const ul = clipWrapper.querySelector(".list-of-tags");
+//         const remainingInput = clipWrapper.querySelector(`#remaining_${span.dataset.id}`);
+//         const errorMessage = clipWrapper.querySelector(".error-message");
+
+//         if (window.getSelection) {
+//             const selection = window.getSelection();
+//             const selectedText = selection.toString().trim();
+
+//             if (selectedText && span.contains(selection.anchorNode)) {
+//                 const fullText = span.innerText.trim();
+//                 const words = fullText.split(/\s+/);
+//                 const selectedWords = selectedText.split(/\s+/);
+
+//                 // Check if the selection starts from the beginning and is word-aligned
+//                 const startsCorrectly = fullText.startsWith(selectedText);
+//                 const isWordAligned = selectedWords.every(word => words.includes(word));
+
+//                 if (startsCorrectly && isWordAligned) {
+//                     // Valid selection
+//                     errorMessage.innerText = ""; // Clear error
+
+//                     // Add selected text to <ul>
+//                     const li = document.createElement("li");
+//                     li.innerText = selectedText;
+//                     ul.appendChild(li);
+
+//                     // Update remaining text
+//                     const remainingText = fullText.slice(selectedText.length).trim();
+//                     remainingInput.value = remainingText; // Set remaining text
+//                     span.innerText = remainingText; // Update span text
+//                 } else {
+//                     // Invalid highlighting
+//                     errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
+//                 }
+//             }
+
+//             // Clear selection
+//             selection.removeAllRanges();
+//         }
+//     });
+// });
 
 </script>
    <!-- <script>
