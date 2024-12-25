@@ -135,18 +135,18 @@
     const wrappers = document.querySelectorAll(".wrapper");
 
     wrappers.forEach((clipWrapper) => {
-        const wrapperId = clipWrapper.id;
+        // Get the wrapper's specific elements
         const span = clipWrapper.querySelector("span");
         const ul = clipWrapper.querySelector(".list-of-tags");
         const remainingInput = clipWrapper.querySelector(`#remaining_${span.dataset.id}`);
         const errorMessage = clipWrapper.querySelector(".error-message");
 
         // Call the function to handle text selection
-        handleSelection(span, ul, remainingInput, errorMessage, wrapperId);
+        handleSelection(span, ul, remainingInput, errorMessage);
     });
 });
 
-function handleSelection(span, ul, remainingInput, errorMessage, wrapperId) {
+function handleSelection(span, ul, remainingInput, errorMessage) {
     if (window.getSelection) {
         const selection = window.getSelection();
         const selectedText = selection.toString().trim();
