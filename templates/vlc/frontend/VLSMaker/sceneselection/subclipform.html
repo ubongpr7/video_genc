@@ -10,7 +10,7 @@
                 <button type="submit" id="submit-clip" class="submit-btn">Add Clip</button>
             </div>
         </form>
-        <button class="close-btn" id="close-popup-btn">Close</button>
+        <button class="close-btn" onclick="closeModal()" id="close-popup-btn">Close</button>
     </div>
 </div>
 
@@ -167,8 +167,34 @@
     }
 
     document.getElementById('close-popup-btn').addEventListener('click', function() {
-        document.getElementById('add-subclip-popup').style.display = 'none';
-    });
 
+
+    });
+function closeModal(){
+    document.getElementById('add-subclip-popup').style.display = 'none';
+    const formClipID =document.getElementById('clipId')
+    const uliItem= document.getElementById(`list-of-tags_${formClipID}`)
+
+}
+function closeModal() {
+    document.getElementById('add-subclip-popup').style.display = 'none';
+
+    const formClipID = document.getElementById('clipId').value;
+    const ulElement = document.getElementById(`list-of-tags_${formClipID}`);
+    const spanElement = document.getElementById(`slide_span_${formClipID}`);
+
+    if (ulElement && ulElement.lastElementChild) {
+        const lastLiItem = ulElement.lastElementChild; 
+        const lastLiText = lastLiItem.textContent; 
+        const spanText= spanElement.textContent.trim();
+        spanElement.textContent= `${lastLiText} ${spanText}`
+        console.log("Last <li> text:", lastLiText); 
+
+        // Remove the last <li> item
+        ulElement.removeChild(lastLiItem);
+    } else {
+        console.log("No <li> items found to remove.");
+    }
+}
 
 </script>

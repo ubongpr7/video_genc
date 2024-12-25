@@ -93,7 +93,7 @@
                                 {% for subclip in clip.subclips.all %}
                                 <li data-id="{{subclip.id}}">{{subclip.subtittle}}</li>
                                 {% endfor %}
-                                <span data-num="{{clip.get_number_of_subclip}}" data-id="{{clip.id}}">{{ clip.remaining }}</span>
+                                <span  id="slide_span_{{clip.id}}" data-num="{{clip.get_number_of_subclip}}" data-id="{{clip.id}}">{{ clip.remaining }}</span>
                             </ul>
                             <input id="remaining_{{clip.id}}" name="remaining_{{clip.id}}" hidden type="text">
                         </div>
@@ -150,6 +150,7 @@ function openPopup(clipId,selectedText,remainingText ) {
             <input id="slide_text" name="slide_text" value="${selectedText}" readonly required class="form-input">
         </div>
         
+        <input id="clipId" type="number" hidden name="clipId" value="${clipId}">
         <input type="hidden" name="textfile_id" value="{{textfile.id}}">
 
         <input type="text" value="${remainingText}" hidden id="remaining" name="remaining">
