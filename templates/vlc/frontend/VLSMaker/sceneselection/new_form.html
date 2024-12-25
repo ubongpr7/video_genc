@@ -131,7 +131,7 @@
 <script>
     
 function fetchClipIds(textfileId) {
-    fetch(`/path/to/get_clips_id/${textfileId}/`)
+    fetch(`/text/get_clips_id/${textfileId}/`)
         .then(response => response.json())
         .then(clipIds => {
             console.log('Fetched clip IDs:', clipIds);
