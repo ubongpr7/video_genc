@@ -334,7 +334,7 @@ class Command(BaseCommand):
         logging.info("Done cropping replacements")
 
         self.text_file_instance.track_progress(54)
-        
+        replacement_video_clips=self.resize_clips_to_max_size(replacement_video_clips)
         final_video_segments = self.replace_video_segments(
             output_video_segments, replacement_video_clips, subtitles, blank_vide_clip
         )
