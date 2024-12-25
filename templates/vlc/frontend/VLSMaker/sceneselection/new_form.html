@@ -159,7 +159,7 @@ function openPopup(clipId,selectedText, ) {
 
         <div class="form-group">
             <label for="selected_topic">Select Topic</label>
-            <select id="selected_topic" onchange="fetchVideoClips(this)" name="selected_topic" class="form-select">
+            <select id="selected_topic_${clipId}" onchange="fetchVideoClips(this)" name="selected_topic" class="form-select">
                 <option value="">Select Topic</option>
                 {%for cat in video_categories%}
                     <option value="{{cat.id}}">{{cat.name}}</option>
@@ -169,7 +169,7 @@ function openPopup(clipId,selectedText, ) {
         
         <div class="form-group">
             <label for="selected_video">Select Video Clip</label>
-            <select id="selected_video" name="selected_video" class="form-select">
+            <select id="videoSelect_${clipId}" name="selected_video" class="form-select">
                 <option value="" disabled selected>Select a video clip</option>
             </select>
         </div>
