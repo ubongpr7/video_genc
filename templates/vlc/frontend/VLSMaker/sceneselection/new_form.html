@@ -142,7 +142,7 @@ let clip_id
 function openPopup(clipId,selectedText ) {
         document.getElementById('add-subclip-popup').style.display = 'flex';
         const formElement =document.getElementById('add-subclip-form')
-        formElement.action=`/text/add_subclip/${clipId}`
+        formElement.action=`/text/add_subclip/${clipId}/`
     const htmlContainer = document.getElementById('submit-cont');
 
     htmlContainer.innerHTML = `
