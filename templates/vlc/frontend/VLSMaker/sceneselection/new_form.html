@@ -145,9 +145,9 @@ function handleClips(clipIds) {
     clipIds.forEach(clipId => {
         // Target the specific elements for each clip by clip.id
         const span = document.querySelector(`#wrapper_${clipId} span`);
-        const ul = document.querySelector(`#wrapper_${clipId} .list-of-tags`);
-        const remainingInput = document.querySelector(`#remaining_${clipId}`);
-        const errorMessage = document.querySelector(`#wrapper_${clipId} .error-message`);
+        const ul = document.getElementById(`list-of-tags_${clipId}`);
+        const remainingInput = document.getElementById(`remaining_${clipId}`);
+        const errorMessage = document.getElementById(`error-message_${clipId}`);
 
         // Now you can manipulate the elements as needed, e.g., handle selection
         handleSelection(span, ul, remainingInput, errorMessage, clipId);
