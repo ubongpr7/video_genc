@@ -194,7 +194,7 @@ function closeModal() {
 function attachValidation(formId, clipId) {
     const form = document.getElementById(formId);
     if (form) {
-        const formClipID = document.getElementById(clipId).value;
+        const formClipID = document.getElementById('clipId').value;
 
         const fileInput = document.getElementById('slide_file');
         const videoSelect = document.querySelector(`#videoSelect_${formClipID}_${num}`);
