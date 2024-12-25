@@ -143,7 +143,9 @@ function openPopup(clipId,selectedText, ) {
         const formElement =document.getElementById('add-subclip-form')
         formElement.action=`/text/add_subclip/${clipId}`
     // Create a container for the new HTML content
-    const htmlContainer = document.createElement('div');
+    const htmlContainer = document.getElementById('submit-cont');
+
+    // const htmlContainer = document.createElement('div');
     htmlContainer.innerHTML = `
         <div class="form-group">
             <input id="slide_text" name="slide_text" value="${selectedText}" readonly required class="form-input">
@@ -176,8 +178,8 @@ function openPopup(clipId,selectedText, ) {
         </div>
     `;
 
-    const submitClipButton = document.getElementById('submit-cont');
-    submitClipButton.innerHTML= htmlContainer
+    // const submitClipButton = document.getElementById('submit-cont');
+    // submitClipButton.innerHTML= htmlContainer
     // formElement.insertBefore(htmlContainer, submitClipButton);
     restoreForm();
     }
