@@ -505,11 +505,22 @@ class Command(BaseCommand):
                 video_content = output_video_file.read()
 
                 file_to_write.save(
-                    f"video_{self.main_clip.id}_{timestamp}.mp4",
+                    f"video_{self.main_clip.id}_{self.generate_random_string()}_{timestamp}.mp4",
                     ContentFile(video_content),
                 )
             return True
 
+
+    def generate_random_string(self,length=10):
+        import random
+        import string
+
+        characters = string.ascii_letters + string.digits
+        return ''.join(random.choice(characters) for _ in range(length))
+
+    # Example usage
+    random_string = generate_random_string(12)  # Generate a string of length 12
+    print("Random String:", random_string)
 
     def save_final_video(self, clip):
         with tempfile.NamedTemporaryFile(
