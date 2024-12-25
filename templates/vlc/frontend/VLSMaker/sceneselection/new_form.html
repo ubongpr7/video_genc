@@ -145,7 +145,7 @@ function openPopup(clipId,selectedText, ) {
         <h1>Inserted</h1>
         <h1>Inserted</h1>
         `
-        formElement.innerHTML.insertBefore(htmlComponentsToInsert,document.getElementById('submit-clip'))
+        formElement.insertBefore(htmlComponentsToInsert,document.getElementById('submit-clip'))
     }
 function fetchClipIds(textfileId) {
     fetch(`/text/get_clips_id/${textfileId}/`)
