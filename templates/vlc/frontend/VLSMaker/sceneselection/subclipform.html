@@ -200,7 +200,7 @@ function attachValidation(formId, clipId) {
         const videoSelect = document.querySelector(`#videoSelect_${formClipID}_${num}`);
 
         if (!fileInput.value || videoSelect.value.trim() === "")  {
-            alert("Please either upload a video file or select a video clip.");
+            // alert("Please either upload a video file or select a video clip.");
             document.getElementById('error-slide').textContent='Select A Clip';
             videoSelect.focus();
         }else{
