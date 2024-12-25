@@ -37,8 +37,7 @@ def add_subclip(request,id):
     if request.method=="POST":
         textfile_id=request.POST.get('textfile_id')
         remaining=request.POST.get('remaining')
-        text_clip.remaining=remaining
-        text_clip.save()
+        
 
         file_=request.FILES.get(f'slide_file')
         text=request.POST.get(f'slide_text')
@@ -50,6 +49,8 @@ def add_subclip(request,id):
                 main_line=text_clip
 
             )
+            text_clip.remaining=remaining
+            text_clip.save()
         elif asset_clip_id:
             video= VideoClip.objects.get(id=asset_clip_id)
 
@@ -59,6 +60,8 @@ def add_subclip(request,id):
                 main_line=text_clip
 
             )
+            text_clip.remaining=remaining
+            text_clip.save()
 
     return redirect(f'/video/add-scene/{textfile_id}')
 
