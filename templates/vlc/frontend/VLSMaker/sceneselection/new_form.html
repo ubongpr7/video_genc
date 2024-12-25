@@ -84,14 +84,13 @@
                 <div class="grid-item slide-row grid-row" data-slide="1"><span>Slide {{ clip.line_number }}</span></div>
                 <div class="grid-item slide-text" data-slide="1" tabindex="0">
                     <!-- <span>{{ clip.slide }}</span> -->
-                    <div id="separateSlide"  class="wrapper">
+                    <div class="wrapper">
 
                     
                         <div style="width: 100%;" class="tag-box">
                             <ul id="list-of-tags" class="list-of-tags">
-                    <!-- <span>{{ clip.slide }}</span> -->
+                            <span data-id="{{clip.id}}">{{ clip.slide }}</span>
 
-                                <input style="width: 100%; border: none;" class="tag-input" id="words" value="{{ clip.slide }}" type="text">
                             </ul>
                             <input id="id" name="id" hidden type="number">
                         </div>
@@ -132,8 +131,50 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener("mouseup", function () {
+    const wrapper = document.querySelectorAll(".wrapper");
 
+    wrapper.forEach((clipWrapper) => {
+        const span = clipWrapper.querySelector("span");
+        const ul = clipWrapper.querySelector(".list-of-tags");
+        const remainingInput = clipWrapper.querySelector(`#remaining_${span.dataset.id}`);
+        const errorMessage = clipWrapper.querySelector(".error-message");
+
+        if (window.getSelection) {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
+
+            if (selectedText && span.contains(selection.anchorNode)) {
+                const fullText = span.innerText.trim();
+
+                if (selectedText === fullText) {
+                    // Full text highlighted - valid
+                    errorMessage.innerText = ""; // Clear error
+
+                    // Add selected text to <ul>
+                    const li = document.createElement("li");
+                    li.innerText = selectedText;
+                    ul.appendChild(li);
+
+                    // Update remaining text
+                    remainingInput.value = ""; // No text remains
+                    span.innerText = ""; // No text remains
+                } else {
+                    // Invalid highlighting
+                    errorMessage.innerText = "Invalid highlighting. You must highlight the entire text.";
+                }
+            }
+
+            // Clear selection
+            selection.removeAllRanges();
+        }
+    });
+});
+
+</script>
    <script>
+
     let textfile_id='{{textfile.id}}'
     let clip_id=1
         function highlightNoSubclipIcons() {
