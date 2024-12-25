@@ -138,7 +138,7 @@ document.addEventListener("mouseup", function () {
     wrapper.forEach((clipWrapper) => {
         const span = clipWrapper.querySelector("span");
         const ul = clipWrapper.querySelector(".list-of-tags");
-        const remainingInput = clipWrapper.querySelector(`#remaining_${span.id}`);
+        const remainingInput = clipWrapper.querySelector(`#remaining_${span.dataset.id}`);
         const errorMessage = clipWrapper.querySelector(".error-message");
 
         if (window.getSelection) {
