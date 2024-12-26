@@ -356,7 +356,7 @@ htmlContainer.innerHTML = `
 
     <div class="form-group">
         <label for="selected_topic_${clipId}_${num}">Select Topic</label>
-        <select id="selected_topic_${clipId}_${num}" value="${catId}" onchange="fetchVideoClips(this)" name="selected_topic" class="form-select">
+        <select id="selected_topic_${clipId}_${num}"  onchange="fetchVideoClips(this)" name="selected_topic" class="form-select">
             <option value="">Select Topic</option>
             {%for cat in video_categories%}
                 <option value="{{cat.id}}">{{cat.name}}</option>
@@ -388,7 +388,7 @@ editForm.addEventListener('submit',(e)=>{
 
 function editSubclip(liElement, currentFile,videoId,catId){
 clipid=liElement.dataset.id ;
-console.log(liElement,currentFile,clipid,videoId,catId);
+console.log(videoId,catId);
 document.getElementById('add-subclip-popup').style.display = 'flex';
 
 handleEditSelection(liElement ,currentFile, clipid,videoId,catId);
