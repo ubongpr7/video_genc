@@ -337,10 +337,10 @@ function handleEditSelection(liElement ,currentFile, clipId,videoId,catId) {
     editForm.action=`/text/edit_subclip/${clipId}/`
     editForm.addEventListener('submit',(e)=>{
         e.preventDefault();
-        const htmlContainer = document.getElementById('submit-cont');
+        const htmlContainer2 = document.getElementById('submit-cont');
         const selectedText=liElement.textContent
         num= clipId
-htmlContainer.innerHTML = `
+htmlContainer2.innerHTML = `
     <div class="form-group">
         <input id="slide_text" name="slide_text" value="${selectedText}" readonly required class="form-input">
     </div>
