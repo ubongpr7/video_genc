@@ -384,6 +384,8 @@ htmlContainer.innerHTML = `
 function editSubclip(liElement, currentFile,videoId,catId){
 clipid=liElement.dataset.id ;
 console.log(liElement,currentFile,clipid);
+document.getElementById('add-subclip-popup').style.display = 'flex';
+
 handleEditSelection(liElement ,currentFile, clipid,videoId,catId);
 }
 </script>
