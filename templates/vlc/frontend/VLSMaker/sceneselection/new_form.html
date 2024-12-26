@@ -252,12 +252,13 @@ function saveInput(inputElement) {
                 for (const selectItem of document.querySelectorAll('select')){
                     selectItem.value='';
                     saveInput(selectItem)
+               document.getElementById('currentFile').textContent=''
+
                 }
 
             }else{
                 sessionStorage.setItem(inputElement.id, inputElement.value);
                 console.log(inputElement.value)
-                document.getElementById('currentFile').textContent=''
                 if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
                     
                     document.getElementById('error-slide').textContent=''
