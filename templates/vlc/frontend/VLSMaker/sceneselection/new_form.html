@@ -103,8 +103,8 @@
                 </div>
                 <input type="text"value="{{clip.slide}}" hidden name="slide_{{cilp.line_number}}" id="slide_{{clip.line_number}}">
                 <div class="grid-item slide-row grid-row" data-slide="1">
-                    <div class="icon-wrapper" id="icon_rapper_{{clip.id}}" onclick="subclipAdd('{{clip.id}}','{{clip.total_clip}}','{{clip.line_number}}')">
-                        <i id="icon_{{clip.id}}" class="ri-file-video-line slide-text"></i>
+                    <div class="icon-wrapper" id="icon_rapper_{{clip.id}}" onclick="subclipReset('{{clip.id}}','{{clip.total_clip}}','{{clip.line_number}}')">
+                        <i id="icon_{{clip.id}}" class="ri-reset-right-fill"></i>
                         <span class="notification-number">{{clip.get_number_of_subclip}}</span>
                     </div>
                     
@@ -138,6 +138,34 @@
     textfile_id='{{textfile.id}}'
     let num
 let clip_id
+function subclipReset(clipID) {
+    const textfileID ="{{textfile.id}}"
+    const url = `/video/reset-subclip/${clipID}`;
+
+    if (confirm("Are you sure you want to reset this clip?")) {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({ textfile_id: textfileID })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Clip reset successfully!");
+                location.reload();
+            } else {
+                alert("Failed to reset the clip. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error resetting clip:", error);
+            alert("An error occurred. Please try again later.");
+        });
+    }
+}
 
 function highlightNoSubclipIcons() {
     fetchNoSubclipIds().then((ids) => {

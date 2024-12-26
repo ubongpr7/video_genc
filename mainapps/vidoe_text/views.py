@@ -64,6 +64,7 @@ def add_subclip(request,id):
             text_clip.save()
 
     return redirect(f'/video/add-scene/{textfile_id}')
+
 def edit_subclip(request,id):
     if request.method =='POST':
         subclip= SubClip.objects.get(id= id)
@@ -82,15 +83,21 @@ def edit_subclip(request,id):
 
         
         return redirect(f'/video/add-scene/{textfile_id}')
+from django.views.decorators.csrf import csrf_exempt
 
-def reset_subclp(request, id):
-    textfile_id= request.GET.get('textfile_id')
-    text_clip= TextLineVideoClip.objects.get(id=id)
-    for subclip in text_clip.subclips.all():
-        if subclip.video_file:
-            subclip.video_file.delete(save=True)
-        subclip.delete()
-    return redirect(f'/video/add-scene/{textfile_id}')
+@csrf_exempt
+def reset_subclip(request, id):
+    if request.method == 'POST':
+        textfile_id = request.POST.get('textfile_id')
+        text_clip = TextLineVideoClip.objects.get(id=id)
+        text_clip.remaining=text_clip.slide
+        text_clip.save()
+        for subclip in text_clip.subclips.all():
+            if subclip.video_file:
+                subclip.video_file.delete(save=True)
+            subclip.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)
 
 def check_text_clip(request,textfile_id):
     textfile=TextFile.objects.get(id=textfile_id)
