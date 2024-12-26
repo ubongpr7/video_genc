@@ -255,7 +255,7 @@ function saveInput(inputElement) {
             }else{
                 sessionStorage.setItem(inputElement.id, inputElement.value);
                 console.log(inputElement.value)
-                document.getElementById('currentFile').textContent=''
+                document.getElementById('currentFile')?.textContent=''
                 if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
                     
                     document.getElementById('error-slide').textContent=''
