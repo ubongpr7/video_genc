@@ -335,12 +335,11 @@ fetchClipIds("{{textfile.id}}");
 function handleEditSelection(liElement ,currentFile, clipId,videoId,catId) {
     const editForm= document.getElementById('add-subclip-form')
     editForm.action=`/text/edit_subclip/${clipId}/`
-    editForm.addEventListener('submit',(e)=>{
-        e.preventDefault();
-        const htmlContainer2 = document.getElementById('submit-cont');
+   
+    const htmlContainer = document.getElementById('submit-cont');
         const selectedText=liElement.textContent
         num= clipId
-htmlContainer2.innerHTML = `
+htmlContainer.innerHTML = `
     <div class="form-group">
         <input id="slide_text" name="slide_text" value="${selectedText}" readonly required class="form-input">
     </div>
@@ -374,11 +373,15 @@ htmlContainer2.innerHTML = `
         <p style="color:red; font-size:13px;" id="error-slide"></p>
     </div>
 `;
-    
+fetchVideoClips(document.getElementById(`selected_topic_${clipId}_${num}`))
+document.getElementById(`videoSelect_${clipId}_${num}`).value=videoId
+editForm.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        
         attachValidation('add-subclip-form', clipId);
-        fetchVideoClips(document.getElementById(`selected_topic_${clipId}_${num}`))
-        document.getElementById(`videoSelect_${clipId}_${num}`).value=videoId
-    })
+        
+    });
+    
 }
 
 function editSubclip(liElement, currentFile,videoId,catId){
