@@ -10,6 +10,7 @@ from mainapps.vidoe_text.decorators import (
 )
 from .models import SubClip, TextFile, TextLineVideoClip
 import os
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, Http404
 from django.conf import settings
 from django.urls import reverse
@@ -83,7 +84,6 @@ def edit_subclip(request,id):
 
         
         return redirect(f'/video/add-scene/{textfile_id}')
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def reset_subclip(request, id):
