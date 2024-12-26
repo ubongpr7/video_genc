@@ -377,7 +377,7 @@ htmlContainer.innerHTML = `
 if (currentFile){
     document.getElementById('currentFile').textContent=`Current File ${currentFile}`
 }
-document.getElementById(`videoSelect_${clipId}_${num}`).value=catId
+document.getElementById(`selected_topic_${clipId}_${num}`).value=catId
 fetchVideoClips(document.getElementById(`selected_topic_${clipId}_${num}`))
 document.getElementById(`videoSelect_${clipId}_${num}`).value=videoId
 editForm.addEventListener('submit',(e)=>{
@@ -388,6 +388,7 @@ editForm.addEventListener('submit',(e)=>{
     });
     
 }
+
 
 function editSubclip(liElement, currentFile,videoId,catId){
 clipid=liElement.dataset.id ;
