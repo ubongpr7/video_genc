@@ -373,6 +373,8 @@ htmlContainer.innerHTML = `
         <p style="color:red; font-size:13px;" id="error-slide"></p>
     </div>
 `;
+
+document.getElementById(`videoSelect_${clipId}_${num}`).value=catId
 fetchVideoClips(document.getElementById(`selected_topic_${clipId}_${num}`))
 document.getElementById(`videoSelect_${clipId}_${num}`).value=videoId
 editForm.addEventListener('submit',(e)=>{
