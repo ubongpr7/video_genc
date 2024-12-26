@@ -255,6 +255,7 @@ function saveInput(inputElement) {
             }else{
                 sessionStorage.setItem(inputElement.id, inputElement.value);
                 console.log(inputElement.value)
+                document.getElementById('currentFile').textContent=''
                 if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
                     
                     document.getElementById('error-slide').textContent=''
@@ -375,7 +376,7 @@ htmlContainer.innerHTML = `
     </div>
 `;
 if (currentFile){
-    document.getElementById('currentFile').textContent=`Current File ${currentFile}`
+    document.getElementById('currentFile').textContent=`Current File: ${currentFile}`
 }
 document.getElementById(`selected_topic_${clipId}_${num}`).value=catId
 fetchVideoClips(document.getElementById(`selected_topic_${clipId}_${num}`))
