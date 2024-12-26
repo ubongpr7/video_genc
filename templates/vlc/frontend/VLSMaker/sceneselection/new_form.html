@@ -154,7 +154,7 @@ function subclipReset(clipID) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert("Clip reset successfully!");
+                // alert("Clip reset successfully!");
                 location.reload();
             } else {
                 alert("Failed to reset the clip. Please try again.");
