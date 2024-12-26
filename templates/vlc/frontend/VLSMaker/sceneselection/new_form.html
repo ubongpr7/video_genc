@@ -91,7 +91,7 @@
                         <div style="width: 100%;" class="tag-box">
                             <ul id="list-of-tags_{{clip.id}}" class="list-of-tags">
                                 {% for subclip in clip.subclips.all %}
-                                <li data-id="{{subclip.id}}" onclick="editSubclip(this,'{{subclip.get_video_file_name}}' )">{{subclip.subtittle}}</li>
+                                <li data-id="{{subclip.id}}" onclick="editSubclip(this,'{{subclip.get_video_file_name}}','{{subclip.video_clip.id}}','{{subclip.video_clip.category.id}}' )">{{subclip.subtittle}}</li>
                                 {% endfor %}
                                 <span  id="slide_span_{{clip.id}}" data-num="{{clip.get_number_of_subclip}}" data-id="{{clip.id}}">{{ clip.remaining }}</span>
                             </ul>
@@ -137,12 +137,10 @@
 <script>
     textfile_id='{{textfile.id}}'
     let num
-// Function to fetch the clip IDs from the backend
 let clip_id
 
 function highlightNoSubclipIcons() {
     fetchNoSubclipIds().then((ids) => {
-        // Explicitly check if ids is an array and if it has any elements
         if (Array.isArray(ids) && ids.length > 0) {
             ids.forEach((id) => {
                 const elementId = `icon_${id}`;
@@ -155,7 +153,6 @@ function highlightNoSubclipIcons() {
                 }
             });
         } else {
-            // Submit the form if ids is empty or not an array
             const form = document.getElementById('processFile');
             if (form) {
                 form.submit();
@@ -170,25 +167,21 @@ function highlightNoSubclipIcons() {
 
 async function fetchNoSubclipIds() {
     try {
-        // Define the URL endpoint
         textfileId=textfile_id
         const url = `/text/check_text_clip/${textfileId}/`;
 
-        // Make the AJAX request
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest', // This identifies the request as AJAX
+                'X-Requested-With': 'XMLHttpRequest',
             },
         });
 
-        // Check if the response is okay
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        // Parse the JSON response
         const idsOfNoSubclip = await response.json();
 
         console.log('IDs of clips with no subclips:', idsOfNoSubclip);
@@ -199,16 +192,12 @@ async function fetchNoSubclipIds() {
     }
 }
 
-function editSubclip(liElement, currentFile){
-clipid=liElement.dataset.id 
-console.log(liElement,currentFile,clipid)
-}
 function openPopup(clipId,selectedText,remainingText ) {
         document.getElementById('add-subclip-popup').style.display = 'flex';
         const formElement =document.getElementById('add-subclip-form')
         formElement.action=`/text/add_subclip/${clipId}/`
     const htmlContainer = document.getElementById('submit-cont');
-
+clip_id=clipId
     htmlContainer.innerHTML = `
         <div class="form-group">
             <input id="slide_text" name="slide_text" value="${selectedText}" readonly required class="form-input">
@@ -297,6 +286,7 @@ function restoreVideoSelectInputs() {
         });
     }
 
+
 function handleSelection(span, ul, remainingInput, errorMessage, clipId) {
     span.addEventListener("mouseup", function () {
         const selection = window.getSelection();
@@ -336,6 +326,64 @@ function handleSelection(span, ul, remainingInput, errorMessage, clipId) {
     });
 }
 
+
 fetchClipIds("{{textfile.id}}");
 
+</script>
+<!-- edit -->
+<script>
+function handleEditSelection(liElement ,currentFile, clipId,videoId,catId) {
+    const editForm= document.getElementById('add-subclip-form')
+    editForm.action=`/text/edit_subclip/${clipId}/`
+    editForm.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        const htmlContainer = document.getElementById('submit-cont');
+        const selectedText=liElement.textContent
+        num= clipId
+htmlContainer.innerHTML = `
+    <div class="form-group">
+        <input id="slide_text" name="slide_text" value="${selectedText}" readonly required class="form-input">
+    </div>
+    
+    <input id="clipId" type="number" hidden name="clipId" value="${clipId}">
+    <input type="hidden" name="textfile_id" value="{{textfile.id}}">
+
+
+    <div class="form-group">
+        <label for="slide_file">Upload Video File</label>
+        <input type="file" onchange="saveInput(this)" id="slide_file" name="slide_file" class="form-input" accept="video/*">
+        <p id="currentFile">${currentFile}</p>
+    </div>
+
+    <div class="form-group">
+        <label for="selected_topic_${clipId}_${num}">Select Topic</label>
+        <select id="selected_topic_${clipId}_${num}" value="${catId}" onchange="fetchVideoClips(this)" name="selected_topic" class="form-select">
+            <option value="">Select Topic</option>
+            {%for cat in video_categories%}
+                <option value="{{cat.id}}">{{cat.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="videoSelect_${clipId}_${num}">Select Video Clip</label>
+        <select id="videoSelect_${clipId}_${num}" onclick="saveInput(this)" name="selected_video" class="form-select">
+            <option value="" disabled selected>Select a video clip</option>
+
+        </select>
+        <p style="color:red; font-size:13px;" id="error-slide"></p>
+    </div>
+`;
+    
+        attachValidation('add-subclip-form', clipId);
+        fetchVideoClips(document.getElementById(`selected_topic_${clipId}_${num}`))
+        document.getElementById(`videoSelect_${clipId}_${num}`).value=videoId
+    })
+}
+
+function editSubclip(liElement, currentFile,videoId,catId){
+clipid=liElement.dataset.id ;
+console.log(liElement,currentFile,clipid);
+handleEditSelection(liElement ,currentFile, clipid,videoId,catId);
+}
 </script>
