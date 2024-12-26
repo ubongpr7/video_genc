@@ -72,6 +72,7 @@ def edit_subclip(request,id):
         asset_clip_id=request.POST.get(f'selected_video')
         if subclip.video_file:
             subclip.video_file.delete(save=False)
+        subclip.video_clip=None
         if file_:
             subclip.video_file=file_
         elif asset_clip_id:
