@@ -103,7 +103,7 @@ def check_text_clip(request,textfile_id):
     textfile=TextFile.objects.get(id=textfile_id)
     ids_of_no_subclip=[]
     for clip in textfile.video_clips.all():
-        if not clip.remaining.trim()=='':
+        if not clip.remaining.strip()=='':
             ids_of_no_subclip.append(clip.id)
     return JsonResponse(ids_of_no_subclip,safe=False)
 @require_http_methods(["DELETE"])
