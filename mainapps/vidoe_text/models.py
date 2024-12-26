@@ -209,7 +209,7 @@ class SubClip(models.Model):
 
     def get_video_file_name(self):
         filename = self.video_file.name.split("/")[-1]
-        return filename[:15]
+        return filename[:25]
 
     def to_dict(self):
         if self.video_clip:
