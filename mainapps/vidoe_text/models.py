@@ -230,7 +230,7 @@ class SubClip(models.Model):
             "video_path": video_path,  
         }
     class Meta:
-        ordererng=['created_at']
+        ordering=['created_at']
     
 class LogoModel(models.Model):
     logo = models.FileField(upload_to="logos/")
