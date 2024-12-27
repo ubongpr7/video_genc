@@ -81,11 +81,10 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "vlcdb1",
-        "USER": "ubongpr7",
-        # "PASSWORD": os.getenv("DB_PASSWORD"),
-        "PASSWORD": "ubongpr7",
-        "HOST": "vlcdb1.cp8w6cg80sxf.eu-north-1.rds.amazonaws.com",
+        "NAME": os.getenv("POSTGRES_NAME"),
+        "USER": os.getenv("POSTGRES_PASSWORD"),
+        "PASSWORD":  os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("POSTGRES_HOST"),
         "PORT": "5432",
     }
 }
