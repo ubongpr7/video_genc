@@ -289,9 +289,9 @@ function saveInput(inputElement) {
             }else{
                 sessionStorage.setItem(inputElement.id, inputElement.value);
                 console.log(inputElement.value)
-                if (inputElement.id.startsWith('videoSelect_')){
+                if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
                     
-                    document.getElementById('error-slide').textContent=''
+                    document.getElementById('currentFile').textContent=''
     
                 };
 
