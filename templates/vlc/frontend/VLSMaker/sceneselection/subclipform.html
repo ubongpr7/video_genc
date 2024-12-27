@@ -212,6 +212,9 @@ function attachValidation(formId, clipId) {
             document.getElementById('error-slide').textContent='Select A Clip';
             videoSelect.focus();
         }else{
+            document.getElementById('submit-clip').disabled= true
+            document.getElementById('submit-clip').style.cursor= 'wait'
+
             form.submit();
         }
         

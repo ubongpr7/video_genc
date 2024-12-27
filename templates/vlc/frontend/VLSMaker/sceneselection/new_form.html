@@ -167,8 +167,6 @@ function subclipReset(clipID) {
 }
 
 function highlightNoSubclipIcons(button) {
-    button.disabled=true
-    button.style.cursor='wait'
     fetchNoSubclipIds().then((ids) => {
         if (Array.isArray(ids) && ids.length > 0) {
             ids.forEach((id) => {
@@ -187,6 +185,8 @@ function highlightNoSubclipIcons(button) {
         } else {
             const form = document.getElementById('processFile');
             if (form) {
+                button.disabled=true
+
                 form.submit();
             } else {
                 console.error("Form with ID 'processFile' not found.");
@@ -349,7 +349,6 @@ function handleSelection(span, ul, remainingInput, errorMessage, clipId) {
                 openPopup(clipId,selectedText,remainingText );
                 document.getElementById('add-subclip-form').addEventListener('submit',(e)=>{
                     e.preventDefault();
-                    document.getElementById('submit-clip').disabled= true
                     attachValidation('add-subclip-form', clipId);
                 })
 
