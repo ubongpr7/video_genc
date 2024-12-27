@@ -1,4 +1,5 @@
 import logging
+from django.utils import timezone
 import os
 import uuid
 from django.db import models
@@ -132,6 +133,7 @@ class TextFile(models.Model):
         except ValueError:
             return False
 
+
     def track_progress(self, increase):
         self.progress = str(increase)
         self.save()
@@ -199,6 +201,8 @@ class SubClip(models.Model):
     end = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=6, default=0.1
     )
+    created_at = models.DateTimeField(auto_now_add=True,default=timezone.now)
+
     video_file = models.FileField(upload_to=text_clip_upload_path)
     main_line=models.ForeignKey(TextLineVideoClip,on_delete=models.CASCADE,related_name='subclips')
     def get_file_status(self):
@@ -225,7 +229,8 @@ class SubClip(models.Model):
             "subtittle": self.subtittle,
             "video_path": video_path,  
         }
-
+    class Meta:
+        ordererng=['created_at']
     
 class LogoModel(models.Model):
     logo = models.FileField(upload_to="logos/")
