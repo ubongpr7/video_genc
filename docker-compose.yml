@@ -7,9 +7,9 @@ services:
       sh -c "
         python3.10 manage.py makemigrations &&
         python3.10 manage.py migrate &&
-        python3.10 manage.py runserver 0.0.0.0:7758
+        python3.10 manage.py runserver 0.0.0.0:7732
       "
     volumes:
       - .:/app
     ports:
-      - "7758:7758"
+      - "7732:7732"
