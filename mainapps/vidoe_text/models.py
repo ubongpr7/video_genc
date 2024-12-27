@@ -201,7 +201,7 @@ class SubClip(models.Model):
     end = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=6, default=0.1
     )
-    created_at = models.DateTimeField(auto_now_add=True,default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     video_file = models.FileField(upload_to=text_clip_upload_path)
     main_line=models.ForeignKey(TextLineVideoClip,on_delete=models.CASCADE,related_name='subclips')
