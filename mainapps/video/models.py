@@ -47,7 +47,7 @@ def video_clip_upload_path(instance, filename):
     filename = f"{uuid.uuid4()}.{ext}"  # Use UUID to ensure unique file names
     if not instance.id:
         return os.path.join("text_files", "new", filename)
-    return os.path.join("video_clip", str(instance.id), filename)
+    return os.path.join("video_clip", str(instance.category.id), filename)
 
 
 class ClipCategory(models.Model):
