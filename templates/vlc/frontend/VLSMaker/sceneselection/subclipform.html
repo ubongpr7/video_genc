@@ -180,7 +180,8 @@
 
 function closeModal() {
     document.getElementById('add-subclip-popup').style.display = 'none';
-
+    const form = document.getElementById('add-subclip-form');
+    form.reset();
     const formClipID = document.getElementById('clipId').value;
     const ulElement = document.getElementById(`list-of-tags_${formClipID}`);
     const spanElement = document.getElementById(`slide_span_${formClipID}`);
