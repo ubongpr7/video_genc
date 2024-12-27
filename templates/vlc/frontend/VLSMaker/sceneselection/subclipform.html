@@ -98,7 +98,13 @@
 </style>
 
 <script>
-    
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('add-subclip-form');
+    if (form) {
+      form.reset();
+    }
+  });
+
     function fetchVideoClips(selected){
         id = selected.value;
         let video_id=`videoSelect_${clip_id}_${num}`

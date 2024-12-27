@@ -38,8 +38,6 @@ def add_subclip(request,id):
     if request.method=="POST":
         textfile_id=request.POST.get('textfile_id')
         remaining=request.POST.get('remaining')
-        
-
         file_=request.FILES.get(f'slide_file')
         text=request.POST.get(f'slide_text')
         asset_clip_id=request.POST.get(f'selected_video')
