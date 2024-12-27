@@ -62,7 +62,7 @@ def add_subclip(request,id):
             text_clip.remaining=remaining
             text_clip.save()
 
-    return redirect(f'/video/add-scene/{textfile_id}')
+    return redirect(f'/video/add-scene/{textfile_id}/#grid-containerid')
 
 def edit_subclip(request,id):
     if request.method =='POST':
@@ -81,7 +81,7 @@ def edit_subclip(request,id):
         subclip.save()
 
         
-        return redirect(f'/video/add-scene/{textfile_id}')
+        return redirect(f'/video/add-scene/{textfile_id}/#grid-containerid')
 
 @csrf_exempt
 def reset_subclip(request, id):
