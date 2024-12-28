@@ -292,7 +292,11 @@ function saveInput(inputElement) {
                 }
 
             }else{
-                for (const FileItem of document.querySelectorAll('input')){
+                
+                sessionStorage.setItem(inputElement.id, inputElement.value);
+                console.log(inputElement.value)
+                if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
+                    for (const FileItem of document.querySelectorAll('input')){
                     if (FileItem.type='file'){
                         FileItem.value='';
 
@@ -300,10 +304,6 @@ function saveInput(inputElement) {
 
                 }
 
-                sessionStorage.setItem(inputElement.id, inputElement.value);
-                console.log(inputElement.value)
-                if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
-                    
                     document.getElementById('currentFile').textContent=''
     
                 };
