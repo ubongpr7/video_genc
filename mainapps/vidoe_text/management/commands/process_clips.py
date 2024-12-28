@@ -489,9 +489,11 @@ class Command(BaseCommand):
             clip.write_videofile(
                 temp_output_video.name,
                 codec="libx264",
-                preset="ultrafast",
+                # preset="ultrafast",
                 audio_codec="aac",
                 fps=30,
+                temp_audiofile='temp-audio.m4a', 
+                remove_temp=True
                 # ffmpeg_params=["-movflags", "+faststart"],
             )
 
@@ -528,9 +530,11 @@ class Command(BaseCommand):
             clip.write_videofile(
                 temp_output_video.name,
                 codec="libx264",
-                preset="ultrafast",
+                # preset="ultrafast",
                 audio_codec="aac",
                 fps=30,
+                temp_audiofile='temp-audio.m4a', 
+                remove_temp=True
                 # ffmpeg_params=["-movflags", "+faststart"],
             )
             self.text_file_instance.track_progress(70)
@@ -1582,11 +1586,12 @@ class Command(BaseCommand):
             ) as temp_output_video:
                 watermarked.write_videofile(
                     temp_output_video.name,
-                    # codec='libx264',
+                    codec='libx264',
                     # preset="ultrafast",
-                    # audio_codec="aac",
-                    # fps=30,
-                    # ffmpeg_params=["-movflags", "+faststart"]
+                    audio_codec="aac",
+                    fps=30,
+                    temp_audiofile='temp-audio.m4a', 
+                    remove_temp=True
                 )
                 self.text_file_instance.track_progress(95)
 
