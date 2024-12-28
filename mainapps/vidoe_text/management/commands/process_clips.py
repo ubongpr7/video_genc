@@ -492,7 +492,7 @@ class Command(BaseCommand):
                 preset="ultrafast",
                 audio_codec="aac",
                 fps=30,
-                ffmpeg_params=["-movflags", "+faststart"],
+                # ffmpeg_params=["-movflags", "+faststart"],
             )
 
             if file_to_write:
@@ -531,7 +531,7 @@ class Command(BaseCommand):
                 preset="ultrafast",
                 audio_codec="aac",
                 fps=30,
-                ffmpeg_params=["-movflags", "+faststart"],
+                # ffmpeg_params=["-movflags", "+faststart"],
             )
             self.text_file_instance.track_progress(70)
 
