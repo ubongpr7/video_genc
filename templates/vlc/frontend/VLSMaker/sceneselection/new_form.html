@@ -289,6 +289,14 @@ function saveInput(inputElement) {
                 }
 
             }else{
+                for (const FileItem of document.querySelectorAll('input')){
+                    if (FileItem.type='file'){
+                        selectItem.value='';
+
+                    }
+
+                }
+
                 sessionStorage.setItem(inputElement.id, inputElement.value);
                 console.log(inputElement.value)
                 if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
