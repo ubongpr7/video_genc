@@ -165,7 +165,7 @@ class Command(BaseCommand):
                 preset="ultrafast",
                 fps=30,
                 audio_codec="aac",
-                ffmpeg_params=["-movflags", "+faststart"],
+                # ffmpeg_params=["-movflags", "+faststart"],
             )
 
             # Save the watermarked video to the generated_watermarked_video field
@@ -246,7 +246,7 @@ class Command(BaseCommand):
                     preset="ultrafast",
                     audio_codec="aac",
                     fps=30,
-                    ffmpeg_params=["-movflags", "+faststart"],
+                    # ffmpeg_params=["-movflags", "+faststart"],
                 )
                 self.text_file_instance.track_progress(95)
 
