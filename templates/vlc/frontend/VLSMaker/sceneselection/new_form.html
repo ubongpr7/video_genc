@@ -296,13 +296,7 @@ function saveInput(inputElement) {
                 sessionStorage.setItem(inputElement.id, inputElement.value);
                 console.log(inputElement.value)
                 if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
-                    for (const FileItem of document.querySelectorAll('input')){
-                    if (FileItem.type='file'){
-                        FileItem.value='';
-
-                    }
-
-                }
+                    document.getElementById("slide_file").value=''
 
                     document.getElementById('currentFile').textContent=''
     
