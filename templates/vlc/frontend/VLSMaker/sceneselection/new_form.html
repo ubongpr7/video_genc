@@ -280,18 +280,21 @@ function fetchClipIds(textfileId) {
 }
 function saveInput(inputElement) {
             if (inputElement.type ==='file'){
-                document.getElementById('error-slide').textContent='';
-                for (const selectItem of document.querySelectorAll('select')){
-                    selectItem.value='';
-                    saveInput(selectItem)
-               document.getElementById('currentFile').textContent=''
+                if (inputElement.value){
+                    document.getElementById('error-slide').textContent='';
 
+                    for (const selectItem of document.querySelectorAll('select')){
+                        selectItem.value='';
+                        saveInput(selectItem)
+                   document.getElementById('currentFile').textContent=''
+    
+                    }
                 }
 
             }else{
                 for (const FileItem of document.querySelectorAll('input')){
                     if (FileItem.type='file'){
-                        selectItem.value='';
+                        FileItem.value='';
 
                     }
 
