@@ -128,7 +128,7 @@ class TextFile(models.Model):
     def get_clip_number(self):
         total_clips=[]
         for clip in self.video_clips.all() :
-            for subclip in clip.subclip.all():
+            for subclip in clip.subclips.all():
                 total_clips.append(subclip)
 
         return len(total_clips)
