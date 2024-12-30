@@ -77,7 +77,7 @@ def delete_textfile(request, textfile_id):
 def manage_textfile(request):
     user =request.user
     textfiles=TextFile.objects.filter(user=user)
-    return render('assets/text_file.html', {'textfiles':textfiles})
+    return render(request,'assets/text_file.html', {'textfiles':textfiles})
 def edit_subclip(request,id):
     if request.method =='POST':
         subclip= SubClip.objects.get(id= id)
