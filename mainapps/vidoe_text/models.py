@@ -121,7 +121,17 @@ class TextFile(models.Model):
     generated_final_bgmw_video = models.FileField(
         upload_to="generated_bgmw_video/", blank=True, null=True
     )
+    def get_file_text(self):
+        if self.video_clips.all():
+            return self.video_clips.all()[0].slide
+        return "No TexFile added to this Instance"
+    def get_clip_number(self):
+        total_clips=[]
+        for clip in self.video_clips.all() :
+            for subclip in clip.subclip.all():
+                total_clips.append(subclip)
 
+        return len(total_clips)
     @staticmethod
     def is_valid_hex_color(color_code):
         """Validate if a color code is a valid hex value."""
@@ -132,6 +142,35 @@ class TextFile(models.Model):
             return True
         except ValueError:
             return False
+    def delete(self, using=None, keep_parents=False):
+        """Override the delete method to delete associated files."""
+        file_fields = [
+            "text_file",
+            "font_file",
+            "bg_music_text",
+            "audio_file",
+            "srt_file",
+            "subtitle_file",
+            "subclips_text_file",
+            "blank_video",
+            "generated_audio",
+            "generated_subclips_srt",
+            "generated_srt",
+            "generated_blank_video",
+            "generated_final_video",
+            "generated_watermarked_video",
+            "generated_final_bgm_video",
+            "generated_final_bgmw_video",
+        ]
+
+        # Delete files associated with each file field
+        for field_name in file_fields:
+            field = getattr(self, field_name, None)
+            if field and field.name:  # Check if the field is not None and has a file
+                field.delete(save=False)
+
+        # Call the parent class's delete method to delete the model instance
+        super().delete(using=using, keep_parents=keep_parents)
 
 
     def track_progress(self, increase):

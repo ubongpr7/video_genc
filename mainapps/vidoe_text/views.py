@@ -63,7 +63,21 @@ def add_subclip(request,id):
             text_clip.save()
 
     return redirect(f'/video/add-scene/{textfile_id}/#grid-containerid')
+def delete_textfile(request, textfile_id):
+    textfile=TextFile.objects.get(id=textfile_id)
+    if request.method=='POST':
+        try:
+            textfile.delete()
 
+            return HttpResponse(status=204)
+        except Exception as e:
+            pass 
+
+    return render(request, "partials/confirm_delete.html", {"item":textfile })
+def manage_textfile(request):
+    user =request.user
+    textfiles=TextFile.objects.filter(user=user)
+    return render('assets/text_file.html', {'textfiles':textfiles})
 def edit_subclip(request,id):
     if request.method =='POST':
         subclip= SubClip.objects.get(id= id)

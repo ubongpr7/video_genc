@@ -20,6 +20,7 @@ urlpatterns = [
     path("reset_subclip/<str:id>/", views.reset_subclip , name="reset_subclip"),
     path("edit_subclip/<str:id>/", views.edit_subclip, name="edit_subclip"),
     path("check_text_clip/<str:textfile_id>/", views.check_text_clip, name="check_text_clip"),
+    path("delete_textfile/<str:textfile_id>/", views.delete_textfile, name="delete_textfile"),
     path(
         "process-background-music/<str:textfile_id>/",
         views.process_background_music,
@@ -37,5 +38,6 @@ urlpatterns = [
         views.delete_background_music,
         name="delete_background_music",
     ),
+    path("manage_textfile/", views.manage_textfile, name="manage_textfile"),
     path("validate_api_key/", views.validate_api_keyv, name="validate_api_key"),
 ]
