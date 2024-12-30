@@ -494,7 +494,7 @@ def update_textfile(request, textfile_id):
         textfile.voice_id = voice_id
         textfile.api_key = api_key
         textfile.save()
-        mess
+        messages.success(request,'Update Successful!')
         return JsonResponse({'message': 'Update successful!'})
 
     return JsonResponse({'message': 'Invalid request method.'}, status=405)
