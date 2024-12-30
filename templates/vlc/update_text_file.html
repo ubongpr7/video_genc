@@ -2,7 +2,7 @@
 <div id="updateTextFileModal" class="modal">
     <div class="modal-content">
         <h4>Update TextFile Details</h4>
-        <form method="POST" id="updateTextFileForm">
+        <form method="POST" action="." id="updateTextFileForm">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Update</button>
