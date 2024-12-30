@@ -232,7 +232,6 @@ class TextLineVideoClip(models.Model):
         super().delete(*args, **kwargs)
 
 
-
 class SubClip(models.Model):
     subtittle=models.CharField(max_length=100,)
     video_clip = models.ForeignKey(
