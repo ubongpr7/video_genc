@@ -1,5 +1,5 @@
 <!-- Popup Modal -->
-<div id="updateTextFileModal" action="/text/update_textfile/{{textfile.id}}" class="modal">
+<div id="updateTextFileModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
             <h2>Update TextFile</h2>
@@ -35,7 +35,6 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 1000;
-    
     justify-content: center;
     align-items: center;
 }
@@ -45,14 +44,12 @@
     background-color: #fff;
     border-radius: 8px;
     max-width: 400px;
-    position: inherit;
     width: 90%;
-    top:50%;
-    left: 25%;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.3s ease-in-out;
 }
+
 
 /* Modal Header */
 .modal-header {
@@ -80,7 +77,6 @@
 /* Form Styling */
 .form-group {
     margin-bottom: 15px;
-    margin-right: 20px;
 }
 
 .form-group label {
@@ -169,29 +165,27 @@
     function closePopup() {
         document.getElementById('updateTextFileModal').style.display = 'none';
     }
-    document.getElementById('updateTextFileForm').onsubmit = function (event) {
-    event.preventDefault(); // Prevent default form submission
 
-    const form = this;
-    const formData = new FormData(form);
-
-    fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
-        },
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message === 'Update successful!') {
-                alert('Updated successfully!');
-                closePopup();
-                window.location.reload(); // Reload the page if needed
-            } else {
-                alert('Error: ' + data.message);
+    document.getElementById('updateTextFileForm').onsubmit = function(event) {
+        event.preventDefault();
+        var form = this;
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', form.action, true);
+        xhr.setRequestHeader('X-CSRFToken', form.querySelector('[name=csrfmiddlewaretoken]').value);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    alert('Update successful!');
+                    closePopup();
+                } else {
+                    alert('Error updating TextFile.');
+                }
             }
-        })
-        .catch(error => console.error('Error:', error));
-};
+        };
+        
+        // Form data
+        var formData = new FormData(form);
+        xhr.send(formData);
+    };
 </script>
