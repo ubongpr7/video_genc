@@ -177,6 +177,7 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     alert('Update successful!');
+                    window.location='/text/process-textfile/{{textfile.id}}/'
                     closePopup();
                 } else {
                     alert('Error updating TextFile.');
