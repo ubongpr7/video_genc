@@ -505,6 +505,8 @@ def process_textfile(request, textfile_id):
     try:
         # Fetch the TextFile instance
         textfile = TextFile.objects.get(pk=textfile_id)
+        textfile.progress='0'
+        textfile.save()
         if textfile.user != request.user:
             messages.error(
                 request, "You do not have access to the resources you requested."
