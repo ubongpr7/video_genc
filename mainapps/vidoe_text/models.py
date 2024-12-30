@@ -123,7 +123,7 @@ class TextFile(models.Model):
     )
     def get_file_text(self):
         if self.video_clips.all():
-            return f'Id: {self.id}->{self.video_clips.all()[0].slide}'
+            return f'Id: {self.id}-> {self.video_clips.all()[0].slide}'
         return "No TexFile added to this Instance"
     def get_clip_number(self):
         total_clips=[]
