@@ -6,7 +6,7 @@
             <button class="close-btn" onclick="closePopup()">&times;</button>
         </div>
         <div class="modal-body">
-            <form id="updateTextFileForm" method="POST" action="{% url 'update_textfile' textfile_id=textfile.id %}">
+            <form id="updateTextFileForm" method="POST" action=".">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="voiceId">Voice ID</label>
