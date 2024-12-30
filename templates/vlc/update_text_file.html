@@ -11,10 +11,13 @@
                 <div class="form-group">
                     <label for="voiceId">Voice ID</label>
                     <input type="text" id="voiceId" name="voice_id" value="{{ textfile.voice_id }}" required>
+                    <p id="voiceIdError"></p>
+
                 </div>
                 <div class="form-group">
                     <label for="apiKey">API Key</label>
                     <input type="text" id="apiKey" name="api_key" value="{{ textfile.api_key }}" required>
+                    <p id="apiKeyError"></p>
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="submit-btn">Update</button>
@@ -166,27 +169,74 @@
         document.getElementById('updateTextFileModal').style.display = 'none';
     }
 
-    document.getElementById('updateTextFileForm').onsubmit = function(event) {
-        event.preventDefault();
-        var form = this;
-        
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', form.action, true);
-        xhr.setRequestHeader('X-CSRFToken', form.querySelector('[name=csrfmiddlewaretoken]').value);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    alert('Update successful!');
-                    window.location='/text/process-textfile/{{textfile.id}}/'
-                    closePopup();
+    document.getElementById('updateTextFileForm').onsubmit = function (event) {
+    event.preventDefault();
+
+    // Get input values
+    const apiKeyInput = document.getElementById('apiKey');
+    const voiceIdInput = document.getElementById('voiceId');
+    const apiKey = apiKeyInput.value.trim();
+    const voiceId = voiceIdInput.value.trim();
+
+    const apiKeyError = document.getElementById('apiKeyError');
+    const voiceIdError = document.getElementById('voiceIdError');
+
+    // Clear previous errors
+    apiKeyError.textContent = '';
+    voiceIdError.textContent = '';
+
+    // Validate API key and Voice ID via AJAX
+    $.ajax({
+        url: '/text/validate_api_key/', // Your validation endpoint
+        type: 'POST',
+        data: {
+            'eleven_labs_api_key': apiKey,
+            'voice_id': voiceId,
+            'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        },
+        success: function (response) {
+            if (response.valid) {
+                // Proceed with form submission if validation passes
+                const form = document.getElementById('updateTextFileForm');
+                const formData = new FormData(form);
+
+                // Use XMLHttpRequest to submit the form
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', form.action, true);
+                xhr.setRequestHeader('X-CSRFToken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            alert('Update successful!');
+                            window.location = `/text/process-textfile/${response.textfile_id}/`;
+                        } else {
+                            alert('Error updating TextFile.');
+                        }
+                    }
+                };
+
+                xhr.send(formData);
+            } else {
+                // Handle validation errors
+                if (response.error.includes('API key')) {
+                    apiKeyInput.focus();
+                    apiKeyError.textContent = response.error;
+                } else if (response.error.includes('Voice')) {
+                    voiceIdInput.focus();
+                    voiceIdError.textContent = response.error;
                 } else {
-                    alert('Error updating TextFile.');
+                    apiKeyInput.focus();
+                    apiKeyError.textContent = response.error || 'An unknown error occurred.';
                 }
             }
-        };
-        
-        // Form data
-        var formData = new FormData(form);
-        xhr.send(formData);
-    };
+        },
+        error: function (xhr, status, error) {
+            console.error('Error Status:', status);
+            console.error('Error:', error);
+            apiKeyError.textContent = 'Error validating the API key.';
+            apiKeyInput.focus();
+        },
+    });
+};
 </script>
