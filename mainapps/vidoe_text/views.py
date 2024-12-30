@@ -9,6 +9,7 @@ from mainapps.vidoe_text.decorators import (
     check_user_credits,
 )
 from .models import SubClip, TextFile, TextLineVideoClip
+from .forms import TextFileUpdateForm
 import os
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, Http404
@@ -469,6 +470,18 @@ def progress(request, text_file_id):
 
 @login_required
 def progress_page(request, al_the_way, text_file_id):
+    textfile = get_object_or_404(TextFile, id=text_file_id)
+
+    if request.method == 'POST':
+        form = TextFileUpdateForm(request.POST, instance=textfile)
+        if form.is_valid():
+            form.save()
+            return redirect(f'text/process-textfile/{text_file_id}')
+        else:
+            return JsonResponse({'message': 'Error updating TextFile.'}, status=400)
+    
+    else:
+        form = TextFileUpdateForm(instance=textfile)
     return render(
         request,
         "vlc/progress.html",
@@ -476,6 +489,21 @@ def progress_page(request, al_the_way, text_file_id):
     )
 
 
+def update_textfile(request, textfile_id):
+    textfile = get_object_or_404(TextFile, id=textfile_id)
+
+    if request.method == 'POST':
+        form = TextFileUpdateForm(request.POST, instance=textfile)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'message': 'Update successful!'})
+        else:
+            return JsonResponse({'message': 'Error updating TextFile.'}, status=400)
+    
+    else:
+        form = TextFileUpdateForm(instance=textfile)
+
+    return render(request, 'update_textfile_popup.html', {'form': form})
 @login_required
 @check_credits_and_ownership(textfile_id_param="textfile_id", credits_required=1)
 def process_textfile(request, textfile_id):

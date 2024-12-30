@@ -1,0 +1,70 @@
+
+<div id="updateTextFileModal" class="modal">
+    <div class="modal-content">
+        <h4>Update TextFile Details</h4>
+        <form method="POST" id="updateTextFileForm">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update</button>
+            <button type="button" onclick="closePopup()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- Add some basic styles for the modal -->
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    .modal-content {
+        background-color: white;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+</style>
+
+<script>
+    // Open the modal
+    function openPopup() {
+        document.getElementById('updateTextFileModal').style.display = 'block';
+    }
+
+    // Close the modal
+    function closePopup() {
+        document.getElementById('updateTextFileModal').style.display = 'none';
+    }
+
+    // Submit the form via AJAX
+    document.getElementById('updateTextFileForm').onsubmit = function(event) {
+        event.preventDefault();
+        var form = this;
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', form.action, true);
+        xhr.setRequestHeader('X-CSRFToken', form.querySelector('[name=csrfmiddlewaretoken]').value);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    alert('Update successful!');
+                    closePopup();
+                } else {
+                    alert('Error updating TextFile.');
+                }
+            }
+        };
+        
+        // Form data
+        var formData = new FormData(form);
+        xhr.send(formData);
+    };
+</script>

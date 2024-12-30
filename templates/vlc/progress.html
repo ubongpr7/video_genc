@@ -65,8 +65,9 @@
         
     </div>
     
-    
+    {% include 'vlc/update_text_file.html' %}
     <script>
+        openPopup();
         function fetchProgress() {
             fetch('/text/progress/{{text_file_id}}')
                 .then(response => response.json())

@@ -13,3 +13,11 @@ class TextFileForm(forms.ModelForm):
     class Meta:
         model = TextFile
         fields = "__aLL__"
+# forms.py
+
+from django import forms
+
+class TextFileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = TextFile
+        fields = ['voice_id', 'api_key']
