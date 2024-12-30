@@ -21,6 +21,7 @@ urlpatterns = [
     path("edit_subclip/<str:id>/", views.edit_subclip, name="edit_subclip"),
     path("check_text_clip/<str:textfile_id>/", views.check_text_clip, name="check_text_clip"),
     path("delete_textfile/<str:textfile_id>/", views.delete_textfile, name="delete_textfile"),
+    path("update_textfile/<str:textfile_id>/", views.update_textfile, name="update_textfile"),
     path(
         "process-background-music/<str:textfile_id>/",
         views.process_background_music,

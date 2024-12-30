@@ -472,38 +472,33 @@ def progress(request, text_file_id):
 def progress_page(request, al_the_way, text_file_id):
     textfile = get_object_or_404(TextFile, id=text_file_id)
 
-    if request.method == 'POST':
-        form = TextFileUpdateForm(request.POST, instance=textfile)
-        if form.is_valid():
-            form.save()
-            return redirect(f'text/process-textfile/{text_file_id}')
-        else:
-            return JsonResponse({'message': 'Error updating TextFile.'}, status=400)
-    
-    else:
-        form = TextFileUpdateForm(instance=textfile)
     return render(
         request,
         "vlc/progress.html",
-        {"al_the_way": al_the_way, "text_file_id": text_file_id,'form':form},
+        {"al_the_way": al_the_way, "text_file_id": text_file_id,'textfile':textfile},
     )
-
-
 def update_textfile(request, textfile_id):
+    # Fetch the TextFile object
     textfile = get_object_or_404(TextFile, id=textfile_id)
 
     if request.method == 'POST':
-        form = TextFileUpdateForm(request.POST, instance=textfile)
-        if form.is_valid():
-            form.save()
-            return JsonResponse({'message': 'Update successful!'})
-        else:
-            return JsonResponse({'message': 'Error updating TextFile.'}, status=400)
-    
-    else:
-        form = TextFileUpdateForm(instance=textfile)
+        # Parse incoming data from the request body
+        voice_id = request.POST.get('voice_id')
+        api_key = request.POST.get('api_key')
 
-    return render(request, 'update_textfile_popup.html', {'form': form})
+        # Validate the inputs (basic example, you can expand this)
+        if not voice_id or not api_key:
+            return JsonResponse({'message': 'Voice ID and API Key are required.'}, status=400)
+
+        # Update the TextFile fields
+        textfile.voice_id = voice_id
+        textfile.api_key = api_key
+        textfile.save()
+
+        return JsonResponse({'message': 'Update successful!'})
+
+    return JsonResponse({'message': 'Invalid request method.'}, status=405)
+
 @login_required
 @check_credits_and_ownership(textfile_id_param="textfile_id", credits_required=1)
 def process_textfile(request, textfile_id):
