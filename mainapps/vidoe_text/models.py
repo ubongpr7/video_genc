@@ -226,6 +226,10 @@ class TextLineVideoClip(models.Model):
         return {
             "video_path": video_path,  
         }
+    def delete(self, *args, **kwargs):
+        if self.video_file and self.video_file.name:
+            self.video_file.delete(save=False)
+        super().delete(*args, **kwargs)
 
 
 
@@ -253,6 +257,10 @@ class SubClip(models.Model):
     def get_video_file_name(self):
         filename = self.video_file.name.split("/")[-1]
         return filename[:25]
+    def delete(self, *args, **kwargs):
+        if self.video_file and self.video_file.name:
+            self.video_file.delete(save=False)
+        super().delete(*args, **kwargs)
 
     def to_dict(self):
         if self.video_clip:
