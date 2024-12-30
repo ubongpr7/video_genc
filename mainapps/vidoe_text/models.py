@@ -91,12 +91,12 @@ class TextFile(models.Model):
     font_color = models.CharField(max_length=7)  # e.g., hex code: #ffffff
     subtitle_box_color = models.CharField(max_length=7, blank=True, null=True)
     font_size = models.IntegerField()
+    created_at = models.DateTimeField(default=timezone.now)
     bg_music_text = models.FileField(upload_to="background_txt/", blank=True, null=True)
-    fps = models.IntegerField(default=30, editable=False)
     audio_file = models.FileField(upload_to="audio_files", blank=True, null=True)
     srt_file = models.FileField(
         upload_to="srt_files/", blank=True, null=True
-    )  # SRT file for subtitles
+    )  
     subtitle_file = models.FileField(upload_to="subtitles/", blank=True, null=True)
     subclips_text_file = models.FileField(upload_to="subclips_text_files/", blank=True, null=True)
     blank_video = models.FileField(upload_to="blank_video/", blank=True, null=True)
