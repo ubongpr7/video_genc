@@ -485,7 +485,7 @@ def progress_page(request, al_the_way, text_file_id):
     return render(
         request,
         "vlc/progress.html",
-        {"al_the_way": al_the_way, "text_file_id": text_file_id},
+        {"al_the_way": al_the_way, "text_file_id": text_file_id,'form':form},
     )
 
 
