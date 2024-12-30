@@ -213,7 +213,7 @@
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
-                            alert('Update successful!');
+                            // alert('Update successful!');
                             window.location = `/text/process-textfile/{{textfile.id}}/`;
                         } else {
                             alert('Error updating TextFile.');
