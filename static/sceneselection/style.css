@@ -27,7 +27,7 @@ html, body{
 
 .grid-items {
     display: grid;
-    grid-template-columns: 135px 350px 350px 483px;
+    /* grid-template-columns: 135px 350px 350px 483px; */
     grid-auto-rows: minmax(auto, fit-content);
     border-radius: 8px;
     border: 1px solid #00000080;
@@ -39,7 +39,7 @@ html, body{
     align-items: center;
     border-bottom: 1px solid #00000080;
     border-right: 1px solid #00000080;
-    padding: 18px 24px;
+    /* padding: 18px 24px; */
     font-size: 20px;
     font-weight: 500;
     line-height: 24.38px;
