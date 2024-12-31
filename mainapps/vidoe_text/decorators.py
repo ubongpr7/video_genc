@@ -39,7 +39,8 @@ def check_credits_and_ownership(textfile_id_param, credits_required, deduct=Fals
 
             # Check if the user has enough credits
             user_credits = request.user.subscription.credits
-            if not request.user.is_superuser and user_credits <= 0:
+            # if not request.user.is_superuser and user_credits <= 0:
+            if user_credits <= 0:
                 # Redirect to pricing page with a relevant message
                 messages.warning(
                     request,
