@@ -180,8 +180,8 @@ body {
     align-items: center;
     gap: 10px;
     background-color: #f5f5f5;
-    border: 2px dashed #864AF9;
-    padding: 10px 20px;
+    border: 2px solid #864AF9;
+    /* padding: 10px 20px; */
     border-radius: 8px;
     cursor: pointer;
     transition: border-color 0.3s ease, background-color 0.3s ease;
@@ -208,7 +208,7 @@ body {
 }
 
 .upload-input {
-    display: none; /* Hide the actual file input */
+    display: none; 
 }
 
 .file-name {
@@ -514,7 +514,6 @@ clip_id=clipId
                 </label>
                 <input type="file" onchange="saveInput(this)" id="slide_file" name="slide_file" class="upload-input" accept="video/*">
             </div>
-            <p id="file-name" class="file-name">No file chosen</p>
 
             <p id="currentFile"></p>
         
@@ -559,7 +558,7 @@ function saveInput(inputElement) {
                 if (inputElement.value){
                     document.getElementById('error-slide').textContent='';
                     const fileName = inputElement.files.length > 0 ? inputElement.files[0].name : "No file chosen";
-                    document.getElementById("file-name").textContent = fileName;
+                    document.getElementById("upload-text").textContent = fileName.slice(0,15);
                     for (const selectItem of document.querySelectorAll('select')){
                         selectItem.value='';
                         saveInput(selectItem)
