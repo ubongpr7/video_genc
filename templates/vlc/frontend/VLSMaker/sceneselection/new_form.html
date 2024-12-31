@@ -217,9 +217,11 @@ body {
 
 }
 
-.form-grid-item.title {
-    border-top-left-radius: 6px;
+.form-grid-item.end {
     border-top-right-radius: 6px;
+}
+.form-grid-item.begin {
+    border-top-left-radius: 6px;
 }
 .form-grid-item {
     display: flex;
@@ -432,8 +434,8 @@ clip_id=clipId
 
         <input type="text" value="${remainingText}" hidden id="remaining" name="remaining">
         <div style="border-left:0.8px solid #864AF9;border-bottom:0.8px solid #864AF9;border-right:0.8px solid #864AF9"  class="form-grid-cont">
-        <div class="grid-item title  form-grid-item column-1"><span>Subtitle</span></div>
-        <div class="grid-item title form-grid-item column-2"><span>Subtitle Text</span></div>
+        <div class="grid-item title  form-grid-item begin column-1"><span>Upload Scene</span></div>
+        <div class="grid-item title form-grid-item end column-2"><span>Upload Scene From Assets Folder</span></div>
         <div class="form-grid-item main-item">
             <div  class="form-group ">
             <input type="file" onchange="saveInput(this)" id="slide_file" name="slide_file" class="form-input" accept="video/*">
