@@ -227,6 +227,9 @@ body {
 .form-group {
     display: flex;
     flex-direction: column;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
     gap: 5px;
 }
 
@@ -424,7 +427,7 @@ clip_id=clipId
         <input type="hidden" name="textfile_id" value="{{textfile.id}}">
 
         <input type="text" value="${remainingText}" hidden id="remaining" name="remaining">
-        <div style="border-left:0.8px solid #864AF9"  class="form-grid-cont">
+        <div style="border-left:0.8px solid #864AF9;border-bottom:0.8px solid #864AF9;border-right:0.8px solid #864AF9"  class="form-grid-cont">
         <div class="grid-item title  form-grid-item column-1"><span>Subtitle</span></div>
         <div class="grid-item title form-grid-item column-2"><span>Subtitle Text</span></div>
         <div class="form-grid-item main-item">
