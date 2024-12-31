@@ -244,12 +244,7 @@ body {
     gap: 5px;
 }
 
-label {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333; 
-    display:none
-}
+
 
 .form-input,
 .form-select {
@@ -446,7 +441,6 @@ clip_id=clipId
         <div class="form-grid-cont">
         <div class="form-grid-item">
             <div  class="form-group ">
-            <label for="slide_file">Upload Video File</label>
             <input type="file" onchange="saveInput(this)" id="slide_file" name="slide_file" class="form-input" accept="video/*">
             <p id="currentFile"></p>
         
@@ -455,7 +449,6 @@ clip_id=clipId
         <div class="form-grid-item">
 
         <div class="form-group">
-            <label for="selected_topic_${clipId}_${num}">Select Topic</label>
             <select id="selected_topic_${clipId}_${num}" onchange="fetchVideoClips(this)" name="selected_topic" class="form-select">
                 <option value="">Select Topic</option>
                 {%for cat in video_categories%}
@@ -465,7 +458,6 @@ clip_id=clipId
         </div>
         
         <div class="form-group">
-            <label for="videoSelect_${clipId}_${num}">Select Video Clip</label>
             <select id="videoSelect_${clipId}_${num}" onclick="saveInput(this)" name="selected_video" class="form-select">
                 <option value="" disabled selected>Select a video clip</option>
 
@@ -600,13 +592,11 @@ htmlContainer.innerHTML = `
 
 
     <div class="form-group">
-        <label for="slide_file">Upload Video File</label>
         <input type="file" onchange="saveInput(this)" id="slide_file" name="slide_file" class="form-input" accept="video/*">
     <p id="currentFile"></p>
     </div>
 
     <div class="form-group">
-        <label for="selected_topic_${clipId}_${num}">Select Topic</label>
         <select id="selected_topic_${clipId}_${num}"  onchange="fetchVideoClips(this)" name="selected_topic" class="form-select">
             <option value="">Select Topic</option>
             {%for cat in video_categories%}
@@ -616,7 +606,6 @@ htmlContainer.innerHTML = `
     </div>
     
     <div class="form-group">
-        <label for="videoSelect_${clipId}_${num}">Select Video Clip</label>
         <select id="videoSelect_${clipId}_${num}" onclick="saveInput(this)" name="selected_video" class="form-select">
             <option value="" disabled selected>Select a video clip</option>
 
