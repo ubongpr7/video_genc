@@ -11,15 +11,40 @@
 
             <div id="submit-cont">
             </div>
-            <div  class="form-group">
+            <!-- <div  class="form-group"> -->
                 <button type="submit" id="submit-clip" class="submit-btn">Add Clip</button>
-            </div>
+            <!-- </div> -->
         </form>
         <button style="display: none;" class="close-btn" onclick="closeModal()" id="close-popup-btn">Close</button>
     </div>
 </div>
 
 <style>
+    .submit-btn {
+    margin-left: auto;
+    display: block;
+    text-align: right;
+    background-color: #864AF9;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #6a3cb8;
+}
+
+/* Ensure the container allows alignment */
+.submit-btn-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
     .popup-form {
         display: none;
         position: fixed;
