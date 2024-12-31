@@ -1,5 +1,9 @@
 <div class="popup-form" id="add-subclip-popup">
     <div class="popup-container">
+        <div class="close-btnx" onclick="closeModal()">
+            <i class="ri-close-line"></i>
+        </div>
+        
         <form method="POST" enctype="multipart/form-data" id="add-subclip-form">
             {% csrf_token %}
 

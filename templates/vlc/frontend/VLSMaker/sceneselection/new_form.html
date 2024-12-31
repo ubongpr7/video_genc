@@ -29,6 +29,31 @@
     position: relative;
     display: inline-block;
 }
+.close-btnx {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: #864AF9; /* Background color */
+    border-radius: 50%; /* Circular button */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.close-btnx i {
+    color: #fff; /* Icon color */
+    font-size: 20px; /* Icon size */
+}
+
+.close-btnx:hover {
+    background-color: #6a3cb8; /* Darker shade on hover */
+    transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+.close-btnx:active {
+    transform: scale(0.95); /* Slight shrink effect on click */
+}
 
 .icon-wrapper i {
     font-size: 24px; 
@@ -439,7 +464,7 @@ clip_id=clipId
         <div class="grid-item title form-grid-item end column-2"><span>Upload Scene From Assets Folder</span></div>
         <div class="form-grid-item main-item">
             <div  class="form-group" style="height:100%;">
-            <input type="file" onchange="saveInput(this)" id="slide_file" name="slide_file" class="form-input" accept="video/*">
+            <input  type="file" onchange="saveInput(this)" id="slide_file" name="slide_file" class="form-input" accept="video/*">
             <p id="currentFile"></p>
         
         </div>
