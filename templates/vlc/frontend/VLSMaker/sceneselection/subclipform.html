@@ -11,7 +11,7 @@
 
             <div id="submit-cont">
             </div>
-            <div class="submit-btn-container">
+            <div style="align-items: end;" class="btn-group">
                 <button type="submit" id="submit-clip" class="submit-btn">Add Clip</button>
             </div>
         </form>
@@ -20,33 +20,36 @@
 </div>
 
 <style>
-    
-    .submit-btn {
-    margin-left: auto;
-    display: block;
-    text-align: center;
+    .btn-group {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px; /* Adjust spacing as needed */
+}
+
+.submit-btn {
     background-color: #864AF9;
     color: white;
     padding: 10px 20px;
     font-size: 16px;
     font-weight: bold;
     border: none;
-    width: 25%;
-    
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
 }
 
 .submit-btn:hover {
     background-color: #6a3cb8;
+    transform: translateY(-2px); /* Lift effect on hover */
 }
 
-/* Ensure the container allows alignment */
-.submit-btn-container {
-    display: flex;
-    justify-content: flex-end;
+.submit-btn:active {
+    background-color: #5e319b;
+    transform: translateY(0); /* Reset on click */
 }
+
 
     .popup-form {
         display: none;
