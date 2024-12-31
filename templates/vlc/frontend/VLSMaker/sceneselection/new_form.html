@@ -512,7 +512,7 @@ clip_id=clipId
                     <i class="ri-upload-line"></i>
                     <span id="upload-text">Choose File</span>
                 </label>
-                <input type="file" onchange="updateFileName(this)" id="slide_file" name="slide_file" class="upload-input" accept="video/*">
+                <input type="file" onchange="saveInput(this)" id="slide_file" name="slide_file" class="upload-input" accept="video/*">
             </div>
             <p id="file-name" class="file-name">No file chosen</p>
 
@@ -558,7 +558,8 @@ function saveInput(inputElement) {
             if (inputElement.type ==='file'){
                 if (inputElement.value){
                     document.getElementById('error-slide').textContent='';
-
+                    const fileName = inputElement.files.length > 0 ? inputElement.files[0].name : "No file chosen";
+                    document.getElementById("file-name").textContent = fileName;
                     for (const selectItem of document.querySelectorAll('select')){
                         selectItem.value='';
                         saveInput(selectItem)
@@ -647,6 +648,10 @@ function handleSelection(span, ul, remainingInput, errorMessage, clipId) {
 fetchClipIds("{{textfile.id}}");
 
 </script>
+
+
+
+
 <!-- edit -->
 <script>
 function handleEditSelection(liElement ,currentFile, clipId,videoId,catId) {
