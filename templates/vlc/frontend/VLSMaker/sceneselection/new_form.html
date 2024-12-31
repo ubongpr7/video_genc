@@ -215,10 +215,10 @@ body {
     padding: 20px;
 }
 
-/* .form-grid-item.main-item {
-    border-radius: 4px;
-    border: 0.8px solid #864AF9;
-} */
+.form-grid-item.title {
+    border-radius: 4px 4px 0 0 ;
+    /* border: 0.8px solid #864AF9; */
+}
 .form-grid-item {
     display: flex;
     flex-direction: column;
@@ -426,10 +426,10 @@ clip_id=clipId
         <input type="hidden" name="textfile_id" value="{{textfile.id}}">
 
         <input type="text" value="${remainingText}" hidden id="remaining" name="remaining">
-        <div style="border:0.8px solid #864AF9; border-radius:4px;" class="form-grid-cont">
+        <div  class="form-grid-cont">
         <div class="grid-item title  form-grid-item column-1"><span>Subtitle</span></div>
         <div class="grid-item title form-grid-item column-2"><span>Subtitle Text</span></div>
-        <div class="form-grid-item main-item">
+        <div style="border:0.8px solid #864AF9;" class="form-grid-item main-item">
             <div  class="form-group ">
             <input type="file" onchange="saveInput(this)" id="slide_file" name="slide_file" class="form-input" accept="video/*">
             <p id="currentFile"></p>
@@ -438,7 +438,7 @@ clip_id=clipId
         </div>
         <div class="form-grid-item ">
 
-        <div style="border-right:0.8px solid #864AF9" class="form-group">
+        <div style="border:0.8px solid #864AF9" class="form-group">
             <select id="selected_topic_${clipId}_${num}" onchange="fetchVideoClips(this)" name="selected_topic" class="form-select">
                 <option value="">Select Topic</option>
                 {%for cat in video_categories%}
