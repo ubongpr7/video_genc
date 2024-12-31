@@ -222,6 +222,49 @@ body {
     border-radius: 50%;
     margin-left: 5px;
 }
+/* .form-grid-cont{
+
+} */
+.form-grid-cont {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 20px; /* Add spacing between columns */
+    padding: 20px; /* Optional: Add padding around the grid */
+}
+
+.form-grid-item {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Add spacing between form groups */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Add spacing between label and input/select */
+}
+
+label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; /* Adjust label color for better readability */
+}
+
+.form-input,
+.form-select {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px; /* Add rounded corners */
+    width: 100%;
+}
+
+.form-input:focus,
+.form-select:focus {
+    border-color: #864AF9; /* Highlight border on focus */
+    outline: none;
+}
+
 
 </style>
   <div id="grid-containerid" class="grid-container">
@@ -392,20 +435,23 @@ function openPopup(clipId,selectedText,remainingText ) {
 clip_id=clipId
     htmlContainer.innerHTML = `
         <div class="form-group">
-            <input id="slide_text" name="slide_text" value="${selectedText}" readonly required class="form-input">
+            <input id="slide_text" hidden name="slide_text" value="${selectedText}" readonly required class="form-input">
         </div>
         
         <input id="clipId" type="number" hidden name="clipId" value="${clipId}">
         <input type="hidden" name="textfile_id" value="{{textfile.id}}">
 
         <input type="text" value="${remainingText}" hidden id="remaining" name="remaining">
-
-        <div class="form-group">
+        <div class="form-grid-cont">
+        <div class="form-grid-item">
+            <div  class="form-group ">
             <label for="slide_file">Upload Video File</label>
             <input type="file" onchange="saveInput(this)" id="slide_file" name="slide_file" class="form-input" accept="video/*">
             <p id="currentFile"></p>
-
+        
         </div>
+        </div>
+        <div class="form-grid-item">
 
         <div class="form-group">
             <label for="selected_topic_${clipId}_${num}">Select Topic</label>
@@ -425,6 +471,8 @@ clip_id=clipId
             </select>
             <p style="color:red; font-size:13px;" id="error-slide"></p>
         </div>
+        </div>
+    </div>
     `;
 
     restoreForm();
