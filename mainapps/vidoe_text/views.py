@@ -677,8 +677,8 @@ def download_video(
         return redirect(f'/video/add-scene/{textfile_id}')
     if request.user.subscription.credits > 0:
         bg_music = request.GET.get("bg_music", None)
-    if not text_file.generated_final_bgmw_video.name:
-        bg_music="false"
+        if not text_file.generated_final_bgmw_video.name:
+            bg_music="false"
 
         return render(
             request,
