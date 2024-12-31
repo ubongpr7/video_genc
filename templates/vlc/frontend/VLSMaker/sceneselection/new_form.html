@@ -574,6 +574,7 @@ function saveInput(inputElement) {
                 console.log(inputElement.value)
                 if (inputElement.id.startsWith('videoSelect_') && inputElement.value !==''){
                     document.getElementById("slide_file").value=''
+                    document.getElementById("upload-text").textContent = "Choose File";
 
                     document.getElementById('currentFile').textContent=''
     
